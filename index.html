@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meu Plano Tech · 16 → 20 anos</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #1a1a25;
+  --card: #13131c;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --green: #00e5a0;
+  --green2: #00b87d;
+  --amber: #f5a623;
+  --purple: #8b7cf8;
+  --blue: #4da6ff;
+  --red: #ff5f5f;
+  --text: #f0f0f8;
+  --text2: #9090a8;
+  --text3: #5a5a72;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Space Grotesk', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
+
+/* NOISE TEXTURE */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* GLOW BLOBS */
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.12;
+}
+.blob1 { width: 600px; height: 600px; background: var(--green); top: -200px; left: -100px; }
+.blob2 { width: 400px; height: 400px; background: var(--purple); bottom: 100px; right: -100px; }
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 16px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(10,10,15,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--green);
+  letter-spacing: 0.05em;
+}
+.nav-links { display: flex; gap: 8px; }
+.nav-link {
+  font-size: 12px;
+  color: var(--text2);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+.nav-link:hover { color: var(--text); background: var(--bg3); border-color: var(--border2); }
+.nav-link.active { color: var(--green); border-color: rgba(0,229,160,0.2); background: rgba(0,229,160,0.05); }
+
+/* HERO */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 100px 40px 60px;
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.hero-tag {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--green);
+  letter-spacing: 0.15em;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero-tag::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 1px;
+  background: var(--green);
+}
+h1.hero-title {
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+}
+.hero-title .accent { color: var(--green); }
+.hero-title .dim { color: var(--text3); }
+.hero-sub {
+  font-size: 18px;
+  color: var(--text2);
+  max-width: 560px;
+  margin-bottom: 48px;
+  font-weight: 400;
+  line-height: 1.7;
+}
+.hero-stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.stat-item { text-align: left; }
+.stat-num {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  font-family: var(--mono);
+  line-height: 1;
+}
+.stat-num span { color: var(--green); }
+.stat-label {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text3);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  animation: bounce 2s infinite;
+}
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--text3), transparent);
+}
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+/* SECTIONS */
+section {
+  position: relative;
+  z-index: 1;
+  padding: 80px 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: 0.2em;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.section-title {
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.section-subtitle {
+  color: var(--text2);
+  font-size: 15px;
+  margin-bottom: 48px;
+}
+
+/* TIMELINE */
+.timeline { position: relative; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 24px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--green), var(--purple), transparent);
+}
+.phase {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 32px;
+  margin-bottom: 48px;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.5s ease;
+}
+.phase.visible { opacity: 1; transform: translateX(0); }
+.phase-dot {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+.dot-1 { background: rgba(0,229,160,0.1); border: 1px solid var(--green); color: var(--green); }
+.dot-2 { background: rgba(245,166,35,0.1); border: 1px solid var(--amber); color: var(--amber); }
+.dot-3 { background: rgba(139,124,248,0.1); border: 1px solid var(--purple); color: var(--purple); }
+.phase-content {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.phase-content:hover { border-color: var(--border2); transform: translateY(-2px); }
+.phase-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.phase-badge {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  padding: 3px 10px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+.b-green { background: rgba(0,229,160,0.1); color: var(--green); }
+.b-amber { background: rgba(245,166,35,0.1); color: var(--amber); }
+.b-purple { background: rgba(139,124,248,0.1); color: var(--purple); }
+.phase-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.phase-age {
+  font-size: 12px;
+  color: var(--text3);
+  font-family: var(--mono);
+}
+.phase-toggle {
+  color: var(--text3);
+  font-size: 20px;
+  transition: transform 0.3s;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.phase-content.open .phase-toggle { transform: rotate(180deg); }
+.phase-goals {
+  display: none;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.phase-content.open .phase-goals { display: block; }
+.goal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+.goal-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text2);
+  padding: 10px 12px;
+  background: var(--bg2);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.goal-icon { flex-shrink: 0; margin-top: 1px; }
+.channels-title {
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-family: var(--mono);
+}
+.channels-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.ch-tag {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: rgba(255,95,95,0.08);
+  border: 1px solid rgba(255,95,95,0.2);
+  color: #ff9090;
+  font-family: var(--mono);
+}
+
+/* PROJECTS */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.project-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.project-card.visible { opacity: 1; transform: translateY(0); }
+.project-card:hover { border-color: var(--border2); transform: translateY(-4px); }
+.project-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  margin-bottom: 12px;
+}
+.project-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.project-desc { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 16px; }
+.stack-row { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 16px; }
+.stack-tag {
+  font-size: 10px;
+  font-family: var(--mono);
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--bg3);
+  color: var(--text3);
+  border: 1px solid var(--border);
+}
+.progress-outer {
+  height: 3px;
+  background: var(--bg3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-inner {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 1s ease;
+  width: 0;
+}
+.prog-green { background: var(--green); }
+.prog-amber { background: var(--amber); }
+.prog-purple { background: var(--purple); }
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--text3);
+  font-family: var(--mono);
+}
+
+/* TOOLS */
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.tool-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.tool-card.visible { opacity: 1; transform: translateY(0); }
+.tool-card:hover { border-color: var(--border2); }
+.tool-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+.tool-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.tool-badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(0,229,160,0.08);
+  color: var(--green);
+  border: 1px solid rgba(0,229,160,0.15);
+  font-family: var(--mono);
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.tool-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+/* COPILOT */
+.copilot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+.copilot-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid;
+}
+.copilot-good { border-color: rgba(0,229,160,0.2); }
+.copilot-bad { border-color: rgba(255,95,95,0.2); }
+.copilot-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.copilot-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.copilot-label { font-size: 14px; font-weight: 600; }
+.copilot-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 0;
+  font-size: 13px;
+  color: var(--text2);
+  border-bottom: 1px solid var(--border);
+}
+.copilot-item:last-child { border-bottom: none; }
+.ci-icon { flex-shrink: 0; margin-top: 2px; font-size: 12px; }
+.rule-box {
+  background: var(--bg2);
+  border: 1px solid rgba(0,229,160,0.15);
+  border-left: 3px solid var(--green);
+  border-radius: 0 12px 12px 0;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+.rule-title { font-size: 13px; font-weight: 600; color: var(--green); margin-bottom: 6px; font-family: var(--mono); }
+.rule-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+/* CHANNELS */
+.channels-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.channel-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s;
+  opacity: 0;
+  transform: translateY(20px);
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
+.channel-card.visible { opacity: 1; transform: translateY(0); }
+.channel-card:hover { border-color: rgba(255,95,95,0.4); transform: translateY(-4px); box-shadow: 0 8px 32px rgba(255,95,95,0.08); }
+.channel-card:hover .channel-name { color: #ff9090; }
+.channel-avatar-wrap {
+  position: relative;
+  width: 64px;
+  margin-bottom: 14px;
+}
+.channel-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,95,95,0.25);
+  object-fit: cover;
+  display: block;
+  background: var(--bg3);
+}
+.channel-yt-badge {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  width: 20px;
+  height: 20px;
+  background: #ff0000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--card);
+  font-size: 8px;
+  color: white;
+  font-weight: 700;
+  line-height: 1;
+}
+.channel-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.channel-phase {
+  font-size: 10px;
+  color: var(--text3);
+  font-family: var(--mono);
+  margin-bottom: 8px;
+}
+.channel-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
+
+/* CANADA */
+.canada-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.canada-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s;
+}
+.canada-card:hover { border-color: var(--border2); }
+.canada-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text2);
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.canada-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text2);
+}
+.canada-item:last-child { border-bottom: none; }
+.ca-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+/* FOOTER */
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 60px 40px;
+  border-top: 1px solid var(--border);
+  color: var(--text3);
+  font-size: 13px;
+}
+footer span { color: var(--green); }
+
+/* PROGRESS BAR */
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--green);
+  z-index: 200;
+  transition: width 0.1s;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav { padding: 14px 20px; }
+  .nav-links { display: none; }
+  section, #hero { padding: 60px 20px; }
+  h1.hero-title { font-size: 32px; }
+  .copilot-grid { grid-template-columns: 1fr; }
+  .canada-grid { grid-template-columns: 1fr; }
+  .goal-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 24px; }
+}
+
+/* TYPEWRITER */
+.typewriter-text { border-right: 2px solid var(--green); padding-right: 2px; }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<nav>
+  <div class="nav-logo">Plano de Carreira</div>
+  <div class="nav-links">
+    <a class="nav-link" href="#fases">Fases</a>
+    <a class="nav-link" href="#projetos">Projetos</a>
+    <a class="nav-link" href="#hospedagem">Hospedagem</a>
+    <a class="nav-link" href="#copiloto">IA Copiloto</a>
+    <a class="nav-link" href="#canais">Canais</a>
+    <a class="nav-link" href="#canada">Canadá</a>
+    <a class="nav-link" href="projetos.html" style="color:var(--green);border-color:rgba(0,229,160,0.2);background:rgba(0,229,160,0.05);">Meus Projetos ↗</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-tag">Redes de Computadores → IA & Automação · Pernambuco, BR</div>
+  <h1 class="hero-title">
+    De Pernambuco<br>
+    <span class="accent" id="typewriter"></span><br>
+    <span class="dim">em 4 anos.</span>
+  </h1>
+  <p class="hero-sub">
+    Um roadmap técnico completo para construir um portfólio real, dominar IA e automação, e conquistar uma vaga no Nubank — com olho no Canadá.
+  </p>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">16<span>→</span>20</div>
+      <div class="stat-label">anos de missão</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">3</div>
+      <div class="stat-label">fases do plano</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">4</div>
+      <div class="stat-label">projetos reais</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">0</div>
+      <div class="stat-label">reais gastos na nuvem</div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    SCROLL
+  </div>
+</div>
+
+<!-- FASES -->
+<section id="fases">
+  <div class="section-label">01 · Roadmap</div>
+  <h2 class="section-title">As 3 fases da missão</h2>
+  <p class="section-subtitle">Clique em cada fase para ver os detalhes, metas e canais recomendados.</p>
+
+  <div class="timeline">
+
+    <div class="phase" id="phase1">
+      <div class="phase-dot dot-1">01</div>
+      <div class="phase-content" onclick="togglePhase(this)">
+        <div class="phase-header">
+          <div class="phase-meta">
+            <div class="phase-badge b-green">Curto Prazo</div>
+            <div class="phase-name">Base sólida + Primeiro deploy</div>
+            <div class="phase-age">⟶ 16 – 17 anos · 2026–2027</div>
+          </div>
+          <div class="phase-toggle">▾</div>
+        </div>
+        <div class="phase-goals">
+          <div class="goal-grid">
+            <div class="goal-item"><span class="goal-icon">🐍</span>Completar Python do Curso em Vídeo (módulos 1 ao 3)</div>
+            <div class="goal-item"><span class="goal-icon">🌐</span>Criar site pessoal estático no GitHub Pages</div>
+            <div class="goal-item"><span class="goal-icon">🔧</span>Aprender Git: commit, push, pull, branches</div>
+            <div class="goal-item"><span class="goal-icon">⚗️</span>Construir 1ª API com Flask (lista de tarefas)</div>
+            <div class="goal-item"><span class="goal-icon">🚀</span>Deploy no PythonAnywhere — zero custo</div>
+            <div class="goal-item"><span class="goal-icon">💼</span>Criar perfil no GitHub e preencher README</div>
+          </div>
+          <div class="channels-title">▶ Canais para essa fase</div>
+          <div class="channels-row">
+            <span class="ch-tag">Curso em Vídeo</span>
+            <span class="ch-tag">Hashtag Programação</span>
+            <span class="ch-tag">Filipe Deschamps</span>
+            <span class="ch-tag">Código Fonte TV</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase" id="phase2">
+      <div class="phase-dot dot-2">02</div>
+      <div class="phase-content" onclick="togglePhase(this)">
+        <div class="phase-header">
+          <div class="phase-meta">
+            <div class="phase-badge b-amber">Médio Prazo</div>
+            <div class="phase-name">IA + Automação no backend</div>
+            <div class="phase-age">⟶ 17 – 18 anos · 2027–2028</div>
+          </div>
+          <div class="phase-toggle">▾</div>
+        </div>
+        <div class="phase-goals">
+          <div class="goal-grid">
+            <div class="goal-item"><span class="goal-icon">🤖</span>Integrar Gemini API ou OpenAI ao site de estudos</div>
+            <div class="goal-item"><span class="goal-icon">📋</span>Sistema de resumo automático de anotações com IA</div>
+            <div class="goal-item"><span class="goal-icon">🗄️</span>Banco de dados SQLite + PostgreSQL com Python</div>
+            <div class="goal-item"><span class="goal-icon">▲</span>Deploy profissional: Vercel (frontend) + Railway (backend)</div>
+            <div class="goal-item"><span class="goal-icon">📜</span>Certificação: Google IT Automation with Python</div>
+            <div class="goal-item"><span class="goal-icon">🔄</span>Criar scripts de automação (Selenium, BeautifulSoup)</div>
+          </div>
+          <div class="channels-title">▶ Canais para essa fase</div>
+          <div class="channels-row">
+            <span class="ch-tag">Hashtag Programação</span>
+            <span class="ch-tag">Sayuri Takei</span>
+            <span class="ch-tag">Andrej Karpathy</span>
+            <span class="ch-tag">TechWith Tim</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase" id="phase3">
+      <div class="phase-dot dot-3">03</div>
+      <div class="phase-content" onclick="togglePhase(this)">
+        <div class="phase-header">
+          <div class="phase-meta">
+            <div class="phase-badge b-purple">Longo Prazo</div>
+            <div class="phase-name">Portfólio sênior + Rumo ao Canadá</div>
+            <div class="phase-age">⟶ 18 – 20 anos · 2028–2030</div>
+          </div>
+          <div class="phase-toggle">▾</div>
+        </div>
+        <div class="phase-goals">
+          <div class="goal-grid">
+            <div class="goal-item"><span class="goal-icon">🧠</span>Machine Learning com fast.ai (100% em vídeo)</div>
+            <div class="goal-item"><span class="goal-icon">☁️</span>Certificação AWS Cloud Practitioner (grátis)</div>
+            <div class="goal-item"><span class="goal-icon">📁</span>3 projetos reais e documentados no GitHub</div>
+            <div class="goal-item"><span class="goal-icon">🌍</span>Contribuição em projeto open-source relevante</div>
+            <div class="goal-item"><span class="goal-icon">🇨🇦</span>IELTS ≥ 7.0 para Express Entry no Canadá</div>
+            <div class="goal-item"><span class="goal-icon">💜</span>Candidatura: Nubank Apprentice ou vaga júnior</div>
+          </div>
+          <div class="channels-title">▶ Canais para essa fase</div>
+          <div class="channels-row">
+            <span class="ch-tag">fast.ai</span>
+            <span class="ch-tag">Sayuri Takei</span>
+            <span class="ch-tag">TechWith Tim</span>
+            <span class="ch-tag">Filipe Deschamps</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJETOS -->
+<section id="projetos">
+  <div class="section-label">02 · Portfólio</div>
+  <h2 class="section-title">Os 4 projetos que vão te contratar</h2>
+  <p class="section-subtitle">Construa em ordem. Cada projeto é pré-requisito do próximo.</p>
+
+  <div class="projects-grid">
+
+    <div class="project-card" data-delay="0">
+      <div class="project-num">projeto 001 · fase 1</div>
+      <div class="project-title">🌐 Site Pessoal Estático</div>
+      <div class="project-desc">Página de apresentação com seus projetos, skills e links. Cartão de visitas digital que fica online para sempre. Recrutadores vão ver antes da entrevista.</div>
+      <div class="stack-row">
+        <span class="stack-tag">HTML</span>
+        <span class="stack-tag">CSS</span>
+        <span class="stack-tag">JavaScript</span>
+        <span class="stack-tag">GitHub Pages</span>
+      </div>
+      <div class="progress-outer"><div class="progress-inner prog-green" data-width="25"></div></div>
+      <div class="progress-label"><span>nível atual</span><span>fundação</span></div>
+    </div>
+
+    <div class="project-card" data-delay="100">
+      <div class="project-num">projeto 002 · fase 1</div>
+      <div class="project-title">📋 API de Tarefas com Flask</div>
+      <div class="project-desc">Backend REST com Python. Endpoints para criar, listar e deletar tarefas. Conecta ao site via Fetch API. Aprende o ciclo completo frontend ↔ backend.</div>
+      <div class="stack-row">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Flask</span>
+        <span class="stack-tag">REST API</span>
+        <span class="stack-tag">PythonAnywhere</span>
+      </div>
+      <div class="progress-outer"><div class="progress-inner prog-green" data-width="45"></div></div>
+      <div class="progress-label"><span>1ª API real</span><span>deploy funcional</span></div>
+    </div>
+
+    <div class="project-card" data-delay="200">
+      <div class="project-num">projeto 003 · fase 2</div>
+      <div class="project-title">🧠 Gerenciador de Estudos com IA</div>
+      <div class="project-desc">O projeto principal. Salve anotações e a IA gera resumos, perguntas de revisão e flashcards automaticamente. Usa Gemini API (grátis) no backend Python.</div>
+      <div class="stack-row">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Flask</span>
+        <span class="stack-tag">SQLite</span>
+        <span class="stack-tag">Gemini API</span>
+        <span class="stack-tag">Vercel</span>
+      </div>
+      <div class="progress-outer"><div class="progress-inner prog-amber" data-width="65"></div></div>
+      <div class="progress-label"><span>âncora do portfólio</span><span>IA no backend</span></div>
+    </div>
+
+    <div class="project-card" data-delay="300">
+      <div class="project-num">projeto 004 · fase 3</div>
+      <div class="project-title">📊 Dashboard de Analytics</div>
+      <div class="project-desc">Painel com gráficos do seu progresso de estudos. Horas, tópicos, frequência de revisão. Domínio de dados e visualização — muito valorizado no Nubank.</div>
+      <div class="stack-row">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Pandas</span>
+        <span class="stack-tag">Chart.js</span>
+        <span class="stack-tag">PostgreSQL</span>
+        <span class="stack-tag">Railway</span>
+      </div>
+      <div class="progress-outer"><div class="progress-inner prog-purple" data-width="90"></div></div>
+      <div class="progress-label"><span>nível portfólio sênior</span><span>candidatura Nubank</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOSPEDAGEM -->
+<section id="hospedagem">
+  <div class="section-label">03 · Infraestrutura</div>
+  <h2 class="section-title">Hospedagem 100% grátis</h2>
+  <p class="section-subtitle">Stack completa sem gastar um centavo.</p>
+
+  <div class="tools-grid">
+
+    <div class="tool-card" data-delay="0">
+      <div class="tool-icon" style="background: rgba(255,255,255,0.05); font-size: 22px;">🐙</div>
+      <div class="tool-title">GitHub + GitHub Pages</div>
+      <div class="tool-badge">grátis para sempre</div>
+      <div class="tool-desc">Guarda todo o código e hospeda sites estáticos. É também o seu portfólio público — recrutadores do Nubank vão abrir antes da entrevista. <strong>Comece aqui no Dia 1.</strong></div>
+    </div>
+
+    <div class="tool-card" data-delay="100">
+      <div class="tool-icon" style="background: rgba(255,255,255,0.05); font-size: 22px;">▲</div>
+      <div class="tool-title">Vercel</div>
+      <div class="tool-badge">grátis no plano Hobby</div>
+      <div class="tool-desc">Deploy automático do frontend — conecta ao GitHub e publica a cada push. Perfeito para React ou Next.js. Suporta funções serverless Python para APIs simples.</div>
+    </div>
+
+    <div class="tool-card" data-delay="200">
+      <div class="tool-icon" style="background: rgba(0,229,160,0.08); font-size: 22px;">🐍</div>
+      <div class="tool-title">PythonAnywhere</div>
+      <div class="tool-badge">grátis conta Beginner</div>
+      <div class="tool-desc">Hospeda aplicações Flask com Python. Conta gratuita suporta 1 web app com SQLite. Ideal para a fase 1 — sobe em minutos, sem cartão de crédito.</div>
+    </div>
+
+    <div class="tool-card" data-delay="300">
+      <div class="tool-icon" style="background: rgba(77,166,255,0.08); font-size: 22px;">🚂</div>
+      <div class="tool-title">Railway</div>
+      <div class="tool-badge">$5 crédito/mês grátis</div>
+      <div class="tool-desc">Sobe PostgreSQL + Flask juntos com um clique. Crédito mensal suficiente para projetos de estudo. Use na fase 2 quando precisar de banco de dados real.</div>
+    </div>
+
+  </div>
+
+  <div style="margin-top: 24px; background: var(--bg2); border: 1px solid rgba(0,229,160,0.15); border-left: 3px solid var(--green); border-radius: 0 12px 12px 0; padding: 20px 24px;">
+    <div style="font-size: 12px; color: var(--green); font-family: var(--mono); margin-bottom: 8px;">FLUXO RECOMENDADO</div>
+    <div style="font-size: 14px; color: var(--text2);">
+      <code style="font-family: var(--mono); color: var(--green);">GitHub</code> (código)
+      &nbsp;→&nbsp;
+      <code style="font-family: var(--mono); color: var(--amber);">Vercel</code> (frontend automático)
+      &nbsp;→&nbsp;
+      <code style="font-family: var(--mono); color: var(--purple);">Railway</code> (backend Python + banco)
+    </div>
+    <div style="font-size: 12px; color: var(--text3); margin-top: 8px;">Tudo grátis. Tudo profissional. Tudo o que o Nubank usa em escala maior.</div>
+  </div>
+</section>
+
+<!-- COPILOTO -->
+<section id="copiloto">
+  <div class="section-label">04 · Método de Estudo</div>
+  <h2 class="section-title">IA como copiloto, não muleta</h2>
+  <p class="section-subtitle">A diferença entre quem aprende e quem apenas copia.</p>
+
+  <div class="copilot-grid">
+    <div class="copilot-card copilot-good">
+      <div class="copilot-header">
+        <div class="copilot-dot" style="background: var(--green);"></div>
+        <div class="copilot-label" style="color: var(--green);">✓ Use a IA assim (copiloto)</div>
+      </div>
+      <div class="copilot-item"><span class="ci-icon" style="color: var(--green);">→</span>Peça explicação de erro que você não entende</div>
+      <div class="copilot-item"><span class="ci-icon" style="color: var(--green);">→</span>Gere o esqueleto, depois edite você mesmo</div>
+      <div class="copilot-item"><span class="ci-icon" style="color: var(--green);">→</span>Use para revisar seu código depois de escrever</div>
+      <div class="copilot-item"><span class="ci-icon" style="color: var(--green);">→</span>Peça sugestões de melhoria (não a solução pronta)</div>
+      <div class="copilot-item"><span class="ci-icon" style="color: var(--green);">→</span>Pergunte "por que isso funciona?" após copiar</div>
+    </div>
+    <div class="copilot-card copilot-bad">
+      <div class="copilot-header">
+        <div class="copilot-dot" style="background: var(--red);"></div>
+        <div class="copilot-label" style="color: var(--red);">✗ Evite a IA assim (muleta)</div>
+      </div>
+      <div class="copilot-item"><span class="ci-icon" style="color: var(--red);">→</span>Copiar código sem ler ou entender</div>
+      <div class="copilot-item"><span class="ci-icon" style="color: var(--red);">→</span>Pedir "faz o projeto completo pra mim"</div>
+      <div class="copilot-item"><span class="ci-icon" style="color: var(--red);">→</span>Usar IA antes de tentar sozinho por 20 min</div>
+      <div class="copilot-item"><span class="ci-icon" style="color: var(--red);">→</span>Não saber explicar o código que você enviou</div>
+      <div class="copilot-item"><span class="ci-icon" style="color: var(--red);">→</span>Depender da IA para lembrar sintaxe básica</div>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-title">REGRA DOS 20 MINUTOS</div>
+    <div class="rule-desc">Tente resolver o problema sozinho por 20 minutos antes de pedir ajuda à IA. Esses 20 minutos são onde o aprendizado de verdade acontece. Em entrevistas técnicas no Nubank, você vai precisar explicar o código ao vivo — sem IA.</div>
+  </div>
+  <div class="rule-box" style="border-left-color: var(--purple);">
+    <div class="rule-title" style="color: var(--purple);">TÉCNICA DA TELA DIVIDIDA</div>
+    <div class="rule-desc">YouTube à esquerda, VS Code à direita. Regra de ouro: nunca feche o vídeo sem ter reproduzido o que o professor fez. Pausa a cada 5 minutos e digita — não copia.</div>
+  </div>
+  <div class="rule-box" style="border-left-color: var(--amber);">
+    <div class="rule-title" style="color: var(--amber);">TESTE DO ENTENDIMENTO</div>
+    <div class="rule-desc">Antes de avançar para a próxima parte do vídeo, feche o editor e tente reescrever o que fez de memória. Se você consegue, aprendeu. Se não consegue, ainda está copiando.</div>
+  </div>
+</section>
+
+<!-- CANAIS -->
+<section id="canais">
+  <div class="section-label">05 · Recursos Visuais</div>
+  <h2 class="section-title">Canais que você precisa seguir</h2>
+  <p class="section-subtitle">Todos em vídeo. Todos gratuitos. Todos em português ou com legendas.</p>
+
+  <div class="channels-grid">
+    <a class="channel-card" href="https://www.youtube.com/@cursoemvideo" target="_blank" rel="noopener" data-delay="0">
+      <div class="channel-avatar-wrap">
+        <img class="channel-avatar" src="https://unavatar.io/youtube/cursoemvideo" alt="Curso em Vídeo" loading="lazy">
+        <div class="channel-yt-badge">▶</div>
+      </div>
+      <div class="channel-name">Curso em Vídeo</div>
+      <div class="channel-phase">fases 1 e 2 · Gustavo Guanabara</div>
+      <div class="channel-desc">O rei do ensino visual no Brasil. Python do zero com didática incomparável. Obrigatório para a fase 1.</div>
+    </a>
+    <a class="channel-card" href="https://www.youtube.com/@HashtagProgramacao" target="_blank" rel="noopener" data-delay="100">
+      <div class="channel-avatar-wrap">
+        <img class="channel-avatar" src="https://unavatar.io/youtube/HashtagProgramacao" alt="Hashtag Programação" loading="lazy">
+        <div class="channel-yt-badge">▶</div>
+      </div>
+      <div class="channel-name">Hashtag Programação</div>
+      <div class="channel-phase">fases 1 e 2 · Python e automação</div>
+      <div class="channel-desc">Tutoriais práticos de Python, automação e análise de dados. Muito focado em resultados reais.</div>
+    </a>
+    <a class="channel-card" href="https://www.youtube.com/@FilipeDeschamps" target="_blank" rel="noopener" data-delay="200">
+      <div class="channel-avatar-wrap">
+        <img class="channel-avatar" src="https://unavatar.io/youtube/FilipeDeschamps" alt="Filipe Deschamps" loading="lazy">
+        <div class="channel-yt-badge">▶</div>
+      </div>
+      <div class="channel-name">Filipe Deschamps</div>
+      <div class="channel-phase">todas as fases · carreira e IA</div>
+      <div class="channel-desc">Mercado de trabalho, IA e tecnologia de um jeito dinâmico e motivador. Ótimo para entender o setor.</div>
+    </a>
+    <a class="channel-card" href="https://www.youtube.com/@sayuri_takei" target="_blank" rel="noopener" data-delay="300">
+      <div class="channel-avatar-wrap">
+        <img class="channel-avatar" src="https://unavatar.io/youtube/sayuri_takei" alt="Sayuri Takei" loading="lazy">
+        <div class="channel-yt-badge">▶</div>
+      </div>
+      <div class="channel-name">Sayuri Takei</div>
+      <div class="channel-phase">fases 2 e 3 · carreira tech</div>
+      <div class="channel-desc">Carreira de tecnologia e estudos de forma direta e honesta. Ótima para visão de mercado.</div>
+    </a>
+    <a class="channel-card" href="https://www.youtube.com/@AndrejKarpathy" target="_blank" rel="noopener" data-delay="400">
+      <div class="channel-avatar-wrap">
+        <img class="channel-avatar" src="https://unavatar.io/youtube/AndrejKarpathy" alt="Andrej Karpathy" loading="lazy">
+        <div class="channel-yt-badge">▶</div>
+      </div>
+      <div class="channel-name">Andrej Karpathy</div>
+      <div class="channel-phase">fase 3 · Machine Learning</div>
+      <div class="channel-desc">Ex-diretor de IA da Tesla e OpenAI. Melhor canal do mundo para entender LLMs e deep learning.</div>
+    </a>
+    <a class="channel-card" href="https://www.youtube.com/@fastai" target="_blank" rel="noopener" data-delay="500">
+      <div class="channel-avatar-wrap">
+        <img class="channel-avatar" src="https://unavatar.io/youtube/fastai" alt="fast.ai" loading="lazy">
+        <div class="channel-yt-badge">▶</div>
+      </div>
+      <div class="channel-name">fast.ai</div>
+      <div class="channel-phase">fase 3 · ML prático</div>
+      <div class="channel-desc">Curso completo de Machine Learning de forma prática. 100% em vídeo, gratuito e focado em código real.</div>
+    </a>
+  </div>
+</section>
+
+<!-- CANADA -->
+<section id="canada">
+  <div class="section-label">06 · Objetivo Final</div>
+  <h2 class="section-title">🇨🇦 Roteiro para o Canadá</h2>
+  <p class="section-subtitle">O Canadá quer profissionais de tech. Você vai ter o perfil certo.</p>
+
+  <div class="canada-grid">
+    <div class="canada-card">
+      <div class="canada-title">Construir antes de sair</div>
+      <div class="canada-item"><span class="ca-dot"></span>IELTS ≥ 7.0 — comece o inglês agora, em paralelo ao código</div>
+      <div class="canada-item"><span class="ca-dot"></span>Portfólio no GitHub com 3+ projetos documentados em inglês</div>
+      <div class="canada-item"><span class="ca-dot"></span>Certificação AWS ou Google Cloud (valorizado pela imigração)</div>
+      <div class="canada-item"><span class="ca-dot"></span>LinkedIn completo em inglês com recomendações</div>
+      <div class="canada-item"><span class="ca-dot"></span>1–2 anos de experiência formal (Nubank ou empresa BR)</div>
+    </div>
+    <div class="canada-card">
+      <div class="canada-title">Caminhos de imigração tech</div>
+      <div class="canada-item"><span class="ca-dot" style="background: var(--green);"></span>Express Entry (Federal Skilled Worker) — pontuação CRS</div>
+      <div class="canada-item"><span class="ca-dot" style="background: var(--green);"></span>Provincial Nominee Programs (PNP) — Ontario e BC priorizam tech</div>
+      <div class="canada-item"><span class="ca-dot" style="background: var(--green);"></span>Global Talent Stream — empresas canadenses contratam de fora</div>
+      <div class="canada-item"><span class="ca-dot" style="background: var(--green);"></span>Study Permit → Work Permit (caminho alternativo)</div>
+      <div class="canada-item"><span class="ca-dot" style="background: var(--green);"></span>Salário médio tech em Toronto: CAD $85k–$130k/ano</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 24px; background: var(--bg2); border: 1px solid rgba(77,166,255,0.15); border-left: 3px solid var(--blue); border-radius: 0 12px 12px 0; padding: 20px 24px;">
+    <div style="font-size: 12px; color: var(--blue); font-family: var(--mono); margin-bottom: 8px;">DICA FUNDAMENTAL</div>
+    <div style="font-size: 14px; color: var(--text2); line-height: 1.7;">A tecnologia abre a porta. O inglês te deixa entrar. <strong style="color: var(--text);">Assista os canais técnicos em inglês sem legenda</strong> — TechWith Tim é ótimo para isso. Mire no IELTS 7.0 e você vai ter mais pontos no Express Entry do que a maioria.</div>
+  </div>
+</section>
+
+<!-- MEUS PROJETOS REAIS -->
+<section id="meus-projetos" style="border-top: 1px solid var(--border);">
+  <div class="section-label">07 · Portfólio Real</div>
+  <h2 class="section-title">Meus Projetos Reais</h2>
+  <p class="section-subtitle">
+    Além do roadmap, aqui estão os projetos que já construí ou estou construindo —
+    código real, links reais, progresso real. Cada projeto representa horas de
+    aprendizado que nenhum certificado substitui.
+  </p>
+
+  <div style="
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 16px;
+    padding: 40px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: center;
+  ">
+    <div>
+      <div style="
+        display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;
+      ">
+        <span style="font-size:11px; padding:4px 12px; border-radius:4px; background:rgba(0,229,160,0.08); color:var(--green); border:1px solid rgba(0,229,160,0.15); font-family:var(--mono);">✓ projetos concluídos</span>
+        <span style="font-size:11px; padding:4px 12px; border-radius:4px; background:rgba(245,166,35,0.08); color:var(--amber); border:1px solid rgba(245,166,35,0.15); font-family:var(--mono);">◉ em andamento</span>
+        <span style="font-size:11px; padding:4px 12px; border-radius:4px; background:rgba(80,85,114,0.15); color:var(--text3); border:1px solid var(--border); font-family:var(--mono);">○ planejados</span>
+      </div>
+      <div style="font-size:15px; color:var(--text2); line-height:1.8; max-width:520px;">
+        Links para GitHub, demos ao vivo e artigos de referência —
+        tudo organizado por status e tecnologia usada.
+        É onde o plano vira realidade.
+      </div>
+    </div>
+    <div>
+      <a href="projetos.html" style="
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--green);
+        color: var(--bg);
+        padding: 16px 30px;
+        border-radius: 12px;
+        font-family: var(--sans);
+        font-weight: 700;
+        font-size: 14px;
+        text-decoration: none;
+        transition: all 0.25s;
+        white-space: nowrap;
+      " onmouseover="this.style.background='var(--green2)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 32px rgba(0,229,160,0.2)'"
+         onmouseout="this.style.background='var(--green)';this.style.transform='none';this.style.boxShadow='none'">
+        Ver Meus Projetos →
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div style="font-family: var(--mono); font-size: 18px; margin-bottom: 12px; color: var(--text);">
+    <span>ETE Maximiano Accioly Campos</span> → <span style="color: var(--amber)">Nubank</span> → <span style="color: var(--blue)">🇨🇦 Canadá</span>
+  </div>
+  <div>Construído para quem tem <span>16 anos</span>, 30 min por dia e ambição suficiente para mudar de país.</div>
+  <div style="margin-top: 8px; font-size: 11px; color: var(--text3);">30 min/dia × 4 anos = mais de 700 horas de código. Isso é suficiente para qualquer coisa.</div>
+</footer>
+
+<script>
+// PROGRESS BAR
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = (scrollTop / docHeight) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+});
+
+// TYPEWRITER
+const phrases = ['ao Nubank.', 'ao Canadá.', 'à autonomia.', 'ao futuro.'];
+let pi = 0, ci = 0, deleting = false;
+const el = document.getElementById('typewriter');
+function type() {
+  const cur = phrases[pi];
+  if (!deleting) {
+    el.textContent = cur.slice(0, ci + 1);
+    ci++;
+    if (ci === cur.length) { deleting = true; setTimeout(type, 1800); return; }
+  } else {
+    el.textContent = cur.slice(0, ci - 1);
+    ci--;
+    if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
+  }
+  setTimeout(type, deleting ? 60 : 100);
+}
+type();
+
+// PHASE TOGGLE
+function togglePhase(el) {
+  el.classList.toggle('open');
+}
+
+// INTERSECTION OBSERVER
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const delay = parseInt(el.dataset.delay || 0);
+      setTimeout(() => {
+        el.classList.add('visible');
+        // animate progress bars
+        el.querySelectorAll('.progress-inner').forEach(bar => {
+          bar.style.width = bar.dataset.width + '%';
+        });
+      }, delay);
+      observer.unobserve(el);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.phase, .project-card, .tool-card, .channel-card').forEach(el => {
+  observer.observe(el);
+});
+
+// NAV ACTIVE STATE
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meus Projetos · Plano de Vida</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   DESIGN SYSTEM — idêntico ao index.html
+   ============================================= */
+:root {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #1a1a25;
+  --card: #13131c;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --green: #00e5a0;
+  --green2: #00b87d;
+  --amber: #f5a623;
+  --purple: #8b7cf8;
+  --blue: #4da6ff;
+  --red: #ff5f5f;
+  --text: #f0f0f8;
+  --text2: #9090a8;
+  --text3: #5a5a72;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Space Grotesk', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.4;
+}
+
+.blob { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; opacity: 0.12; }
+.blob1 { width: 600px; height: 600px; background: var(--purple); top: -200px; right: -100px; }
+.blob2 { width: 400px; height: 400px; background: var(--green); bottom: 100px; left: -100px; }
+
+/* PROGRESS BAR */
+#progress-bar {
+  position: fixed; top: 0; left: 0;
+  height: 2px; background: var(--green);
+  z-index: 200; transition: width 0.1s;
+}
+
+/* NAV — idêntico */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 16px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(10,10,15,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family: var(--mono); font-size: 13px; color: var(--green); letter-spacing: 0.05em; }
+.nav-links { display: flex; gap: 8px; align-items: center; }
+.nav-link {
+  font-size: 12px; color: var(--text2); text-decoration: none;
+  padding: 6px 12px; border-radius: 6px; transition: all 0.2s;
+  border: 1px solid transparent;
+}
+.nav-link:hover { color: var(--text); background: var(--bg3); border-color: var(--border2); }
+.nav-link.active { color: var(--green); border-color: rgba(0,229,160,0.2); background: rgba(0,229,160,0.05); }
+.nav-back {
+  font-size: 12px; color: var(--text2); text-decoration: none;
+  padding: 6px 12px; border-radius: 6px; transition: all 0.2s;
+  border: 1px solid var(--border);
+}
+.nav-back:hover { color: var(--text); background: var(--bg3); }
+
+/* HERO DA PÁGINA */
+.page-hero {
+  padding: 130px 40px 60px;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.hero-tag {
+  font-family: var(--mono); font-size: 12px; color: var(--green);
+  letter-spacing: 0.15em; margin-bottom: 24px;
+  display: flex; align-items: center; gap: 8px;
+}
+.hero-tag::before {
+  content: ''; display: inline-block;
+  width: 20px; height: 1px; background: var(--green);
+}
+.page-title {
+  font-size: clamp(32px, 5vw, 60px);
+  font-weight: 700; letter-spacing: -0.03em; line-height: 1.1;
+  margin-bottom: 16px;
+}
+.page-title .accent { color: var(--green); }
+.page-subtitle {
+  font-size: 16px; color: var(--text2); max-width: 540px;
+  line-height: 1.7; margin-bottom: 40px;
+}
+.hero-counters { display: flex; gap: 36px; flex-wrap: wrap; }
+.hc-item { text-align: left; }
+.hc-num { font-size: 30px; font-weight: 700; font-family: var(--mono); color: var(--text); line-height: 1; }
+.hc-label { font-size: 11px; color: var(--text3); margin-top: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* SECTIONS */
+section {
+  position: relative; z-index: 1;
+  padding: 60px 40px;
+  max-width: 1100px; margin: 0 auto;
+}
+.section-label {
+  font-family: var(--mono); font-size: 11px; color: var(--green);
+  letter-spacing: 0.2em; margin-bottom: 12px; text-transform: uppercase;
+}
+.section-title { font-size: clamp(20px, 3vw, 32px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+.section-subtitle { color: var(--text2); font-size: 14px; margin-bottom: 36px; line-height: 1.7; }
+
+/* GRID DE PROJETOS */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+/* =============================================
+   PROJECT CARD
+   
+   Para adicionar um novo projeto:
+   duplique qualquer bloco .project-card,
+   ajuste os campos e mude o data-delay.
+   ============================================= */
+.project-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 26px;
+  transition: all 0.3s;
+  opacity: 0;
+  transform: translateY(20px);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.project-card.visible { opacity: 1; transform: translateY(0); }
+.project-card:hover { border-color: var(--border2); transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.4); }
+
+/* Linha de cor no topo — troque por card-done / card-wip / card-planned */
+.project-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+}
+.card-done::before  { background: var(--green); }
+.card-wip::before   { background: var(--amber); }
+.card-planned::before { background: var(--text3); }
+
+/* STATUS BADGE */
+.card-status {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 10px;
+  padding: 3px 10px; border-radius: 4px;
+  margin-bottom: 14px; width: fit-content;
+}
+.status-done    { background: rgba(0,229,160,0.08);  color: var(--green);  border: 1px solid rgba(0,229,160,0.18); }
+.status-wip     { background: rgba(245,166,35,0.08); color: var(--amber);  border: 1px solid rgba(245,166,35,0.18); }
+.status-planned { background: rgba(90,90,114,0.15);  color: var(--text3);  border: 1px solid var(--border); }
+.status-dot { width: 5px; height: 5px; border-radius: 50%; }
+.status-done .status-dot    { background: var(--green); box-shadow: 0 0 5px var(--green); }
+.status-wip .status-dot     { background: var(--amber); }
+.status-planned .status-dot { background: var(--text3); }
+
+.card-num   { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 8px; }
+.card-title { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+.card-desc  { font-size: 13px; color: var(--text2); line-height: 1.65; margin-bottom: 18px; flex: 1; }
+
+/* STACK TAGS */
+.stack-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 18px; }
+.stack-tag {
+  font-size: 10px; font-family: var(--mono);
+  padding: 3px 8px; border-radius: 4px;
+  background: var(--bg3); color: var(--text3); border: 1px solid var(--border);
+}
+
+/* PROGRESS */
+.progress-outer { height: 3px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.progress-inner { height: 100%; border-radius: 2px; width: 0; transition: width 1s ease; }
+.prog-green  { background: var(--green); }
+.prog-amber  { background: var(--amber); }
+.prog-purple { background: var(--purple); }
+.prog-blue   { background: var(--blue); }
+.progress-label {
+  display: flex; justify-content: space-between; margin-top: 6px;
+  font-size: 10px; color: var(--text3); font-family: var(--mono);
+}
+
+/* LINKS DO CARD */
+.card-links {
+  display: flex; gap: 8px; margin-top: 18px;
+  padding-top: 16px; border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.card-link {
+  font-size: 11px; font-weight: 600; text-decoration: none;
+  padding: 5px 12px; border-radius: 6px; transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--mono);
+}
+.link-github  { color: var(--text2); border: 1px solid var(--border2); background: var(--bg2); }
+.link-github:hover  { color: var(--text); background: var(--bg3); }
+.link-demo    { color: var(--bg); background: var(--green); border: 1px solid var(--green); }
+.link-demo:hover    { background: var(--green2); }
+.link-article { color: var(--purple); border: 1px solid rgba(139,124,248,0.25); background: rgba(139,124,248,0.06); }
+.link-article:hover { background: rgba(139,124,248,0.14); }
+
+/* EMPTY STATE */
+.empty-card {
+  background: var(--bg2);
+  border: 2px dashed var(--border2);
+  border-radius: 16px;
+  padding: 40px 26px;
+  text-align: center;
+  color: var(--text3);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.empty-card .empty-icon  { font-size: 28px; margin-bottom: 12px; display: block; }
+.empty-card .empty-title { font-size: 14px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+
+/* DIVIDER */
+.divider { border: none; border-top: 1px solid var(--border); max-width: 1100px; margin: 0 auto; }
+
+/* MANIFESTO */
+.manifesto {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 48px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.manifesto::before {
+  content: '"'; position: absolute;
+  font-size: 320px; font-weight: 700;
+  color: rgba(255,255,255,0.018);
+  top: -80px; left: 10px;
+  line-height: 1; pointer-events: none;
+}
+.manifesto-quote {
+  font-size: clamp(18px, 2.8vw, 28px);
+  font-weight: 600; letter-spacing: -0.02em;
+  line-height: 1.45; margin-bottom: 18px;
+  max-width: 640px; margin-left: auto; margin-right: auto;
+  position: relative;
+}
+.manifesto-quote .em { color: var(--green); }
+.manifesto-attr { font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: 0.1em; }
+.manifesto-math {
+  margin-top: 28px;
+  display: inline-flex; align-items: center; gap: 12px;
+  background: var(--bg); border: 1px solid var(--border2);
+  border-radius: 10px; padding: 12px 22px;
+  font-family: var(--mono); font-size: 13px; color: var(--text2);
+}
+.manifesto-math strong { color: var(--green); }
+
+/* FOOTER */
+footer {
+  position: relative; z-index: 1;
+  text-align: center; padding: 60px 40px;
+  border-top: 1px solid var(--border);
+  color: var(--text3); font-size: 13px;
+}
+footer .ft-main {
+  font-family: var(--mono); font-size: 16px; margin-bottom: 12px; color: var(--text);
+}
+footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav { padding: 14px 20px; }
+  .nav-links { display: none; }
+  section, .page-hero { padding-left: 20px; padding-right: 20px; }
+  .manifesto { padding: 32px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Plano de Carreira</div>
+  <div class="nav-links">
+    <a class="nav-back" href="index.html">← Voltar ao Plano</a>
+    <a class="nav-link active" href="#em-andamento">Em Andamento</a>
+    <a class="nav-link" href="#concluidos">Concluídos</a>
+    <a class="nav-link" href="#planejados">Planejados</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-tag">07 · Portfólio Real</div>
+  <h1 class="page-title">
+    Meus<br>
+    <span class="accent">Projetos Reais</span>
+  </h1>
+  <p class="page-subtitle">
+    Aqui não tem roadmap — tem código. Projetos que já construí,
+    que estou construindo agora e os que vêm a seguir.
+    Cada card tem link direto para o repositório, demo ou artigo de referência.
+  </p>
+  <div class="hero-counters">
+    <div class="hc-item">
+      <div class="hc-num" style="color:var(--green)">0</div>
+      <div class="hc-label">concluídos</div>
+    </div>
+    <div class="hc-item">
+      <div class="hc-num" style="color:var(--amber)">1</div>
+      <div class="hc-label">em andamento</div>
+    </div>
+    <div class="hc-item">
+      <div class="hc-num" style="color:var(--text3)">3</div>
+      <div class="hc-label">planejados</div>
+    </div>
+  </div>
+</div>
+
+<!-- =============================================
+     SEÇÃO: EM ANDAMENTO
+     ============================================= -->
+<section id="em-andamento">
+  <div class="section-label">01 · Agora</div>
+  <h2 class="section-title">Em Andamento</h2>
+  <p class="section-subtitle">O que está sendo construído agora mesmo.</p>
+
+  <div class="projects-grid">
+
+    <!--
+    ╔══════════════════════════════════════════════╗
+    ║  COMO ADICIONAR UM NOVO PROJETO              ║
+    ║                                              ║
+    ║  1. Copie um bloco .project-card completo    ║
+    ║  2. Cole na seção correta (andamento /       ║
+    ║     concluídos / planejados)                 ║
+    ║  3. Atualize: título, desc, tags, progresso  ║
+    ║  4. Troque a classe do card:                 ║
+    ║     card-done / card-wip / card-planned      ║
+    ║  5. Troque o badge:                          ║
+    ║     status-done / status-wip / status-planned║
+    ║  6. Adicione os links reais em .card-links   ║
+    ╚══════════════════════════════════════════════╝
+    -->
+
+    <!-- PROJETO 001 -->
+    <div class="project-card card-wip" data-delay="0">
+      <div class="card-num">projeto 001 · fase 1</div>
+      <div class="card-status status-wip">
+        <div class="status-dot"></div>
+        em andamento
+      </div>
+      <div class="card-title">🌐 Site Pessoal Estático</div>
+      <div class="card-desc">
+        Página de apresentação com projetos, skills e links.
+        Cartão de visitas digital permanente — recrutadores vão ver antes da entrevista.
+      </div>
+      <div class="stack-row">
+        <span class="stack-tag">HTML</span>
+        <span class="stack-tag">CSS</span>
+        <span class="stack-tag">JavaScript</span>
+        <span class="stack-tag">GitHub Pages</span>
+      </div>
+      <div class="progress-outer"><div class="progress-inner prog-green" data-width="30"></div></div>
+      <div class="progress-label"><span>iniciado</span><span>30%</span></div>
+      <div class="card-links">
+        <!-- Troque o href pelo link real do seu repositório -->
+        <a href="https://github.com" target="_blank" rel="noopener" class="card-link link-github">🐙 GitHub</a>
+        <!-- Descomente quando tiver demo no ar:
+        <a href="https://seusite.github.io" target="_blank" rel="noopener" class="card-link link-demo">▶ Demo</a>
+        -->
+      </div>
+    </div>
+
+    <!-- EMPTY STATE — remova quando adicionar mais projetos em andamento -->
+    <div class="empty-card">
+      <span class="empty-icon">⚡</span>
+      <div class="empty-title">Próximo projeto aqui</div>
+      Duplique qualquer card acima,<br>cole aqui e atualize os campos.
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- =============================================
+     SEÇÃO: CONCLUÍDOS
+     ============================================= -->
+<section id="concluidos">
+  <div class="section-label">02 · Entregues</div>
+  <h2 class="section-title">Concluídos</h2>
+  <p class="section-subtitle">Projetos finalizados, com código no ar e lições aprendidas.</p>
+
+  <div class="projects-grid">
+
+    <!-- EMPTY STATE — remova quando tiver o primeiro projeto concluído -->
+    <div class="empty-card" style="grid-column: 1 / -1; max-width: 460px;">
+      <span class="empty-icon">🏁</span>
+      <div class="empty-title">Primeiros entregues a caminho</div>
+      Quando o site pessoal for ao ar, ele vem para cá —
+      com link de demo real, repositório documentado e os aprendizados do processo.
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- =============================================
+     SEÇÃO: PLANEJADOS
+     ============================================= -->
+<section id="planejados">
+  <div class="section-label">03 · Em Fila</div>
+  <h2 class="section-title">Planejados</h2>
+  <p class="section-subtitle">Já têm nome, tecnologia e propósito definidos. Só faltam ser construídos.</p>
+
+  <div class="projects-grid">
+
+    <!-- PROJETO 002 -->
+    <div class="project-card card-planned" data-delay="0">
+      <div class="card-num">projeto 002 · fase 1</div>
+      <div class="card-status status-planned">
+        <div class="status-dot"></div>
+        planejado
+      </div>
+      <div class="card-title">📋 API de Tarefas com Flask</div>
+      <div class="card-desc">
+        Backend REST com Python. Endpoints para criar, listar e deletar tarefas.
+        Aprende o ciclo completo frontend ↔ backend — habilidade mais cobrada em entrevistas.
+      </div>
+      <div class="stack-row">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Flask</span>
+        <span class="stack-tag">REST API</span>
+        <span class="stack-tag">PythonAnywhere</span>
+      </div>
+      <div class="progress-outer"><div class="progress-inner prog-green" data-width="0"></div></div>
+      <div class="progress-label"><span>não iniciado</span><span>fase 1</span></div>
+      <div class="card-links">
+        <a href="https://flask.palletsprojects.com/en/latest/" target="_blank" rel="noopener" class="card-link link-article">📖 Docs Flask</a>
+      </div>
+    </div>
+
+    <!-- PROJETO 003 -->
+    <div class="project-card card-planned" data-delay="100">
+      <div class="card-num">projeto 003 · fase 2</div>
+      <div class="card-status status-planned">
+        <div class="status-dot"></div>
+        planejado
+      </div>
+      <div class="card-title">🧠 Gerenciador de Estudos com IA</div>
+      <div class="card-desc">
+        Salve anotações e a IA gera resumos, perguntas de revisão e flashcards.
+        Usa Gemini API (grátis) no backend Python. O projeto âncora do portfólio.
+      </div>
+      <div class="stack-row">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Flask</span>
+        <span class="stack-tag">SQLite</span>
+        <span class="stack-tag">Gemini API</span>
+        <span class="stack-tag">Vercel</span>
+      </div>
+      <div class="progress-outer"><div class="progress-inner prog-amber" data-width="0"></div></div>
+      <div class="progress-label"><span>fase 2 · 2026–27</span><span>âncora do portfólio</span></div>
+      <div class="card-links">
+        <a href="https://ai.google.dev/docs" target="_blank" rel="noopener" class="card-link link-article">🤖 Docs Gemini</a>
+      </div>
+    </div>
+
+    <!-- PROJETO 004 -->
+    <div class="project-card card-planned" data-delay="200">
+      <div class="card-num">projeto 004 · fase 3</div>
+      <div class="card-status status-planned">
+        <div class="status-dot"></div>
+        planejado
+      </div>
+      <div class="card-title">📊 Dashboard de Analytics</div>
+      <div class="card-desc">
+        Painel com gráficos do progresso de estudos: horas, tópicos, frequência.
+        Domínio de dados e visualização — muito valorizado no Nubank.
+      </div>
+      <div class="stack-row">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Pandas</span>
+        <span class="stack-tag">Chart.js</span>
+        <span class="stack-tag">PostgreSQL</span>
+        <span class="stack-tag">Railway</span>
+      </div>
+      <div class="progress-outer"><div class="progress-inner prog-purple" data-width="0"></div></div>
+      <div class="progress-label"><span>fase 3 · 2027–28</span><span>candidatura Nubank</span></div>
+      <div class="card-links">
+        <a href="https://www.chartjs.org/" target="_blank" rel="noopener" class="card-link link-article">📈 Chart.js</a>
+        <a href="https://railway.app" target="_blank" rel="noopener" class="card-link link-github">🚂 Railway</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section>
+  <div class="manifesto">
+    <div class="manifesto-quote">
+      "30 minutos por dia parece pouco.<br>
+      São <span class="em">700+ horas</span> em quatro anos.<br>
+      É suficiente para mudar de país."
+    </div>
+    <div class="manifesto-attr">— A matemática do comprometimento</div>
+    <div class="manifesto-math">
+      <strong>30 min/dia</strong> × 365 dias × 4 anos = <strong>730 horas de código</strong>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-main">
+    <span style="color:var(--green)">ETE Maximiano Accioly Campos</span>
+    <span style="color:var(--text3)"> → </span>
+    <span style="color:var(--amber)">Nubank</span>
+    <span style="color:var(--text3)"> → </span>
+    <span style="color:var(--blue)">🇨🇦 Canadá</span>
+  </div>
+  <div>Construído para quem tem <span style="color:var(--green)">16 anos</span>, 30 min por dia e ambição suficiente para mudar de país.</div>
+  <div class="ft-sub">30 min/dia × 4 anos = mais de 700 horas de código. Isso é suficiente para qualquer coisa.</div>
+</footer>
+
+<script>
+// PROGRESS BAR
+window.addEventListener('scroll', () => {
+  const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+});
+
+// INTERSECTION OBSERVER — anima cards + barras de progresso
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const delay = parseInt(el.dataset.delay || 0);
+      setTimeout(() => {
+        el.classList.add('visible');
+        el.querySelectorAll('.progress-inner').forEach(bar => {
+          bar.style.width = (bar.dataset.width || 0) + '%';
+        });
+      }, delay);
+      observer.unobserve(el);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.project-card').forEach(el => observer.observe(el));
+
+// NAV ACTIVE STATE
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 130) current = s.id; });
+  navLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+});
+</script>
+</body>
+</html>
