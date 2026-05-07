@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meus Projetos · Plano de Vida</title>
+<title>Meus Projetos · TheLegacy</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* =============================================
@@ -138,10 +138,6 @@ section {
 
 /* =============================================
    PROJECT CARD
-   
-   Para adicionar um novo projeto:
-   duplique qualquer bloco .project-card,
-   ajuste os campos e mude o data-delay.
    ============================================= */
 .project-card {
   background: var(--card);
@@ -159,7 +155,6 @@ section {
 .project-card.visible { opacity: 1; transform: translateY(0); }
 .project-card:hover { border-color: var(--border2); transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.4); }
 
-/* Linha de cor no topo — troque por card-done / card-wip / card-planned */
 .project-card::before {
   content: ''; position: absolute;
   top: 0; left: 0; right: 0; height: 2px;
@@ -278,6 +273,35 @@ section {
 }
 .manifesto-math strong { color: var(--green); }
 
+/* METAS SECTION */
+.metas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+.meta-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: all 0.3s;
+}
+.meta-card:hover { border-color: var(--border2); }
+.meta-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+.meta-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.meta-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+.meta-badge {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 10px;
+  font-family: var(--mono);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
 /* FOOTER */
 footer {
   position: relative; z-index: 1;
@@ -291,7 +315,6 @@ footer .ft-main {
 footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
 
 /* RESPONSIVE */
-/* NAV MOBILE BUTTON */
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -322,7 +345,6 @@ footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
 .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 @media (max-width: 768px) {
-  /* NAV */
   nav { padding: 14px 20px; }
   .nav-toggle { display: flex; }
   .nav-links {
@@ -339,25 +361,15 @@ footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
   }
   .nav-links.open { display: flex; }
   .nav-link, .nav-back { font-size: 14px; padding: 10px 14px; }
-
-  /* HERO DA PÁGINA */
   .page-hero { padding: 90px 20px 40px; }
   .page-title { font-size: clamp(1.8rem, 8vw, 2.4rem); }
   .page-subtitle { font-size: 0.9rem; }
   .hero-counters { gap: 20px; }
-
-  /* SECTIONS */
   section { padding: 40px 20px; }
-
-  /* GRIDS — coluna única */
   .projects-grid { grid-template-columns: 1fr; }
-
-  /* MANIFESTO */
   .manifesto { padding: 32px 20px; }
   .manifesto-quote { font-size: clamp(1rem, 4vw, 1.2rem); }
   .manifesto-math { flex-direction: column; gap: 6px; text-align: center; font-size: 12px; }
-
-  /* FOOTER */
   footer { padding: 40px 20px; }
   footer .ft-main { font-size: 13px; }
 }
@@ -371,7 +383,7 @@ footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Plano de Carreira</div>
+  <div class="nav-logo">TheLegacy · Projetos</div>
   <button class="nav-toggle" id="navToggle" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
@@ -380,12 +392,14 @@ footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
     <a class="nav-link active" href="#em-andamento">Em Andamento</a>
     <a class="nav-link" href="#concluidos">Concluídos</a>
     <a class="nav-link" href="#planejados">Planejados</a>
+    <a class="nav-link" href="#metas">Metas</a>
+    <a class="nav-link" href="estudos.html" style="color:var(--amber);border-color:rgba(245,166,35,0.2);background:rgba(245,166,35,0.05);">📚 Estudos ↗</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <div class="page-hero">
-  <div class="hero-tag">07 · Portfólio Real</div>
+  <div class="hero-tag">07 · Portfólio Real · PM-PE → IA → Canadá</div>
   <h1 class="page-title">
     Meus<br>
     <span class="accent">Projetos Reais</span>
@@ -401,7 +415,7 @@ footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
       <div class="hc-label">concluídos</div>
     </div>
     <div class="hc-item">
-      <div class="hc-num" style="color:var(--amber)">1</div>
+      <div class="hc-num" style="color:var(--amber)">2</div>
       <div class="hc-label">em andamento</div>
     </div>
     <div class="hc-item">
@@ -411,9 +425,7 @@ footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
   </div>
 </div>
 
-<!-- =============================================
-     SEÇÃO: EM ANDAMENTO
-     ============================================= -->
+<!-- EM ANDAMENTO -->
 <section id="em-andamento">
   <div class="section-label">01 · Agora</div>
   <h2 class="section-title">Em Andamento</h2>
@@ -421,25 +433,37 @@ footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
 
   <div class="projects-grid">
 
-    <!--
-    ╔══════════════════════════════════════════════╗
-    ║  COMO ADICIONAR UM NOVO PROJETO              ║
-    ║                                              ║
-    ║  1. Copie um bloco .project-card completo    ║
-    ║  2. Cole na seção correta (andamento /       ║
-    ║     concluídos / planejados)                 ║
-    ║  3. Atualize: título, desc, tags, progresso  ║
-    ║  4. Troque a classe do card:                 ║
-    ║     card-done / card-wip / card-planned      ║
-    ║  5. Troque o badge:                          ║
-    ║     status-done / status-wip / status-planned║
-    ║  6. Adicione os links reais em .card-links   ║
-    ╚══════════════════════════════════════════════╝
-    -->
-
-    <!-- PROJETO 001 -->
+    <!-- PROJETO 001 — AUTOMAÇÃO DE ESTUDOS (NOVO) -->
     <div class="project-card card-wip" data-delay="0">
       <div class="card-num">projeto 001 · fase 1</div>
+      <div class="card-status status-wip">
+        <div class="status-dot"></div>
+        em andamento
+      </div>
+      <div class="card-title">🤖 Automação de Estudos para Concurso</div>
+      <div class="card-desc">
+        Script Python que usa IA para gerar questões simuladas das matérias da PM-PE,
+        corrige automaticamente as respostas e salva o histórico de acertos em JSON.
+        IA aplicada na prática desde a fase 1 — e portfólio real para o Canadá.
+      </div>
+      <div class="stack-row">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Gemini API</span>
+        <span class="stack-tag">JSON</span>
+        <span class="stack-tag">CLI</span>
+        <span class="stack-tag">GitHub</span>
+      </div>
+      <div class="progress-outer"><div class="progress-inner prog-green" data-width="15"></div></div>
+      <div class="progress-label"><span>em planejamento</span><span>fase 1 · concurso</span></div>
+      <div class="card-links">
+        <a href="https://github.com" target="_blank" rel="noopener" class="card-link link-github">🐙 GitHub</a>
+        <a href="https://ai.google.dev/docs" target="_blank" rel="noopener" class="card-link link-article">🤖 Gemini API</a>
+      </div>
+    </div>
+
+    <!-- PROJETO 002 — SITE PESSOAL -->
+    <div class="project-card card-wip" data-delay="100">
+      <div class="card-num">projeto 002 · fase 1</div>
       <div class="card-status status-wip">
         <div class="status-dot"></div>
         em andamento
@@ -447,7 +471,8 @@ footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
       <div class="card-title">🌐 Site Pessoal Estático</div>
       <div class="card-desc">
         Página de apresentação com projetos, skills e links.
-        Cartão de visitas digital permanente — recrutadores vão ver antes da entrevista.
+        Cartão de visitas digital permanente — recrutadores canadenses vão ver antes da entrevista.
+        Documentado em inglês desde o início.
       </div>
       <div class="stack-row">
         <span class="stack-tag">HTML</span>
@@ -458,15 +483,11 @@ footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
       <div class="progress-outer"><div class="progress-inner prog-green" data-width="30"></div></div>
       <div class="progress-label"><span>iniciado</span><span>30%</span></div>
       <div class="card-links">
-        <!-- Troque o href pelo link real do seu repositório -->
         <a href="https://github.com" target="_blank" rel="noopener" class="card-link link-github">🐙 GitHub</a>
-        <!-- Descomente quando tiver demo no ar:
-        <a href="https://seusite.github.io" target="_blank" rel="noopener" class="card-link link-demo">▶ Demo</a>
-        -->
       </div>
     </div>
 
-    <!-- EMPTY STATE — remova quando adicionar mais projetos em andamento -->
+    <!-- EMPTY STATE -->
     <div class="empty-card">
       <span class="empty-icon">⚡</span>
       <div class="empty-title">Próximo projeto aqui</div>
@@ -478,32 +499,25 @@ footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
 
 <hr class="divider">
 
-<!-- =============================================
-     SEÇÃO: CONCLUÍDOS
-     ============================================= -->
+<!-- CONCLUÍDOS -->
 <section id="concluidos">
   <div class="section-label">02 · Entregues</div>
   <h2 class="section-title">Concluídos</h2>
   <p class="section-subtitle">Projetos finalizados, com código no ar e lições aprendidas.</p>
 
   <div class="projects-grid">
-
-    <!-- EMPTY STATE — remova quando tiver o primeiro projeto concluído -->
     <div class="empty-card" style="grid-column: 1 / -1; max-width: 460px;">
       <span class="empty-icon">🏁</span>
       <div class="empty-title">Primeiros entregues a caminho</div>
-      Quando o site pessoal for ao ar, ele vem para cá —
+      Quando a Automação de Estudos ou o Site Pessoal forem ao ar, eles vêm para cá —
       com link de demo real, repositório documentado e os aprendizados do processo.
     </div>
-
   </div>
 </section>
 
 <hr class="divider">
 
-<!-- =============================================
-     SEÇÃO: PLANEJADOS
-     ============================================= -->
+<!-- PLANEJADOS -->
 <section id="planejados">
   <div class="section-label">03 · Em Fila</div>
   <h2 class="section-title">Planejados</h2>
@@ -511,9 +525,9 @@ footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
 
   <div class="projects-grid">
 
-    <!-- PROJETO 002 -->
+    <!-- PROJETO 003 -->
     <div class="project-card card-planned" data-delay="0">
-      <div class="card-num">projeto 002 · fase 1</div>
+      <div class="card-num">projeto 003 · fase 2</div>
       <div class="card-status status-planned">
         <div class="status-dot"></div>
         planejado
@@ -530,15 +544,15 @@ footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
         <span class="stack-tag">PythonAnywhere</span>
       </div>
       <div class="progress-outer"><div class="progress-inner prog-green" data-width="0"></div></div>
-      <div class="progress-label"><span>não iniciado</span><span>fase 1</span></div>
+      <div class="progress-label"><span>não iniciado</span><span>fase 2</span></div>
       <div class="card-links">
         <a href="https://flask.palletsprojects.com/en/latest/" target="_blank" rel="noopener" class="card-link link-article">📖 Docs Flask</a>
       </div>
     </div>
 
-    <!-- PROJETO 003 -->
+    <!-- PROJETO 004 -->
     <div class="project-card card-planned" data-delay="100">
-      <div class="card-num">projeto 003 · fase 2</div>
+      <div class="card-num">projeto 004 · fase 2</div>
       <div class="card-status status-planned">
         <div class="status-dot"></div>
         planejado
@@ -556,23 +570,23 @@ footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
         <span class="stack-tag">Vercel</span>
       </div>
       <div class="progress-outer"><div class="progress-inner prog-amber" data-width="0"></div></div>
-      <div class="progress-label"><span>fase 2 · 2026–27</span><span>âncora do portfólio</span></div>
+      <div class="progress-label"><span>fase 2 · pós-concurso</span><span>âncora do portfólio</span></div>
       <div class="card-links">
         <a href="https://ai.google.dev/docs" target="_blank" rel="noopener" class="card-link link-article">🤖 Docs Gemini</a>
       </div>
     </div>
 
-    <!-- PROJETO 004 -->
+    <!-- PROJETO 005 -->
     <div class="project-card card-planned" data-delay="200">
-      <div class="card-num">projeto 004 · fase 3</div>
+      <div class="card-num">projeto 005 · fase 3</div>
       <div class="card-status status-planned">
         <div class="status-dot"></div>
         planejado
       </div>
       <div class="card-title">📊 Dashboard de Analytics</div>
       <div class="card-desc">
-        Painel com gráficos do progresso de estudos: horas, tópicos, frequência.
-        Domínio de dados e visualização — muito valorizado no Nubank.
+        Painel com gráficos de progresso de estudos e produtividade pessoal.
+        Domínio de dados e visualização — muito valorizado em empresas tech canadenses.
       </div>
       <div class="stack-row">
         <span class="stack-tag">Python</span>
@@ -582,13 +596,73 @@ footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
         <span class="stack-tag">Railway</span>
       </div>
       <div class="progress-outer"><div class="progress-inner prog-purple" data-width="0"></div></div>
-      <div class="progress-label"><span>fase 3 · 2027–28</span><span>candidatura Nubank</span></div>
+      <div class="progress-label"><span>fase 3 · pré-imigração</span><span>portfólio sênior</span></div>
       <div class="card-links">
         <a href="https://www.chartjs.org/" target="_blank" rel="noopener" class="card-link link-article">📈 Chart.js</a>
         <a href="https://railway.app" target="_blank" rel="noopener" class="card-link link-github">🚂 Railway</a>
       </div>
     </div>
 
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- METAS -->
+<section id="metas">
+  <div class="section-label">04 · Objetivos</div>
+  <h2 class="section-title">Metas para o Portfólio</h2>
+  <p class="section-subtitle">O que precisa estar pronto antes da imigração. Cada meta é um requisito do Express Entry.</p>
+
+  <div class="metas-grid">
+    <div class="meta-card">
+      <div class="meta-icon">🎖️</div>
+      <div>
+        <div class="meta-title">Aprovação PM-PE</div>
+        <div class="meta-desc">Fase 1. A estabilidade que financia tudo. Missão número um sem negociação.</div>
+        <span class="meta-badge" style="background:rgba(0,229,160,0.08);color:var(--green);border:1px solid rgba(0,229,160,0.2);">prioridade máxima</span>
+      </div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-icon">🌍</div>
+      <div>
+        <div class="meta-title">IELTS ≥ 7.0</div>
+        <div class="meta-desc">Fluência em inglês comprovada. Mais pontos no Express Entry do que qualquer certificação tech. Comece agora.</div>
+        <span class="meta-badge" style="background:rgba(245,166,35,0.08);color:var(--amber);border:1px solid rgba(245,166,35,0.2);">meta crítica · Canadá</span>
+      </div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-icon">📁</div>
+      <div>
+        <div class="meta-title">3+ Projetos em Inglês no GitHub</div>
+        <div class="meta-desc">READMEs completos, código documentado e commits regulares. Recrutadores canadenses fazem isso primeiro.</div>
+        <span class="meta-badge" style="background:rgba(77,166,255,0.08);color:var(--blue);border:1px solid rgba(77,166,255,0.2);">portfólio · fase 2–3</span>
+      </div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-icon">☁️</div>
+      <div>
+        <div class="meta-title">Certificação AWS ou Google Cloud</div>
+        <div class="meta-desc">Valoriza muito no Express Entry e diferencia o perfil em empresas canadenses de tech.</div>
+        <span class="meta-badge" style="background:rgba(139,124,248,0.08);color:var(--purple);border:1px solid rgba(139,124,248,0.2);">fase 3 · imigração</span>
+      </div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-icon">🤖</div>
+      <div>
+        <div class="meta-title">Portfólio de IA Consolidado</div>
+        <div class="meta-desc">Pelo menos 2 projetos com integração de LLMs (Gemini/OpenAI) bem documentados. IA é o diferencial de 2025+.</div>
+        <span class="meta-badge" style="background:rgba(0,229,160,0.08);color:var(--green);border:1px solid rgba(0,229,160,0.2);">fase 2–3 · tech</span>
+      </div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-icon">✈️</div>
+      <div>
+        <div class="meta-title">Imigração até os 30 anos</div>
+        <div class="meta-desc">Express Entry, PNP ou Global Talent Stream. Com PM-PE, IELTS 7.0 e portfólio tech o perfil estará forte.</div>
+        <span class="meta-badge" style="background:rgba(77,166,255,0.08);color:var(--blue);border:1px solid rgba(77,166,255,0.2);">🇨🇦 objetivo final</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -609,14 +683,14 @@ footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
 
 <footer>
   <div class="ft-main">
-    <span style="color:var(--green)">ETEMAC</span>
+    <span style="color:var(--green)">PM-PE</span>
     <span style="color:var(--text3)"> → </span>
-    <span style="color:var(--amber)">Nubank</span>
+    <span style="color:var(--amber)">Faculdade TI + IA</span>
     <span style="color:var(--text3)"> → </span>
     <span style="color:var(--blue)">🇨🇦 Canadá</span>
   </div>
-  <div>Construído para quem tem <span style="color:var(--green)">16 anos</span>, 30 min por dia e ambição suficiente para mudar de país.</div>
-  <div class="ft-sub">30 min/dia × 4 anos = mais de 700 horas de código. Isso é suficiente para qualquer coisa.</div>
+  <div>Construído para quem tem <span style="color:var(--green)">ambição</span>, 30 min por dia e coragem para mudar de país.</div>
+  <div class="ft-sub">Cada projeto concluído é um degrau a menos para o Canadá.</div>
 </footer>
 
 <script>

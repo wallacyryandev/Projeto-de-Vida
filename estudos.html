@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard de Estudos · TheLegacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #1a1a25;
+  --card: #13131c;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --green: #00e5a0;
+  --green2: #00b87d;
+  --amber: #f5a623;
+  --purple: #8b7cf8;
+  --blue: #4da6ff;
+  --red: #ff5f5f;
+  --text: #f0f0f8;
+  --text2: #9090a8;
+  --text3: #5a5a72;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Space Grotesk', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.4;
+}
+
+.blob { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; opacity: 0.12; }
+.blob1 { width: 600px; height: 600px; background: var(--amber); top: -200px; right: -100px; }
+.blob2 { width: 400px; height: 400px; background: var(--green); bottom: 100px; left: -100px; }
+
+#progress-bar {
+  position: fixed; top: 0; left: 0;
+  height: 2px; background: var(--amber);
+  z-index: 200; transition: width 0.1s;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 16px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(10,10,15,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family: var(--mono); font-size: 13px; color: var(--amber); letter-spacing: 0.05em; }
+.nav-links { display: flex; gap: 8px; align-items: center; }
+.nav-link {
+  font-size: 12px; color: var(--text2); text-decoration: none;
+  padding: 6px 12px; border-radius: 6px; transition: all 0.2s;
+  border: 1px solid transparent;
+}
+.nav-link:hover { color: var(--text); background: var(--bg3); border-color: var(--border2); }
+.nav-back {
+  font-size: 12px; color: var(--text2); text-decoration: none;
+  padding: 6px 12px; border-radius: 6px; transition: all 0.2s;
+  border: 1px solid var(--border);
+}
+.nav-back:hover { color: var(--text); background: var(--bg3); }
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 110;
+}
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text2);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease, background 0.2s;
+  transform-origin: center;
+}
+.nav-toggle:hover span { background: var(--text); }
+.nav-toggle.open span { background: var(--amber); }
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* HERO */
+.page-hero {
+  padding: 130px 40px 60px;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.hero-tag {
+  font-family: var(--mono); font-size: 12px; color: var(--amber);
+  letter-spacing: 0.15em; margin-bottom: 24px;
+  display: flex; align-items: center; gap: 8px;
+}
+.hero-tag::before {
+  content: ''; display: inline-block;
+  width: 20px; height: 1px; background: var(--amber);
+}
+.page-title {
+  font-size: clamp(32px, 5vw, 60px);
+  font-weight: 700; letter-spacing: -0.03em; line-height: 1.1;
+  margin-bottom: 16px;
+}
+.page-title .accent { color: var(--amber); }
+.page-subtitle {
+  font-size: 16px; color: var(--text2); max-width: 540px;
+  line-height: 1.7; margin-bottom: 40px;
+}
+
+/* GLOBAL PROGRESS */
+.global-progress-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 40px 60px;
+}
+.global-card {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 36px 40px;
+}
+.global-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.global-title {
+  font-size: 13px;
+  font-family: var(--mono);
+  color: var(--amber);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.global-pct {
+  font-size: 48px;
+  font-weight: 700;
+  font-family: var(--mono);
+  color: var(--text);
+  line-height: 1;
+}
+.global-pct span { color: var(--amber); }
+.global-meta {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 4px;
+}
+.global-bar-outer {
+  height: 10px;
+  background: var(--bg3);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.global-bar-inner {
+  height: 100%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--green), var(--amber));
+  transition: width 0.8s ease;
+  width: 0%;
+}
+.global-sub {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text3);
+  font-family: var(--mono);
+}
+.counters-row {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.cnt-item { text-align: center; }
+.cnt-num {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: var(--mono);
+  line-height: 1;
+}
+.cnt-label {
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* SECTIONS */
+section {
+  position: relative; z-index: 1;
+  padding: 60px 40px;
+  max-width: 1100px; margin: 0 auto;
+}
+.section-label {
+  font-family: var(--mono); font-size: 11px; color: var(--amber);
+  letter-spacing: 0.2em; margin-bottom: 12px; text-transform: uppercase;
+}
+.section-title { font-size: clamp(20px, 3vw, 32px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+.section-subtitle { color: var(--text2); font-size: 14px; margin-bottom: 32px; line-height: 1.7; }
+
+/* COURSE CATEGORY */
+.course-category {
+  margin-bottom: 48px;
+}
+.cat-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.cat-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.cat-name {
+  font-size: 16px;
+  font-weight: 600;
+}
+.cat-phase {
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--text3);
+  margin-top: 2px;
+}
+.cat-progress-mini {
+  margin-left: auto;
+  text-align: right;
+}
+.cat-pct-mini {
+  font-size: 18px;
+  font-weight: 700;
+  font-family: var(--mono);
+}
+.cat-bar-outer {
+  height: 3px;
+  background: var(--bg3);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.cat-bar-inner {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s ease;
+  width: 0%;
+}
+
+/* COURSE ITEM */
+.course-list { display: flex; flex-direction: column; gap: 8px; }
+.course-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.25s;
+  cursor: pointer;
+  user-select: none;
+}
+.course-item:hover { border-color: var(--border2); background: var(--bg2); }
+.course-item.done {
+  border-color: rgba(0,229,160,0.2);
+  background: rgba(0,229,160,0.03);
+}
+.course-item.done .course-name { text-decoration: line-through; color: var(--text3); }
+
+/* CUSTOM CHECKBOX */
+.course-check {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  font-size: 13px;
+}
+.course-item.done .course-check {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--bg);
+}
+.course-info { flex: 1; }
+.course-name { font-size: 14px; font-weight: 500; transition: all 0.2s; }
+.course-meta { font-size: 11px; color: var(--text3); font-family: var(--mono); margin-top: 2px; }
+.course-badge {
+  font-size: 10px;
+  font-family: var(--mono);
+  padding: 3px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* MANIFESTO */
+.manifesto {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 48px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-top: 60px;
+}
+.manifesto::before {
+  content: '"'; position: absolute;
+  font-size: 320px; font-weight: 700;
+  color: rgba(255,255,255,0.018);
+  top: -80px; left: 10px;
+  line-height: 1; pointer-events: none;
+}
+.manifesto-quote {
+  font-size: clamp(18px, 2.8vw, 26px);
+  font-weight: 600; letter-spacing: -0.02em;
+  line-height: 1.45; margin-bottom: 18px;
+  max-width: 640px; margin-left: auto; margin-right: auto;
+  position: relative;
+}
+.manifesto-quote .em { color: var(--amber); }
+.manifesto-attr { font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: 0.1em; }
+
+/* FOOTER */
+footer {
+  position: relative; z-index: 1;
+  text-align: center; padding: 60px 40px;
+  border-top: 1px solid var(--border);
+  color: var(--text3); font-size: 13px;
+}
+footer .ft-main { font-family: var(--mono); font-size: 16px; margin-bottom: 12px; color: var(--text); }
+footer .ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
+
+/* RESET BUTTON */
+.btn-reset {
+  background: none;
+  border: 1px solid var(--border2);
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-reset:hover { border-color: var(--red); color: var(--red); }
+
+@media (max-width: 768px) {
+  nav { padding: 14px 20px; }
+  .nav-toggle { display: flex; }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 57px; left: 0; right: 0;
+    background: rgba(10,10,15,0.97);
+    backdrop-filter: blur(20px);
+    padding: 20px;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    z-index: 99;
+  }
+  .nav-links.open { display: flex; }
+  .nav-link, .nav-back { font-size: 14px; padding: 10px 14px; }
+  .page-hero, .global-progress-wrap { padding-left: 20px; padding-right: 20px; }
+  .page-hero { padding-top: 90px; }
+  section { padding: 40px 20px; }
+  .global-card { padding: 24px 20px; }
+  .global-pct { font-size: 36px; }
+  .global-header { flex-direction: column; gap: 16px; }
+  .counters-row { gap: 16px; }
+  .course-item { gap: 12px; padding: 14px 16px; }
+  .manifesto { padding: 32px 20px; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">📚 Dashboard de Estudos</div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links" id="navLinks">
+    <a class="nav-back" href="index.html">← Voltar ao Plano</a>
+    <a class="nav-link" href="#concurso">PM-PE</a>
+    <a class="nav-link" href="#python">Python</a>
+    <a class="nav-link" href="#ingles">Inglês</a>
+    <a class="nav-link" href="#automacao">Automação IA</a>
+    <a class="nav-link" href="projetos.html" style="color:var(--green);border-color:rgba(0,229,160,0.2);background:rgba(0,229,160,0.05);">Projetos ↗</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-tag">Dashboard de Progresso · Atualiza em tempo real</div>
+  <h1 class="page-title">
+    Estudos &<br>
+    <span class="accent">Progresso Real</span>
+  </h1>
+  <p class="page-subtitle">
+    Marque o que concluiu. O progresso é salvo automaticamente no seu navegador.
+    Nada de ilusão — só o que você realmente fez conta.
+  </p>
+</div>
+
+<!-- GLOBAL PROGRESS -->
+<div class="global-progress-wrap">
+  <div class="global-card">
+    <div class="global-header">
+      <div>
+        <div class="global-title">Progresso Geral da Missão</div>
+        <div class="global-pct"><span id="globalPct">0</span>%</div>
+        <div class="global-meta" id="globalMeta">0 de 0 itens concluídos</div>
+      </div>
+      <div class="counters-row">
+        <div class="cnt-item">
+          <div class="cnt-num" id="cntDone" style="color: var(--green);">0</div>
+          <div class="cnt-label">concluídos</div>
+        </div>
+        <div class="cnt-item">
+          <div class="cnt-num" id="cntPending" style="color: var(--amber);">0</div>
+          <div class="cnt-label">pendentes</div>
+        </div>
+        <div class="cnt-item">
+          <div class="cnt-num" id="cntTotal" style="color: var(--text3);">0</div>
+          <div class="cnt-label">total</div>
+        </div>
+        <div class="cnt-item" style="margin-left: 8px;">
+          <button class="btn-reset" onclick="resetAll()">↺ Resetar tudo</button>
+        </div>
+      </div>
+    </div>
+    <div class="global-bar-outer">
+      <div class="global-bar-inner" id="globalBar"></div>
+    </div>
+    <div class="global-sub">
+      <span>Início da missão</span>
+      <span id="globalSubRight">0% completo</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONCURSO PM-PE -->
+<section id="concurso">
+  <div class="section-label">01 · Missão Principal</div>
+  <h2 class="section-title">🎖️ Concurso PM-PE</h2>
+  <p class="section-subtitle">A base de tudo. Estabilidade financeira primeiro — ela libera as fases 2 e 3.</p>
+
+  <div class="course-category">
+    <div class="cat-header">
+      <div class="cat-icon" style="background: rgba(0,229,160,0.08);">📖</div>
+      <div>
+        <div class="cat-name">Língua Portuguesa</div>
+        <div class="cat-phase">fase 1 · concurso PM-PE</div>
+      </div>
+      <div class="cat-progress-mini">
+        <div class="cat-pct-mini" style="color:var(--green)" data-cat="portugues">0%</div>
+      </div>
+    </div>
+    <div class="cat-bar-outer">
+      <div class="cat-bar-inner" style="background: var(--green);" data-catbar="portugues"></div>
+    </div>
+    <div class="course-list" data-cat="portugues">
+      <div class="course-item" data-id="pt-01" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Ortografia e Acentuação</div>
+          <div class="course-meta">gramática · base obrigatória</div>
+        </div>
+        <span class="course-badge" style="background:rgba(0,229,160,0.08);color:var(--green);border:1px solid rgba(0,229,160,0.2);">concurso</span>
+      </div>
+      <div class="course-item" data-id="pt-02" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Interpretação de Texto</div>
+          <div class="course-meta">compreensão · alta incidência nas provas</div>
+        </div>
+        <span class="course-badge" style="background:rgba(0,229,160,0.08);color:var(--green);border:1px solid rgba(0,229,160,0.2);">concurso</span>
+      </div>
+      <div class="course-item" data-id="pt-03" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Sintaxe e Análise Morfológica</div>
+          <div class="course-meta">gramática · média-alta incidência</div>
+        </div>
+        <span class="course-badge" style="background:rgba(0,229,160,0.08);color:var(--green);border:1px solid rgba(0,229,160,0.2);">concurso</span>
+      </div>
+      <div class="course-item" data-id="pt-04" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Redação Oficial</div>
+          <div class="course-meta">escrita formal · pontos extras</div>
+        </div>
+        <span class="course-badge" style="background:rgba(0,229,160,0.08);color:var(--green);border:1px solid rgba(0,229,160,0.2);">concurso</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="course-category">
+    <div class="cat-header">
+      <div class="cat-icon" style="background: rgba(77,166,255,0.08);">🔢</div>
+      <div>
+        <div class="cat-name">Matemática e Raciocínio Lógico</div>
+        <div class="cat-phase">fase 1 · concurso PM-PE</div>
+      </div>
+      <div class="cat-progress-mini">
+        <div class="cat-pct-mini" style="color:var(--blue)" data-cat="matematica">0%</div>
+      </div>
+    </div>
+    <div class="cat-bar-outer">
+      <div class="cat-bar-inner" style="background: var(--blue);" data-catbar="matematica"></div>
+    </div>
+    <div class="course-list" data-cat="matematica">
+      <div class="course-item" data-id="mat-01" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Operações Fundamentais e Porcentagem</div>
+          <div class="course-meta">base · muito cobrado</div>
+        </div>
+        <span class="course-badge" style="background:rgba(77,166,255,0.08);color:var(--blue);border:1px solid rgba(77,166,255,0.2);">concurso</span>
+      </div>
+      <div class="course-item" data-id="mat-02" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Raciocínio Lógico — Proposições</div>
+          <div class="course-meta">lógica · alta incidência</div>
+        </div>
+        <span class="course-badge" style="background:rgba(77,166,255,0.08);color:var(--blue);border:1px solid rgba(77,166,255,0.2);">concurso</span>
+      </div>
+      <div class="course-item" data-id="mat-03" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Geometria Básica e Trigonometria</div>
+          <div class="course-meta">geometria · média incidência</div>
+        </div>
+        <span class="course-badge" style="background:rgba(77,166,255,0.08);color:var(--blue);border:1px solid rgba(77,166,255,0.2);">concurso</span>
+      </div>
+      <div class="course-item" data-id="mat-04" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Probabilidade e Estatística</div>
+          <div class="course-meta">estatística · recorrente em provas PM</div>
+        </div>
+        <span class="course-badge" style="background:rgba(77,166,255,0.08);color:var(--blue);border:1px solid rgba(77,166,255,0.2);">concurso</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="course-category">
+    <div class="cat-header">
+      <div class="cat-icon" style="background: rgba(139,124,248,0.08);">⚖️</div>
+      <div>
+        <div class="cat-name">Conhecimentos Específicos</div>
+        <div class="cat-phase">fase 1 · direito e legislação PM-PE</div>
+      </div>
+      <div class="cat-progress-mini">
+        <div class="cat-pct-mini" style="color:var(--purple)" data-cat="direito">0%</div>
+      </div>
+    </div>
+    <div class="cat-bar-outer">
+      <div class="cat-bar-inner" style="background: var(--purple);" data-catbar="direito"></div>
+    </div>
+    <div class="course-list" data-cat="direito">
+      <div class="course-item" data-id="dir-01" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Direitos Humanos e Cidadania</div>
+          <div class="course-meta">direito · obrigatório PM-PE</div>
+        </div>
+        <span class="course-badge" style="background:rgba(139,124,248,0.08);color:var(--purple);border:1px solid rgba(139,124,248,0.2);">concurso</span>
+      </div>
+      <div class="course-item" data-id="dir-02" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Noções de Direito Penal</div>
+          <div class="course-meta">direito penal · alta relevância</div>
+        </div>
+        <span class="course-badge" style="background:rgba(139,124,248,0.08);color:var(--purple);border:1px solid rgba(139,124,248,0.2);">concurso</span>
+      </div>
+      <div class="course-item" data-id="dir-03" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Estatuto da PM-PE e Legislação Estadual</div>
+          <div class="course-meta">legislação específica · sempre cai</div>
+        </div>
+        <span class="course-badge" style="background:rgba(139,124,248,0.08);color:var(--purple);border:1px solid rgba(139,124,248,0.2);">concurso</span>
+      </div>
+      <div class="course-item" data-id="dir-04" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Constituição Federal — Direitos Fundamentais</div>
+          <div class="course-meta">CF · art. 5º sempre cobrado</div>
+        </div>
+        <span class="course-badge" style="background:rgba(139,124,248,0.08);color:var(--purple);border:1px solid rgba(139,124,248,0.2);">concurso</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PYTHON -->
+<section id="python" style="border-top: 1px solid var(--border);">
+  <div class="section-label">02 · Base Tech</div>
+  <h2 class="section-title">🐍 Python — Curso em Vídeo</h2>
+  <p class="section-subtitle">A linguagem de IA e automação. Aprenda em paralelo ao concurso.</p>
+
+  <div class="course-category">
+    <div class="cat-header">
+      <div class="cat-icon" style="background: rgba(0,229,160,0.08);">🐍</div>
+      <div>
+        <div class="cat-name">Curso em Vídeo Python — Completo</div>
+        <div class="cat-phase">fases 1 e 2 · gustavo guanabara</div>
+      </div>
+      <div class="cat-progress-mini">
+        <div class="cat-pct-mini" style="color:var(--green)" data-cat="python">0%</div>
+      </div>
+    </div>
+    <div class="cat-bar-outer">
+      <div class="cat-bar-inner" style="background: var(--green);" data-catbar="python"></div>
+    </div>
+    <div class="course-list" data-cat="python">
+      <div class="course-item" data-id="py-01" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Mundo 1 — Fundamentos</div>
+          <div class="course-meta">variáveis, operadores, entrada e saída · 40 aulas</div>
+        </div>
+        <span class="course-badge" style="background:rgba(0,229,160,0.08);color:var(--green);border:1px solid rgba(0,229,160,0.2);">iniciante</span>
+      </div>
+      <div class="course-item" data-id="py-02" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Mundo 2 — Estruturas de Controle</div>
+          <div class="course-meta">if/else, while, for, listas · 40 aulas</div>
+        </div>
+        <span class="course-badge" style="background:rgba(0,229,160,0.08);color:var(--green);border:1px solid rgba(0,229,160,0.2);">iniciante</span>
+      </div>
+      <div class="course-item" data-id="py-03" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Mundo 3 — Funções, Dicionários e Tuplas</div>
+          <div class="course-meta">funções, módulos, arquivos · 40 aulas</div>
+        </div>
+        <span class="course-badge" style="background:rgba(245,166,35,0.08);color:var(--amber);border:1px solid rgba(245,166,35,0.2);">intermediário</span>
+      </div>
+      <div class="course-item" data-id="py-04" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Projetos práticos com Python puro</div>
+          <div class="course-meta">consolidar · pelo menos 3 projetos</div>
+        </div>
+        <span class="course-badge" style="background:rgba(245,166,35,0.08);color:var(--amber);border:1px solid rgba(245,166,35,0.2);">intermediário</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="course-category">
+    <div class="cat-header">
+      <div class="cat-icon" style="background: rgba(77,166,255,0.08);">📜</div>
+      <div>
+        <div class="cat-name">Google IT Automation with Python</div>
+        <div class="cat-phase">fase 2 · certificação oficial google</div>
+      </div>
+      <div class="cat-progress-mini">
+        <div class="cat-pct-mini" style="color:var(--blue)" data-cat="googleit">0%</div>
+      </div>
+    </div>
+    <div class="cat-bar-outer">
+      <div class="cat-bar-inner" style="background: var(--blue);" data-catbar="googleit"></div>
+    </div>
+    <div class="course-list" data-cat="googleit">
+      <div class="course-item" data-id="git-01" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Curso 1 — Crash Course on Python</div>
+          <div class="course-meta">revisão python · google coursera</div>
+        </div>
+        <span class="course-badge" style="background:rgba(77,166,255,0.08);color:var(--blue);border:1px solid rgba(77,166,255,0.2);">google cert</span>
+      </div>
+      <div class="course-item" data-id="git-02" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Curso 2 — Using Python to Interact with the OS</div>
+          <div class="course-meta">automação de sistema · bash + python</div>
+        </div>
+        <span class="course-badge" style="background:rgba(77,166,255,0.08);color:var(--blue);border:1px solid rgba(77,166,255,0.2);">google cert</span>
+      </div>
+      <div class="course-item" data-id="git-03" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Curso 3 — Introduction to Git and GitHub</div>
+          <div class="course-meta">controle de versão · essencial</div>
+        </div>
+        <span class="course-badge" style="background:rgba(77,166,255,0.08);color:var(--blue);border:1px solid rgba(77,166,255,0.2);">google cert</span>
+      </div>
+      <div class="course-item" data-id="git-04" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Cursos 4–6 — Troubleshooting, Config, Capstone</div>
+          <div class="course-meta">automação avançada · projeto final</div>
+        </div>
+        <span class="course-badge" style="background:rgba(77,166,255,0.08);color:var(--blue);border:1px solid rgba(77,166,255,0.2);">google cert</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INGLÊS -->
+<section id="ingles" style="border-top: 1px solid var(--border);">
+  <div class="section-label">03 · IELTS · Canadá</div>
+  <h2 class="section-title">🇨🇦 Inglês para o IELTS</h2>
+  <p class="section-subtitle">A pontuação de 7.0+ no IELTS vale mais pontos no Express Entry do que qualquer certificação tech. Não subestime isso.</p>
+
+  <div class="course-category">
+    <div class="cat-header">
+      <div class="cat-icon" style="background: rgba(245,166,35,0.08);">🗣️</div>
+      <div>
+        <div class="cat-name">Inglês para o IELTS · Meta 7.0+</div>
+        <div class="cat-phase">todas as fases · imigração canadá</div>
+      </div>
+      <div class="cat-progress-mini">
+        <div class="cat-pct-mini" style="color:var(--amber)" data-cat="ingles">0%</div>
+      </div>
+    </div>
+    <div class="cat-bar-outer">
+      <div class="cat-bar-inner" style="background: var(--amber);" data-catbar="ingles"></div>
+    </div>
+    <div class="course-list" data-cat="ingles">
+      <div class="course-item" data-id="en-01" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">English in Brazil — Base A2/B1</div>
+          <div class="course-meta">canal youtube · produção oral e escrita</div>
+        </div>
+        <span class="course-badge" style="background:rgba(245,166,35,0.08);color:var(--amber);border:1px solid rgba(245,166,35,0.2);">IELTS prep</span>
+      </div>
+      <div class="course-item" data-id="en-02" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Assistir tech videos em inglês sem legenda</div>
+          <div class="course-meta">TechWith Tim, Andrej Karpathy · rotina diária</div>
+        </div>
+        <span class="course-badge" style="background:rgba(245,166,35,0.08);color:var(--amber);border:1px solid rgba(245,166,35,0.2);">imersão</span>
+      </div>
+      <div class="course-item" data-id="en-03" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Prática oral — falar em inglês pelo menos 15 min/dia</div>
+          <div class="course-meta">speaking · ponto mais difícil do IELTS</div>
+        </div>
+        <span class="course-badge" style="background:rgba(245,166,35,0.08);color:var(--amber);border:1px solid rgba(245,166,35,0.2);">IELTS prep</span>
+      </div>
+      <div class="course-item" data-id="en-04" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">British Council — IELTS Preparation online</div>
+          <div class="course-meta">preparatório oficial · reading, writing, listening</div>
+        </div>
+        <span class="course-badge" style="background:rgba(245,166,35,0.08);color:var(--amber);border:1px solid rgba(245,166,35,0.2);">IELTS prep</span>
+      </div>
+      <div class="course-item" data-id="en-05" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Simulado IELTS completo — Band Score ≥ 7.0</div>
+          <div class="course-meta">meta final · prova real</div>
+        </div>
+        <span class="course-badge" style="background:rgba(245,166,35,0.08);color:var(--amber);border:1px solid rgba(245,166,35,0.2);">meta</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTOMAÇÃO E IA -->
+<section id="automacao" style="border-top: 1px solid var(--border);">
+  <div class="section-label">04 · Fase 2 · IA</div>
+  <h2 class="section-title">🤖 Automação & Inteligência Artificial</h2>
+  <p class="section-subtitle">A fase pós-concurso. Quando a estabilidade estiver garantida, o portfólio de IA começa a crescer.</p>
+
+  <div class="course-category">
+    <div class="cat-header">
+      <div class="cat-icon" style="background: rgba(139,124,248,0.08);">🤖</div>
+      <div>
+        <div class="cat-name">Automação e IA com Python</div>
+        <div class="cat-phase">fase 2 · portfólio tech</div>
+      </div>
+      <div class="cat-progress-mini">
+        <div class="cat-pct-mini" style="color:var(--purple)" data-cat="ia">0%</div>
+      </div>
+    </div>
+    <div class="cat-bar-outer">
+      <div class="cat-bar-inner" style="background: var(--purple);" data-catbar="ia"></div>
+    </div>
+    <div class="course-list" data-cat="ia">
+      <div class="course-item" data-id="ia-01" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Selenium WebDriver — automação de browser</div>
+          <div class="course-meta">web scraping · automação de tarefas</div>
+        </div>
+        <span class="course-badge" style="background:rgba(139,124,248,0.08);color:var(--purple);border:1px solid rgba(139,124,248,0.2);">automação</span>
+      </div>
+      <div class="course-item" data-id="ia-02" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">BeautifulSoup + Requests — web scraping</div>
+          <div class="course-meta">coleta de dados · projetos reais</div>
+        </div>
+        <span class="course-badge" style="background:rgba(139,124,248,0.08);color:var(--purple);border:1px solid rgba(139,124,248,0.2);">automação</span>
+      </div>
+      <div class="course-item" data-id="ia-03" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Gemini API / OpenAI API — integração IA</div>
+          <div class="course-meta">LLMs em projetos python · foco em prompting</div>
+        </div>
+        <span class="course-badge" style="background:rgba(139,124,248,0.08);color:var(--purple);border:1px solid rgba(139,124,248,0.2);">IA</span>
+      </div>
+      <div class="course-item" data-id="ia-04" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Flask — backend APIs com Python</div>
+          <div class="course-meta">web backend · servidor de automações</div>
+        </div>
+        <span class="course-badge" style="background:rgba(139,124,248,0.08);color:var(--purple);border:1px solid rgba(139,124,248,0.2);">backend</span>
+      </div>
+      <div class="course-item" data-id="ia-05" onclick="toggle(this)">
+        <div class="course-check">✓</div>
+        <div class="course-info">
+          <div class="course-name">Projeto: Automação de Estudos para Concurso</div>
+          <div class="course-meta">gerador de questões com IA · portfólio real</div>
+        </div>
+        <span class="course-badge" style="background:rgba(245,166,35,0.08);color:var(--amber);border:1px solid rgba(245,166,35,0.2);">projeto</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section>
+  <div class="manifesto">
+    <div class="manifesto-quote">
+      "Marcar um checkbox não é conquista.<br>
+      Conquistar é o que você faz <span class="em">antes</span> de marcar."
+    </div>
+    <div class="manifesto-attr">— A única métrica que importa é o progresso real</div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-main">
+    <span style="color:var(--green)">PM-PE</span>
+    <span style="color:var(--text3)"> → </span>
+    <span style="color:var(--amber)">Faculdade TI + IA</span>
+    <span style="color:var(--text3)"> → </span>
+    <span style="color:var(--blue)">🇨🇦 Canadá</span>
+  </div>
+  <div>O progresso salvo aqui é só seu — <span style="color:var(--green)">localStorage</span>, sem servidor, sem nuvem.</div>
+  <div class="ft-sub">Cada item marcado é uma hora a menos para o Canadá.</div>
+</footer>
+
+<script>
+// NAV MENU
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => {
+  navToggle.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    navToggle.classList.remove('open');
+    navLinks.classList.remove('open');
+  });
+});
+
+// PROGRESS BAR (scroll)
+window.addEventListener('scroll', () => {
+  const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+});
+
+// ========== CHECKLIST ENGINE ==========
+
+const STORAGE_KEY = 'thelegacy_estudos_v1';
+
+function loadState() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  } catch { return {}; }
+}
+
+function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function toggle(el) {
+  const id = el.dataset.id;
+  const state = loadState();
+  state[id] = !state[id];
+  saveState(state);
+  applyState(el, state[id]);
+  updateProgress();
+}
+
+function applyState(el, done) {
+  el.classList.toggle('done', done);
+}
+
+function initCheckboxes() {
+  const state = loadState();
+  document.querySelectorAll('.course-item[data-id]').forEach(el => {
+    applyState(el, !!state[el.dataset.id]);
+  });
+  updateProgress();
+}
+
+function updateProgress() {
+  const state = loadState();
+  const allItems = document.querySelectorAll('.course-item[data-id]');
+  let total = allItems.length;
+  let done = 0;
+  allItems.forEach(el => { if (state[el.dataset.id]) done++; });
+
+  // Global
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  document.getElementById('globalPct').textContent = pct;
+  document.getElementById('globalMeta').textContent = `${done} de ${total} itens concluídos`;
+  document.getElementById('globalBar').style.width = pct + '%';
+  document.getElementById('globalSubRight').textContent = pct + '% completo';
+  document.getElementById('cntDone').textContent = done;
+  document.getElementById('cntPending').textContent = total - done;
+  document.getElementById('cntTotal').textContent = total;
+
+  // Per category
+  document.querySelectorAll('.course-list[data-cat]').forEach(list => {
+    const cat = list.dataset.cat;
+    const items = list.querySelectorAll('.course-item[data-id]');
+    const catTotal = items.length;
+    let catDone = 0;
+    items.forEach(el => { if (state[el.dataset.id]) catDone++; });
+    const catPct = catTotal > 0 ? Math.round((catDone / catTotal) * 100) : 0;
+
+    const pctEl = document.querySelector(`[data-cat="${cat}"].cat-pct-mini`);
+    const barEl = document.querySelector(`[data-catbar="${cat}"]`);
+    if (pctEl) pctEl.textContent = catPct + '%';
+    if (barEl) barEl.style.width = catPct + '%';
+  });
+}
+
+function resetAll() {
+  if (!confirm('Tem certeza? Todo o progresso será apagado.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  initCheckboxes();
+}
+
+// INIT
+initCheckboxes();
+</script>
+</body>
+</html>

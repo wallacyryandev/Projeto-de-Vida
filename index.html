@@ -597,7 +597,6 @@ footer span { color: var(--green); }
 }
 
 /* RESPONSIVE */
-/* NAV MOBILE BUTTON */
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -628,7 +627,6 @@ footer span { color: var(--green); }
 .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 @media (max-width: 768px) {
-  /* NAV */
   nav { padding: 14px 20px; }
   .nav-toggle { display: flex; }
   .nav-links {
@@ -645,43 +643,15 @@ footer span { color: var(--green); }
   }
   .nav-links.open { display: flex; }
   .nav-link { font-size: 14px; padding: 10px 14px; }
-
-  /* HERO */
   section, #hero { padding: 60px 20px; }
-  h1.hero-title { font-size: clamp(1.8rem, 8vw, 2.4rem); }
-  .hero-sub { font-size: 0.95rem; }
+  h1.hero-title { font-size: clamp(32px, 8vw, 52px); }
   .hero-stats { gap: 20px; }
-  .stat-num { font-size: 1.6rem; }
-
-  /* TIMELINE */
-  .phase { grid-template-columns: 44px 1fr; gap: 14px; }
-  .phase-dot { width: 40px; height: 40px; font-size: 12px; }
-  .phase-content { padding: 18px; }
-  .phase-name { font-size: 1rem; }
+  .stat-num { font-size: 24px; }
   .goal-grid { grid-template-columns: 1fr; }
-
-  /* GRIDS — colapsar para coluna única */
-  .projects-grid { grid-template-columns: 1fr; }
-  .tools-grid { grid-template-columns: 1fr; }
-  .channels-grid { grid-template-columns: 1fr; }
   .copilot-grid { grid-template-columns: 1fr; }
   .canada-grid { grid-template-columns: 1fr; }
-
-  /* SECTION PROJETOS (inline no index) */
-  #meus-projetos > div {
-    grid-template-columns: 1fr !important;
-  }
-  #meus-projetos > div > div:last-child {
-    display: flex;
-    justify-content: flex-start;
-  }
-
-  /* FOOTER */
-  footer { padding: 40px 20px; font-size: 12px; }
+  .phase { grid-template-columns: 48px 1fr; gap: 16px; }
 }
-
-/* TYPEWRITER */
-.typewriter-text { border-right: 2px solid var(--green); padding-right: 2px; }
 </style>
 </head>
 <body>
@@ -690,45 +660,46 @@ footer span { color: var(--green); }
 <div class="blob blob1"></div>
 <div class="blob blob2"></div>
 
+<!-- NAV -->
 <nav>
-  <div class="nav-logo">TheLegacy</div>
+  <div class="nav-logo">TheLegacy.exe</div>
   <button class="nav-toggle" id="navToggle" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
   <div class="nav-links" id="navLinks">
     <a class="nav-link" href="#fases">Fases</a>
     <a class="nav-link" href="#projetos">Projetos</a>
-    <a class="nav-link" href="#hospedagem">Hospedagem</a>
     <a class="nav-link" href="#copiloto">IA Copiloto</a>
     <a class="nav-link" href="#canais">Canais</a>
     <a class="nav-link" href="#canada">Canadá</a>
+    <a class="nav-link" href="estudos.html" style="color:var(--amber);border-color:rgba(245,166,35,0.2);background:rgba(245,166,35,0.05);">📚 Estudos ↗</a>
     <a class="nav-link" href="projetos.html" style="color:var(--green);border-color:rgba(0,229,160,0.2);background:rgba(0,229,160,0.05);">Meus Projetos ↗</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <div id="hero">
-  <div class="hero-tag">Redes de Computadores → IA & Automação · Pernambuco, BR</div>
+  <div class="hero-tag">PM-PE → Faculdade TI → IA & Automação · Pernambuco, BR</div>
   <h1 class="hero-title">
     De Pernambuco<br>
     <span class="accent" id="typewriter"></span><br>
-    <span class="dim">em 4 anos.</span>
+    <span class="dim">antes dos 30.</span>
   </h1>
   <p class="hero-sub">
-    Um roadmap técnico completo para construir um portfólio real, dominar IA e automação, e conquistar uma vaga no Nubank — com olho no Canadá.
+    Missão clara: concurso PM-PE, faculdade de TI, portfólio real de IA e imigração para o Canadá. Cada fase é um degrau. Cada dia conta.
   </p>
   <div class="hero-stats">
     <div class="stat-item">
-      <div class="stat-num">16<span>→</span>20</div>
-      <div class="stat-label">anos de missão</div>
+      <div class="stat-num"><span>01</span></div>
+      <div class="stat-label">missão PM-PE ativa</div>
     </div>
     <div class="stat-item">
       <div class="stat-num">3</div>
       <div class="stat-label">fases do plano</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">4</div>
-      <div class="stat-label">projetos reais</div>
+      <div class="stat-num"><span>30</span></div>
+      <div class="stat-label">missão canadá · anos</div>
     </div>
     <div class="stat-item">
       <div class="stat-num">0</div>
@@ -749,56 +720,58 @@ footer span { color: var(--green); }
 
   <div class="timeline">
 
+    <!-- FASE 1 -->
     <div class="phase" id="phase1">
       <div class="phase-dot dot-1">01</div>
       <div class="phase-content" onclick="togglePhase(this)">
         <div class="phase-header">
           <div class="phase-meta">
-            <div class="phase-badge b-green">Curto Prazo</div>
-            <div class="phase-name">Base sólida + Primeiro deploy</div>
-            <div class="phase-age">⟶ 16 – 17 anos · 2026–2027</div>
+            <div class="phase-badge b-green">Curto Prazo · AGORA</div>
+            <div class="phase-name">🎖️ Concurso PM-PE + Base de TI</div>
+            <div class="phase-age">⟶ Missão principal · Estabilidade primeiro</div>
           </div>
           <div class="phase-toggle">▾</div>
         </div>
         <div class="phase-goals">
           <div class="goal-grid">
-            <div class="goal-item"><span class="goal-icon">🐍</span>Completar Python do Curso em Vídeo (módulos 1 ao 3)</div>
-            <div class="goal-item"><span class="goal-icon">🌐</span>Criar site pessoal estático no GitHub Pages</div>
+            <div class="goal-item"><span class="goal-icon">📖</span>Estudar matérias do concurso PM-PE diariamente (Português, Matemática, Direito)</div>
+            <div class="goal-item"><span class="goal-icon">🐍</span>Completar Python do Curso em Vídeo — base para automações futuras</div>
+            <div class="goal-item"><span class="goal-icon">🌐</span>Aprender inglês em paralelo — mira no IELTS 7.0</div>
             <div class="goal-item"><span class="goal-icon">🔧</span>Aprender Git: commit, push, pull, branches</div>
-            <div class="goal-item"><span class="goal-icon">⚗️</span>Construir 1ª API com Flask (lista de tarefas)</div>
-            <div class="goal-item"><span class="goal-icon">🚀</span>Deploy no PythonAnywhere — zero custo</div>
-            <div class="goal-item"><span class="goal-icon">💼</span>Criar perfil no GitHub e preencher README</div>
+            <div class="goal-item"><span class="goal-icon">🎯</span>Aprovação no concurso PM-PE — estabilidade garantida</div>
+            <div class="goal-item"><span class="goal-icon">💼</span>Criar perfil no GitHub e preencher README pessoal</div>
           </div>
           <div class="channels-title">▶ Canais para essa fase</div>
           <div class="channels-row">
             <span class="ch-tag">Curso em Vídeo</span>
-            <span class="ch-tag">Hashtag Programação</span>
+            <span class="ch-tag">Estratégia Concursos</span>
             <span class="ch-tag">Filipe Deschamps</span>
-            <span class="ch-tag">Código Fonte TV</span>
+            <span class="ch-tag">English in Brazil</span>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- FASE 2 -->
     <div class="phase" id="phase2">
       <div class="phase-dot dot-2">02</div>
       <div class="phase-content" onclick="togglePhase(this)">
         <div class="phase-header">
           <div class="phase-meta">
             <div class="phase-badge b-amber">Médio Prazo</div>
-            <div class="phase-name">IA + Automação no backend</div>
-            <div class="phase-age">⟶ 17 – 18 anos · 2027–2028</div>
+            <div class="phase-name">🎓 Faculdade de TI + Automações e IA</div>
+            <div class="phase-age">⟶ Fase pós-concurso · PM + Estudante de TI</div>
           </div>
           <div class="phase-toggle">▾</div>
         </div>
         <div class="phase-goals">
           <div class="goal-grid">
-            <div class="goal-item"><span class="goal-icon">🤖</span>Integrar Gemini API ou OpenAI ao site de estudos</div>
-            <div class="goal-item"><span class="goal-icon">📋</span>Sistema de resumo automático de anotações com IA</div>
-            <div class="goal-item"><span class="goal-icon">🗄️</span>Banco de dados SQLite + PostgreSQL com Python</div>
-            <div class="goal-item"><span class="goal-icon">▲</span>Deploy profissional: Vercel (frontend) + Railway (backend)</div>
+            <div class="goal-item"><span class="goal-icon">🎓</span>Ingressar na Faculdade de TI (enquanto estiver na PM)</div>
+            <div class="goal-item"><span class="goal-icon">🤖</span>Desenvolver automações com Python — Selenium, BeautifulSoup</div>
             <div class="goal-item"><span class="goal-icon">📜</span>Certificação: Google IT Automation with Python</div>
-            <div class="goal-item"><span class="goal-icon">🔄</span>Criar scripts de automação (Selenium, BeautifulSoup)</div>
+            <div class="goal-item"><span class="goal-icon">🧠</span>Integrar IA (Gemini API / OpenAI) em projetos reais</div>
+            <div class="goal-item"><span class="goal-icon">🗄️</span>Banco de dados SQLite + PostgreSQL com Python</div>
+            <div class="goal-item"><span class="goal-icon">🇨🇦</span>Inglês para o IELTS — praticar todo dia sem exceção</div>
           </div>
           <div class="channels-title">▶ Canais para essa fase</div>
           <div class="channels-row">
@@ -811,25 +784,26 @@ footer span { color: var(--green); }
       </div>
     </div>
 
+    <!-- FASE 3 -->
     <div class="phase" id="phase3">
       <div class="phase-dot dot-3">03</div>
       <div class="phase-content" onclick="togglePhase(this)">
         <div class="phase-header">
           <div class="phase-meta">
             <div class="phase-badge b-purple">Longo Prazo</div>
-            <div class="phase-name">Portfólio sênior + Rumo ao Canadá</div>
-            <div class="phase-age">⟶ 18 – 20 anos · 2028–2030</div>
+            <div class="phase-name">🇨🇦 Transição Tech + Imigração Canadá</div>
+            <div class="phase-age">⟶ Antes dos 30 anos · Objetivo final</div>
           </div>
           <div class="phase-toggle">▾</div>
         </div>
         <div class="phase-goals">
           <div class="goal-grid">
-            <div class="goal-item"><span class="goal-icon">🧠</span>Machine Learning com fast.ai (100% em vídeo)</div>
-            <div class="goal-item"><span class="goal-icon">☁️</span>Certificação AWS Cloud Practitioner (grátis)</div>
-            <div class="goal-item"><span class="goal-icon">📁</span>3 projetos reais e documentados no GitHub</div>
-            <div class="goal-item"><span class="goal-icon">🌍</span>Contribuição em projeto open-source relevante</div>
-            <div class="goal-item"><span class="goal-icon">🇨🇦</span>IELTS ≥ 7.0 para Express Entry no Canadá</div>
-            <div class="goal-item"><span class="goal-icon">💜</span>Candidatura: Nubank Apprentice ou vaga júnior</div>
+            <div class="goal-item"><span class="goal-icon">💼</span>Transição de carreira para Tech — portfólio sólido de IA</div>
+            <div class="goal-item"><span class="goal-icon">🧠</span>Machine Learning com fast.ai — dominar LLMs na prática</div>
+            <div class="goal-item"><span class="goal-icon">☁️</span>Certificação AWS ou Google Cloud (valoriza Express Entry)</div>
+            <div class="goal-item"><span class="goal-icon">📁</span>3+ projetos reais documentados em inglês no GitHub</div>
+            <div class="goal-item"><span class="goal-icon">🌍</span>IELTS ≥ 7.0 — pontuação CRS máxima no Express Entry</div>
+            <div class="goal-item"><span class="goal-icon">✈️</span>Imigração para o Canadá — até os 30 anos</div>
           </div>
           <div class="channels-title">▶ Canais para essa fase</div>
           <div class="channels-row">
@@ -848,15 +822,29 @@ footer span { color: var(--green); }
 <!-- PROJETOS -->
 <section id="projetos">
   <div class="section-label">02 · Portfólio</div>
-  <h2 class="section-title">Os 4 projetos que vão te contratar</h2>
+  <h2 class="section-title">Os projetos que vão te levar ao Canadá</h2>
   <p class="section-subtitle">Construa em ordem. Cada projeto é pré-requisito do próximo.</p>
 
   <div class="projects-grid">
 
     <div class="project-card" data-delay="0">
       <div class="project-num">projeto 001 · fase 1</div>
+      <div class="project-title">🤖 Automação de Estudos para Concurso</div>
+      <div class="project-desc">Script Python que gera questões simuladas das matérias da PM-PE, corrige automaticamente e salva seu histórico de acertos. IA aplicada na vida real desde já.</div>
+      <div class="stack-row">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Gemini API</span>
+        <span class="stack-tag">JSON</span>
+        <span class="stack-tag">CLI</span>
+      </div>
+      <div class="progress-outer"><div class="progress-inner prog-green" data-width="20"></div></div>
+      <div class="progress-label"><span>em planejamento</span><span>fase 1</span></div>
+    </div>
+
+    <div class="project-card" data-delay="100">
+      <div class="project-num">projeto 002 · fase 1</div>
       <div class="project-title">🌐 Site Pessoal Estático</div>
-      <div class="project-desc">Página de apresentação com seus projetos, skills e links. Cartão de visitas digital que fica online para sempre. Recrutadores vão ver antes da entrevista.</div>
+      <div class="project-desc">Página de apresentação com seus projetos, skills e links. Cartão de visitas digital permanente — recrutadores canadenses vão ver antes da entrevista.</div>
       <div class="stack-row">
         <span class="stack-tag">HTML</span>
         <span class="stack-tag">CSS</span>
@@ -867,24 +855,10 @@ footer span { color: var(--green); }
       <div class="progress-label"><span>nível atual</span><span>fundação</span></div>
     </div>
 
-    <div class="project-card" data-delay="100">
-      <div class="project-num">projeto 002 · fase 1</div>
-      <div class="project-title">📋 API de Tarefas com Flask</div>
-      <div class="project-desc">Backend REST com Python. Endpoints para criar, listar e deletar tarefas. Conecta ao site via Fetch API. Aprende o ciclo completo frontend ↔ backend.</div>
-      <div class="stack-row">
-        <span class="stack-tag">Python</span>
-        <span class="stack-tag">Flask</span>
-        <span class="stack-tag">REST API</span>
-        <span class="stack-tag">PythonAnywhere</span>
-      </div>
-      <div class="progress-outer"><div class="progress-inner prog-green" data-width="45"></div></div>
-      <div class="progress-label"><span>1ª API real</span><span>deploy funcional</span></div>
-    </div>
-
     <div class="project-card" data-delay="200">
       <div class="project-num">projeto 003 · fase 2</div>
       <div class="project-title">🧠 Gerenciador de Estudos com IA</div>
-      <div class="project-desc">O projeto principal. Salve anotações e a IA gera resumos, perguntas de revisão e flashcards automaticamente. Usa Gemini API (grátis) no backend Python.</div>
+      <div class="project-desc">Salve anotações e a IA gera resumos, perguntas de revisão e flashcards automaticamente. Usa Gemini API (grátis) no backend Python. Âncora do portfólio.</div>
       <div class="stack-row">
         <span class="stack-tag">Python</span>
         <span class="stack-tag">Flask</span>
@@ -898,8 +872,8 @@ footer span { color: var(--green); }
 
     <div class="project-card" data-delay="300">
       <div class="project-num">projeto 004 · fase 3</div>
-      <div class="project-title">📊 Dashboard de Analytics</div>
-      <div class="project-desc">Painel com gráficos do seu progresso de estudos. Horas, tópicos, frequência de revisão. Domínio de dados e visualização — muito valorizado no Nubank.</div>
+      <div class="project-title">📊 Dashboard de Analytics Pessoal</div>
+      <div class="project-desc">Painel com gráficos do progresso de estudos e produtividade. Domínio de dados e visualização — muito valorizado em empresas tech canadenses.</div>
       <div class="stack-row">
         <span class="stack-tag">Python</span>
         <span class="stack-tag">Pandas</span>
@@ -907,8 +881,8 @@ footer span { color: var(--green); }
         <span class="stack-tag">PostgreSQL</span>
         <span class="stack-tag">Railway</span>
       </div>
-      <div class="progress-outer"><div class="progress-inner prog-purple" data-width="90"></div></div>
-      <div class="progress-label"><span>nível portfólio sênior</span><span>candidatura Nubank</span></div>
+      <div class="progress-outer"><div class="progress-inner prog-purple" data-width="85"></div></div>
+      <div class="progress-label"><span>fase 3 · portfólio sênior</span><span>imigração</span></div>
     </div>
 
   </div>
@@ -917,104 +891,79 @@ footer span { color: var(--green); }
 <!-- HOSPEDAGEM -->
 <section id="hospedagem">
   <div class="section-label">03 · Infraestrutura</div>
-  <h2 class="section-title">Hospedagem 100% grátis</h2>
-  <p class="section-subtitle">Stack completa sem gastar um centavo.</p>
+  <h2 class="section-title">Zero custo, 100% profissional</h2>
+  <p class="section-subtitle">As melhores ferramentas do mercado têm plano gratuito robusto. Use enquanto aprende.</p>
 
   <div class="tools-grid">
-
     <div class="tool-card" data-delay="0">
-      <div class="tool-icon" style="background: rgba(255,255,255,0.05); font-size: 22px;">🐙</div>
-      <div class="tool-title">GitHub + GitHub Pages</div>
-      <div class="tool-badge">grátis para sempre</div>
-      <div class="tool-desc">Guarda todo o código e hospeda sites estáticos. É também o seu portfólio público — recrutadores do Nubank vão abrir antes da entrevista. <strong>Comece aqui no Dia 1.</strong></div>
+      <div class="tool-icon" style="background: rgba(0,229,160,0.08);">🐙</div>
+      <div class="tool-title">GitHub Pages</div>
+      <div class="tool-badge">GRÁTIS · SEMPRE</div>
+      <div class="tool-desc">Hospedagem estática diretamente do repositório. Domínio .github.io automático. Ideal para portfólio e projetos HTML/CSS/JS.</div>
     </div>
-
     <div class="tool-card" data-delay="100">
-      <div class="tool-icon" style="background: rgba(255,255,255,0.05); font-size: 22px;">▲</div>
+      <div class="tool-icon" style="background: rgba(139,124,248,0.08);">▲</div>
       <div class="tool-title">Vercel</div>
-      <div class="tool-badge">grátis no plano Hobby</div>
-      <div class="tool-desc">Deploy automático do frontend — conecta ao GitHub e publica a cada push. Perfeito para React ou Next.js. Suporta funções serverless Python para APIs simples.</div>
+      <div class="tool-badge">PLANO HOBBY · GRÁTIS</div>
+      <div class="tool-desc">Deploy automático via Git. Ideal para frontends React e sites com SSR. URL profissional imediata. Padrão da indústria.</div>
     </div>
-
     <div class="tool-card" data-delay="200">
-      <div class="tool-icon" style="background: rgba(0,229,160,0.08); font-size: 22px;">🐍</div>
+      <div class="tool-icon" style="background: rgba(77,166,255,0.08);">🐍</div>
       <div class="tool-title">PythonAnywhere</div>
-      <div class="tool-badge">grátis conta Beginner</div>
-      <div class="tool-desc">Hospeda aplicações Flask com Python. Conta gratuita suporta 1 web app com SQLite. Ideal para a fase 1 — sobe em minutos, sem cartão de crédito.</div>
+      <div class="tool-badge">PLANO FREE · FUNCIONAL</div>
+      <div class="tool-desc">Servidor Python na nuvem sem configuração. Ideal para APIs Flask e scripts de automação rodando 24/7 sem custo.</div>
     </div>
-
     <div class="tool-card" data-delay="300">
-      <div class="tool-icon" style="background: rgba(77,166,255,0.08); font-size: 22px;">🚂</div>
+      <div class="tool-icon" style="background: rgba(245,166,35,0.08);">🚂</div>
       <div class="tool-title">Railway</div>
-      <div class="tool-badge">$5 crédito/mês grátis</div>
-      <div class="tool-desc">Sobe PostgreSQL + Flask juntos com um clique. Crédito mensal suficiente para projetos de estudo. Use na fase 2 quando precisar de banco de dados real.</div>
+      <div class="tool-badge">$5 CRÉDITO GRÁTIS/MÊS</div>
+      <div class="tool-desc">Bancos de dados PostgreSQL e backends completos. Mais poderoso que PythonAnywhere para fase 2 e 3 do plano.</div>
     </div>
-
-  </div>
-
-  <div style="margin-top: 24px; background: var(--bg2); border: 1px solid rgba(0,229,160,0.15); border-left: 3px solid var(--green); border-radius: 0 12px 12px 0; padding: 20px 24px;">
-    <div style="font-size: 12px; color: var(--green); font-family: var(--mono); margin-bottom: 8px;">FLUXO RECOMENDADO</div>
-    <div style="font-size: 14px; color: var(--text2);">
-      <code style="font-family: var(--mono); color: var(--green);">GitHub</code> (código)
-      &nbsp;→&nbsp;
-      <code style="font-family: var(--mono); color: var(--amber);">Vercel</code> (frontend automático)
-      &nbsp;→&nbsp;
-      <code style="font-family: var(--mono); color: var(--purple);">Railway</code> (backend Python + banco)
-    </div>
-    <div style="font-size: 12px; color: var(--text3); margin-top: 8px;">Tudo grátis. Tudo profissional. Tudo o que o Nubank usa em escala maior.</div>
   </div>
 </section>
 
-<!-- COPILOTO -->
+<!-- COPILOTO IA -->
 <section id="copiloto">
-  <div class="section-label">04 · Método de Estudo</div>
-  <h2 class="section-title">IA como copiloto, não muleta</h2>
-  <p class="section-subtitle">A diferença entre quem aprende e quem apenas copia.</p>
+  <div class="section-label">04 · IA como Ferramenta</div>
+  <h2 class="section-title">Como usar IA sem virar dependente</h2>
+  <p class="section-subtitle">IA é copiloto, não piloto automático. A diferença define sua carreira.</p>
 
   <div class="copilot-grid">
     <div class="copilot-card copilot-good">
       <div class="copilot-header">
         <div class="copilot-dot" style="background: var(--green);"></div>
-        <div class="copilot-label" style="color: var(--green);">✓ Use a IA assim (copiloto)</div>
+        <div class="copilot-label">✅ Use IA para isso</div>
       </div>
-      <div class="copilot-item"><span class="ci-icon" style="color: var(--green);">→</span>Peça explicação de erro que você não entende</div>
-      <div class="copilot-item"><span class="ci-icon" style="color: var(--green);">→</span>Gere o esqueleto, depois edite você mesmo</div>
-      <div class="copilot-item"><span class="ci-icon" style="color: var(--green);">→</span>Use para revisar seu código depois de escrever</div>
-      <div class="copilot-item"><span class="ci-icon" style="color: var(--green);">→</span>Peça sugestões de melhoria (não a solução pronta)</div>
-      <div class="copilot-item"><span class="ci-icon" style="color: var(--green);">→</span>Pergunte "por que isso funciona?" após copiar</div>
+      <div class="copilot-item"><span class="ci-icon">→</span>Debugar erros que você já tentou resolver</div>
+      <div class="copilot-item"><span class="ci-icon">→</span>Entender conceitos após tentar na documentação</div>
+      <div class="copilot-item"><span class="ci-icon">→</span>Revisar código que você já escreveu</div>
+      <div class="copilot-item"><span class="ci-icon">→</span>Gerar testes unitários para seu código</div>
+      <div class="copilot-item"><span class="ci-icon">→</span>Traduzir e praticar inglês técnico</div>
     </div>
     <div class="copilot-card copilot-bad">
       <div class="copilot-header">
         <div class="copilot-dot" style="background: var(--red);"></div>
-        <div class="copilot-label" style="color: var(--red);">✗ Evite a IA assim (muleta)</div>
+        <div class="copilot-label">❌ Não use IA para isso</div>
       </div>
-      <div class="copilot-item"><span class="ci-icon" style="color: var(--red);">→</span>Copiar código sem ler ou entender</div>
-      <div class="copilot-item"><span class="ci-icon" style="color: var(--red);">→</span>Pedir "faz o projeto completo pra mim"</div>
-      <div class="copilot-item"><span class="ci-icon" style="color: var(--red);">→</span>Usar IA antes de tentar sozinho por 20 min</div>
-      <div class="copilot-item"><span class="ci-icon" style="color: var(--red);">→</span>Não saber explicar o código que você enviou</div>
-      <div class="copilot-item"><span class="ci-icon" style="color: var(--red);">→</span>Depender da IA para lembrar sintaxe básica</div>
+      <div class="copilot-item"><span class="ci-icon">→</span>Pedir o código completo sem tentar antes</div>
+      <div class="copilot-item"><span class="ci-icon">→</span>Copiar sem entender o que está acontecendo</div>
+      <div class="copilot-item"><span class="ci-icon">→</span>Substituir a leitura da documentação oficial</div>
+      <div class="copilot-item"><span class="ci-icon">→</span>Resolver exercícios de estudo automaticamente</div>
+      <div class="copilot-item"><span class="ci-icon">→</span>Fazer as questões do concurso por você</div>
     </div>
   </div>
 
   <div class="rule-box">
-    <div class="rule-title">REGRA DOS 20 MINUTOS</div>
-    <div class="rule-desc">Tente resolver o problema sozinho por 20 minutos antes de pedir ajuda à IA. Esses 20 minutos são onde o aprendizado de verdade acontece. Em entrevistas técnicas no Nubank, você vai precisar explicar o código ao vivo — sem IA.</div>
-  </div>
-  <div class="rule-box" style="border-left-color: var(--purple);">
-    <div class="rule-title" style="color: var(--purple);">TÉCNICA DA TELA DIVIDIDA</div>
-    <div class="rule-desc">YouTube à esquerda, VS Code à direita. Regra de ouro: nunca feche o vídeo sem ter reproduzido o que o professor fez. Pausa a cada 5 minutos e digita — não copia.</div>
-  </div>
-  <div class="rule-box" style="border-left-color: var(--amber);">
-    <div class="rule-title" style="color: var(--amber);">TESTE DO ENTENDIMENTO</div>
-    <div class="rule-desc">Antes de avançar para a próxima parte do vídeo, feche o editor e tente reescrever o que fez de memória. Se você consegue, aprendeu. Se não consegue, ainda está copiando.</div>
+    <div class="rule-title">REGRA DE OURO</div>
+    <div class="rule-desc">Se você não consegue explicar o código para alguém sem a IA, você não aprendeu — você copiou. A entrevista de emprego não vai ter IA.</div>
   </div>
 </section>
 
 <!-- CANAIS -->
 <section id="canais">
-  <div class="section-label">05 · Recursos Visuais</div>
-  <h2 class="section-title">Canais que você precisa seguir</h2>
-  <p class="section-subtitle">Todos em vídeo. Todos gratuitos. Todos em português ou com legendas.</p>
+  <div class="section-label">05 · Aprendizado</div>
+  <h2 class="section-title">Canais que valem o tempo</h2>
+  <p class="section-subtitle">Curadoria brutal. Só o que realmente importa para o plano.</p>
 
   <div class="channels-grid">
     <a class="channel-card" href="https://www.youtube.com/@cursoemvideo" target="_blank" rel="noopener" data-delay="0">
@@ -1023,8 +972,8 @@ footer span { color: var(--green); }
         <div class="channel-yt-badge">▶</div>
       </div>
       <div class="channel-name">Curso em Vídeo</div>
-      <div class="channel-phase">fases 1 e 2 · Gustavo Guanabara</div>
-      <div class="channel-desc">O rei do ensino visual no Brasil. Python do zero com didática incomparável. Obrigatório para a fase 1.</div>
+      <div class="channel-phase">fase 1 · Python + Web</div>
+      <div class="channel-desc">Gustavo Guanabara. Melhor conteúdo de Python em português. Comece aqui, sem exceção.</div>
     </a>
     <a class="channel-card" href="https://www.youtube.com/@HashtagProgramacao" target="_blank" rel="noopener" data-delay="100">
       <div class="channel-avatar-wrap">
@@ -1032,8 +981,8 @@ footer span { color: var(--green); }
         <div class="channel-yt-badge">▶</div>
       </div>
       <div class="channel-name">Hashtag Programação</div>
-      <div class="channel-phase">fases 1 e 2 · Python e automação</div>
-      <div class="channel-desc">Tutoriais práticos de Python, automação e análise de dados. Muito focado em resultados reais.</div>
+      <div class="channel-phase">fases 1 e 2 · Python prático</div>
+      <div class="channel-desc">Python aplicado a automação e dados. Projetos reais, direto ao ponto. Essencial para fase 2.</div>
     </a>
     <a class="channel-card" href="https://www.youtube.com/@FilipeDeschamps" target="_blank" rel="noopener" data-delay="200">
       <div class="channel-avatar-wrap">
@@ -1078,16 +1027,16 @@ footer span { color: var(--green); }
 <section id="canada">
   <div class="section-label">06 · Objetivo Final</div>
   <h2 class="section-title">🇨🇦 Roteiro para o Canadá</h2>
-  <p class="section-subtitle">O Canadá quer profissionais de tech. Você vai ter o perfil certo.</p>
+  <p class="section-subtitle">O Canadá quer profissionais de tech. Você vai ter o perfil certo antes dos 30.</p>
 
   <div class="canada-grid">
     <div class="canada-card">
       <div class="canada-title">Construir antes de sair</div>
-      <div class="canada-item"><span class="ca-dot"></span>IELTS ≥ 7.0 — comece o inglês agora, em paralelo ao código</div>
+      <div class="canada-item"><span class="ca-dot"></span>IELTS ≥ 7.0 — inglês começa agora, em paralelo ao concurso</div>
       <div class="canada-item"><span class="ca-dot"></span>Portfólio no GitHub com 3+ projetos documentados em inglês</div>
       <div class="canada-item"><span class="ca-dot"></span>Certificação AWS ou Google Cloud (valorizado pela imigração)</div>
       <div class="canada-item"><span class="ca-dot"></span>LinkedIn completo em inglês com recomendações</div>
-      <div class="canada-item"><span class="ca-dot"></span>1–2 anos de experiência formal (Nubank ou empresa BR)</div>
+      <div class="canada-item"><span class="ca-dot"></span>Estabilidade financeira via PM-PE durante a transição tech</div>
     </div>
     <div class="canada-card">
       <div class="canada-title">Caminhos de imigração tech</div>
@@ -1101,7 +1050,7 @@ footer span { color: var(--green); }
 
   <div style="margin-top: 24px; background: var(--bg2); border: 1px solid rgba(77,166,255,0.15); border-left: 3px solid var(--blue); border-radius: 0 12px 12px 0; padding: 20px 24px;">
     <div style="font-size: 12px; color: var(--blue); font-family: var(--mono); margin-bottom: 8px;">DICA FUNDAMENTAL</div>
-    <div style="font-size: 14px; color: var(--text2); line-height: 1.7;">A tecnologia abre a porta. O inglês te deixa entrar. <strong style="color: var(--text);">Assista os canais técnicos em inglês sem legenda</strong> — TechWith Tim é ótimo para isso. Mire no IELTS 7.0 e você vai ter mais pontos no Express Entry do que a maioria.</div>
+    <div style="font-size: 14px; color: var(--text2); line-height: 1.7;">A tecnologia abre a porta. O inglês te deixa entrar. <strong style="color: var(--text);">Assista canais técnicos em inglês sem legenda</strong> — TechWith Tim é ótimo para isso. Mire no IELTS 7.0 e você vai ter mais pontos no Express Entry do que a maioria.</div>
   </div>
 </section>
 
@@ -1126,9 +1075,7 @@ footer span { color: var(--green); }
     align-items: center;
   ">
     <div>
-      <div style="
-        display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;
-      ">
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
         <span style="font-size:11px; padding:4px 12px; border-radius:4px; background:rgba(0,229,160,0.08); color:var(--green); border:1px solid rgba(0,229,160,0.15); font-family:var(--mono);">✓ projetos concluídos</span>
         <span style="font-size:11px; padding:4px 12px; border-radius:4px; background:rgba(245,166,35,0.08); color:var(--amber); border:1px solid rgba(245,166,35,0.15); font-family:var(--mono);">◉ em andamento</span>
         <span style="font-size:11px; padding:4px 12px; border-radius:4px; background:rgba(80,85,114,0.15); color:var(--text3); border:1px solid var(--border); font-family:var(--mono);">○ planejados</span>
@@ -1139,18 +1086,36 @@ footer span { color: var(--green); }
         É onde o plano vira realidade.
       </div>
     </div>
-    <div>
+    <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-end;">
+      <a href="estudos.html" style="
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--amber);
+        color: var(--bg);
+        padding: 14px 26px;
+        border-radius: 12px;
+        font-family: var(--sans);
+        font-weight: 700;
+        font-size: 13px;
+        text-decoration: none;
+        transition: all 0.25s;
+        white-space: nowrap;
+      " onmouseover="this.style.opacity='0.85';this.style.transform='translateY(-2px)'"
+         onmouseout="this.style.opacity='1';this.style.transform='none'">
+        📚 Dashboard de Estudos →
+      </a>
       <a href="projetos.html" style="
         display: inline-flex;
         align-items: center;
         gap: 10px;
         background: var(--green);
         color: var(--bg);
-        padding: 16px 30px;
+        padding: 14px 26px;
         border-radius: 12px;
         font-family: var(--sans);
         font-weight: 700;
-        font-size: 14px;
+        font-size: 13px;
         text-decoration: none;
         transition: all 0.25s;
         white-space: nowrap;
@@ -1164,10 +1129,10 @@ footer span { color: var(--green); }
 
 <footer>
   <div style="font-family: var(--mono); font-size: 18px; margin-bottom: 12px; color: var(--text);">
-    <span>ETEMAC</span> → <span style="color: var(--amber)">Nubank</span> → <span style="color: var(--blue)">🇨🇦 Canadá</span>
+    <span>PM-PE</span> → <span style="color: var(--amber)">Faculdade TI + IA</span> → <span style="color: var(--blue)">🇨🇦 Canadá</span>
   </div>
-  <div>Construído para quem tem <span>16 anos</span>, 30 min por dia e ambição suficiente para mudar de país.</div>
-  <div style="margin-top: 8px; font-size: 11px; color: var(--text3);">30 min/dia × 4 anos = mais de 700 horas de código. Isso é suficiente para qualquer coisa.</div>
+  <div>Construído para quem tem <span>ambição</span>, 30 min por dia e coragem suficiente para mudar de país.</div>
+  <div style="margin-top: 8px; font-size: 11px; color: var(--text3);">30 min/dia × anos = centenas de horas de código. Isso é suficiente para qualquer coisa.</div>
 </footer>
 
 <script>
@@ -1194,7 +1159,7 @@ window.addEventListener('scroll', () => {
 });
 
 // TYPEWRITER
-const phrases = ['ao Nubank.', 'ao Canadá.', 'à autonomia.', 'ao futuro.'];
+const phrases = ['ao Canadá.', 'à PM-PE.', 'à autonomia.', 'ao futuro.', 'à tech.'];
 let pi = 0, ci = 0, deleting = false;
 const el = document.getElementById('typewriter');
 function type() {
@@ -1225,7 +1190,6 @@ const observer = new IntersectionObserver((entries) => {
       const delay = parseInt(el.dataset.delay || 0);
       setTimeout(() => {
         el.classList.add('visible');
-        // animate progress bars
         el.querySelectorAll('.progress-inner').forEach(bar => {
           bar.style.width = bar.dataset.width + '%';
         });
