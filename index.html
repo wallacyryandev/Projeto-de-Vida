@@ -597,15 +597,87 @@ footer span { color: var(--green); }
 }
 
 /* RESPONSIVE */
+/* NAV MOBILE BUTTON */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 110;
+}
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text2);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease, background 0.2s;
+  transform-origin: center;
+}
+.nav-toggle:hover span { background: var(--text); }
+.nav-toggle.open span { background: var(--green); }
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
 @media (max-width: 768px) {
+  /* NAV */
   nav { padding: 14px 20px; }
-  .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 57px; left: 0; right: 0;
+    background: rgba(10,10,15,0.97);
+    backdrop-filter: blur(20px);
+    padding: 20px;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    z-index: 99;
+  }
+  .nav-links.open { display: flex; }
+  .nav-link { font-size: 14px; padding: 10px 14px; }
+
+  /* HERO */
   section, #hero { padding: 60px 20px; }
-  h1.hero-title { font-size: 32px; }
+  h1.hero-title { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+  .hero-sub { font-size: 0.95rem; }
+  .hero-stats { gap: 20px; }
+  .stat-num { font-size: 1.6rem; }
+
+  /* TIMELINE */
+  .phase { grid-template-columns: 44px 1fr; gap: 14px; }
+  .phase-dot { width: 40px; height: 40px; font-size: 12px; }
+  .phase-content { padding: 18px; }
+  .phase-name { font-size: 1rem; }
+  .goal-grid { grid-template-columns: 1fr; }
+
+  /* GRIDS — colapsar para coluna única */
+  .projects-grid { grid-template-columns: 1fr; }
+  .tools-grid { grid-template-columns: 1fr; }
+  .channels-grid { grid-template-columns: 1fr; }
   .copilot-grid { grid-template-columns: 1fr; }
   .canada-grid { grid-template-columns: 1fr; }
-  .goal-grid { grid-template-columns: 1fr; }
-  .hero-stats { gap: 24px; }
+
+  /* SECTION PROJETOS (inline no index) */
+  #meus-projetos > div {
+    grid-template-columns: 1fr !important;
+  }
+  #meus-projetos > div > div:last-child {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  /* FOOTER */
+  footer { padding: 40px 20px; font-size: 12px; }
 }
 
 /* TYPEWRITER */
@@ -620,7 +692,10 @@ footer span { color: var(--green); }
 
 <nav>
   <div class="nav-logo">TheLegacy</div>
-  <div class="nav-links">
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links" id="navLinks">
     <a class="nav-link" href="#fases">Fases</a>
     <a class="nav-link" href="#projetos">Projetos</a>
     <a class="nav-link" href="#hospedagem">Hospedagem</a>
@@ -1096,6 +1171,20 @@ footer span { color: var(--green); }
 </footer>
 
 <script>
+// NAV MENU
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => {
+  navToggle.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    navToggle.classList.remove('open');
+    navLinks.classList.remove('open');
+  });
+});
+
 // PROGRESS BAR
 window.addEventListener('scroll', () => {
   const scrollTop = window.scrollY;
@@ -1152,13 +1241,13 @@ document.querySelectorAll('.phase, .project-card, .tool-card, .channel-card').fo
 
 // NAV ACTIVE STATE
 const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-link');
+const navLinkItems = document.querySelectorAll('.nav-link');
 window.addEventListener('scroll', () => {
   let current = '';
   sections.forEach(s => {
     if (window.scrollY >= s.offsetTop - 120) current = s.id;
   });
-  navLinks.forEach(link => {
+  navLinkItems.forEach(link => {
     link.classList.toggle('active', link.getAttribute('href') === '#' + current);
   });
 });
