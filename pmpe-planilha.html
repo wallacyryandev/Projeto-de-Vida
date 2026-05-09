@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planilha de Estudos · PM-PE · TheLegacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #1a1a25;
+  --card: #13131c;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --green: #00e5a0;
+  --green2: #00b87d;
+  --amber: #f5a623;
+  --purple: #8b7cf8;
+  --blue: #4da6ff;
+  --red: #ff5f5f;
+  --text: #f0f0f8;
+  --text2: #9090a8;
+  --text3: #5a5a72;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Space Grotesk', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.4;
+}
+
+.blob { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; opacity: 0.12; }
+.blob1 { width: 700px; height: 700px; background: var(--green); top: -250px; left: -150px; }
+.blob2 { width: 400px; height: 400px; background: var(--purple); bottom: 0; right: -100px; }
+
+#progress-bar {
+  position: fixed; top: 0; left: 0;
+  height: 2px; background: var(--green);
+  z-index: 200; transition: width 0.1s;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 16px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family: var(--mono); font-size: 13px; color: var(--green); letter-spacing: 0.05em; }
+.nav-links { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.nav-link {
+  font-size: 12px; color: var(--text2); text-decoration: none;
+  padding: 6px 12px; border-radius: 6px; transition: all 0.2s;
+  border: 1px solid transparent;
+}
+.nav-link:hover { color: var(--text); background: var(--bg3); border-color: var(--border2); }
+.nav-back {
+  font-size: 12px; color: var(--text2); text-decoration: none;
+  padding: 6px 12px; border-radius: 6px; transition: all 0.2s;
+  border: 1px solid var(--border);
+}
+.nav-back:hover { color: var(--text); background: var(--bg3); }
+.nav-toggle {
+  display: none; flex-direction: column; justify-content: center;
+  align-items: center; gap: 5px; width: 36px; height: 36px;
+  background: none; border: none; cursor: pointer; padding: 0; z-index: 110;
+}
+.nav-toggle span {
+  display: block; width: 22px; height: 2px; background: var(--text2);
+  border-radius: 2px; transition: all 0.3s; transform-origin: center;
+}
+.nav-toggle.open span { background: var(--green); }
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* HERO */
+.page-hero {
+  padding: 130px 40px 50px;
+  max-width: 1200px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+.hero-tag {
+  font-family: var(--mono); font-size: 12px; color: var(--green);
+  letter-spacing: 0.15em; margin-bottom: 24px;
+  display: flex; align-items: center; gap: 8px;
+}
+.hero-tag::before {
+  content: ''; display: inline-block; width: 20px; height: 1px; background: var(--green);
+}
+.page-title {
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px;
+}
+.page-title .accent { color: var(--green); }
+.page-subtitle {
+  font-size: 16px; color: var(--text2); max-width: 580px; line-height: 1.7; margin-bottom: 40px;
+}
+
+/* STATS ROW */
+.stats-row {
+  display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 8px;
+}
+.stat-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 24px;
+  min-width: 140px;
+  transition: border-color 0.3s;
+}
+.stat-box:hover { border-color: var(--border2); }
+.stat-box-num {
+  font-size: 28px; font-weight: 700; font-family: var(--mono); line-height: 1;
+}
+.stat-box-label {
+  font-size: 11px; color: var(--text3); margin-top: 4px;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+
+/* GLOBAL PROGRESS */
+.gp-wrap {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto; padding: 0 40px 48px;
+}
+.gp-card {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 28px 32px;
+}
+.gp-title {
+  font-size: 11px; font-family: var(--mono); color: var(--green);
+  letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 10px;
+}
+.gp-row { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.gp-pct {
+  font-size: 52px; font-weight: 700; font-family: var(--mono); line-height: 1;
+  white-space: nowrap;
+}
+.gp-pct span { color: var(--green); }
+.gp-bar-col { flex: 1; min-width: 200px; }
+.gp-bar-outer {
+  height: 12px; background: var(--bg3); border-radius: 8px; overflow: hidden; margin-bottom: 10px;
+}
+.gp-bar-inner {
+  height: 100%; border-radius: 8px;
+  background: linear-gradient(90deg, var(--green) 0%, #00c896 50%, var(--amber) 100%);
+  transition: width 1s ease; width: 0%;
+}
+.gp-detail { display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); font-family: var(--mono); }
+.gp-counts { display: flex; gap: 20px; flex-wrap: wrap; }
+.gpc-item { text-align: center; }
+.gpc-num { font-size: 22px; font-weight: 700; font-family: var(--mono); line-height: 1; }
+.gpc-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
+.btn-reset {
+  background: none; border: 1px solid var(--border2); color: var(--text3);
+  font-family: var(--mono); font-size: 10px; padding: 5px 12px;
+  border-radius: 6px; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.btn-reset:hover { border-color: var(--red); color: var(--red); }
+
+/* MATERIA SECTION */
+.materia-section {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 40px 48px;
+}
+
+/* MATERIA HEADER */
+.mat-header {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 20px;
+  padding: 20px 24px;
+  background: var(--bg2);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.3s;
+  user-select: none;
+}
+.mat-header:hover { border-color: var(--border2); }
+.mat-icon {
+  width: 46px; height: 46px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.mat-info { flex: 1; }
+.mat-name { font-size: 18px; font-weight: 600; margin-bottom: 2px; }
+.mat-meta { font-size: 12px; color: var(--text3); font-family: var(--mono); }
+.mat-right { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
+.mat-pct {
+  font-size: 22px; font-weight: 700; font-family: var(--mono); text-align: right;
+}
+.mat-bar-mini-outer {
+  width: 80px; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; margin-top: 4px;
+}
+.mat-bar-mini-inner { height: 100%; border-radius: 2px; transition: width 0.8s ease; width: 0%; }
+.mat-chevron { color: var(--text3); font-size: 18px; transition: transform 0.3s; }
+.mat-header.open .mat-chevron { transform: rotate(180deg); }
+
+/* QUESTIONS BADGE */
+.mat-badge {
+  font-size: 10px; font-family: var(--mono); padding: 4px 12px;
+  border-radius: 20px; font-weight: 600; white-space: nowrap;
+}
+
+/* TOPICS TABLE */
+.mat-body { display: none; }
+.mat-header.open + .mat-body { display: block; }
+
+.topics-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 4px;
+  background: var(--card);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.topics-table thead tr {
+  background: var(--bg3);
+}
+.topics-table th {
+  font-size: 10px; font-family: var(--mono); color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  padding: 12px 16px; text-align: left; font-weight: 500;
+  border-bottom: 1px solid var(--border);
+}
+.topics-table th:last-child { text-align: center; }
+.topics-table td {
+  padding: 0; border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.topics-table tr:last-child td { border-bottom: none; }
+.topics-table tr:hover td { background: rgba(255,255,255,0.018); }
+
+/* ROW CLICK AREA */
+.topic-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 13px 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+  width: 100%;
+}
+.topic-row:hover { background: rgba(255,255,255,0.02); }
+
+/* CUSTOM CHECKBOX */
+.topic-check {
+  width: 20px; height: 20px; border-radius: 5px;
+  border: 2px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all 0.2s;
+  font-size: 11px;
+}
+.topic-row.done .topic-check {
+  background: var(--green); border-color: var(--green); color: var(--bg);
+}
+.topic-num {
+  font-family: var(--mono); font-size: 10px; color: var(--text3);
+  width: 24px; flex-shrink: 0;
+}
+.topic-name { font-size: 13px; color: var(--text2); flex: 1; line-height: 1.4; transition: all 0.2s; }
+.topic-row.done .topic-name { text-decoration: line-through; color: var(--text3); }
+.topic-priority {
+  font-size: 9px; font-family: var(--mono); padding: 2px 8px;
+  border-radius: 3px; flex-shrink: 0;
+}
+.p-alta { background: rgba(255,95,95,0.1); color: #ff9090; border: 1px solid rgba(255,95,95,0.2); }
+.p-media { background: rgba(245,166,35,0.1); color: var(--amber); border: 1px solid rgba(245,166,35,0.2); }
+.p-baixa { background: rgba(90,90,114,0.15); color: var(--text3); border: 1px solid var(--border); }
+
+/* SECTION DIVIDER INSIDE TABLE */
+.topic-section-header td {
+  background: var(--bg3);
+  padding: 0;
+}
+.topic-section-inner {
+  padding: 8px 16px;
+  font-size: 10px; font-family: var(--mono); color: var(--text3);
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+
+/* REDACAO SECTION */
+.redacao-card {
+  background: var(--bg2);
+  border: 1px solid rgba(0,229,160,0.15);
+  border-left: 3px solid var(--green);
+  border-radius: 0 14px 14px 0;
+  padding: 20px 24px;
+  margin-bottom: 48px;
+}
+.redacao-title { font-family: var(--mono); font-size: 12px; color: var(--green); margin-bottom: 8px; letter-spacing: 0.1em; }
+.redacao-desc { font-size: 13px; color: var(--text2); line-height: 1.7; }
+
+/* MANIFESTO */
+.manifesto-wrap { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 40px 80px; }
+.manifesto {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 16px; padding: 48px 40px; text-align: center;
+  position: relative; overflow: hidden;
+}
+.manifesto::before {
+  content: '"'; position: absolute; font-size: 320px; font-weight: 700;
+  color: rgba(255,255,255,0.018); top: -80px; left: 10px;
+  line-height: 1; pointer-events: none;
+}
+.manifesto-quote {
+  font-size: clamp(18px, 2.5vw, 26px); font-weight: 600;
+  letter-spacing: -0.02em; line-height: 1.5; margin-bottom: 18px;
+  max-width: 640px; margin-left: auto; margin-right: auto; position: relative;
+}
+.manifesto-quote .em { color: var(--green); }
+.manifesto-attr { font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: 0.1em; }
+
+/* FOOTER */
+footer {
+  position: relative; z-index: 1; text-align: center; padding: 60px 40px;
+  border-top: 1px solid var(--border); color: var(--text3); font-size: 13px;
+}
+.ft-main { font-family: var(--mono); font-size: 16px; margin-bottom: 12px; color: var(--text); }
+.ft-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 999;
+  background: var(--green); color: var(--bg);
+  font-family: var(--mono); font-size: 12px; font-weight: 700;
+  padding: 10px 20px; border-radius: 10px;
+  transform: translateY(80px); opacity: 0;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+@media (max-width: 768px) {
+  nav { padding: 14px 20px; }
+  .nav-toggle { display: flex; }
+  .nav-links {
+    display: none; flex-direction: column; position: fixed;
+    top: 57px; left: 0; right: 0; background: rgba(10,10,15,0.97);
+    backdrop-filter: blur(20px); padding: 20px; gap: 8px;
+    border-bottom: 1px solid var(--border); z-index: 99;
+  }
+  .nav-links.open { display: flex; }
+  .nav-link, .nav-back { font-size: 14px; padding: 10px 14px; }
+  .page-hero { padding: 90px 20px 36px; }
+  .gp-wrap, .materia-section, .manifesto-wrap { padding-left: 20px; padding-right: 20px; }
+  .gp-card { padding: 20px; }
+  .gp-pct { font-size: 38px; }
+  .stats-row { gap: 10px; }
+  .stat-box { padding: 14px 18px; min-width: 110px; }
+  .mat-header { padding: 16px; gap: 12px; }
+  .mat-name { font-size: 15px; }
+  .mat-right { gap: 12px; }
+  .mat-bar-mini-outer { width: 50px; }
+  .topic-row { padding: 10px 12px; gap: 10px; }
+  .topic-priority { display: none; }
+  .manifesto { padding: 32px 20px; }
+  footer { padding: 40px 20px; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="toast" id="toast"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">🎖️ PM-PE · Planilha de Estudos</div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links" id="navLinks">
+    <a class="nav-back" href="index.html">← Voltar ao Plano</a>
+    <a class="nav-link" href="#portugues">Português</a>
+    <a class="nav-link" href="#historia">História PE</a>
+    <a class="nav-link" href="#logico">Raciocínio</a>
+    <a class="nav-link" href="#informatica">Informática</a>
+    <a class="nav-link" href="#constitucional">Dir. Const.</a>
+    <a class="nav-link" href="#direitos">Dir. Humanos</a>
+    <a class="nav-link" href="estudos.html" style="color:var(--amber);border-color:rgba(245,166,35,0.2);background:rgba(245,166,35,0.05);">📚 Dashboard ↗</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-tag">Edital 83/2023 · Banca AOCP · Soldado PM-PE</div>
+  <h1 class="page-title">
+    Planilha de Estudos<br>
+    <span class="accent">🎖️ PM-PE</span>
+  </h1>
+  <p class="page-subtitle">
+    Todos os tópicos do edital do concurso PM-PE (Soldado), organizados por disciplina
+    com prioridade e checkbox. Marque o que já estudou — o progresso salva no seu navegador.
+  </p>
+
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-box-num" style="color:var(--green)">60</div>
+      <div class="stat-box-label">questões na prova</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-box-num" style="color:var(--amber)">6</div>
+      <div class="stat-box-label">disciplinas</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-box-num" style="color:var(--purple)" id="totalTopics">0</div>
+      <div class="stat-box-label">tópicos no edital</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-box-num" style="color:var(--blue)">5</div>
+      <div class="stat-box-label">etapas do concurso</div>
+    </div>
+  </div>
+</div>
+
+<!-- GLOBAL PROGRESS -->
+<div class="gp-wrap">
+  <div class="gp-card">
+    <div class="gp-title">Progresso Geral — Conteúdo Programático PM-PE</div>
+    <div class="gp-row">
+      <div>
+        <div class="gp-pct"><span id="gPct">0</span>%</div>
+        <div style="font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:4px;" id="gMeta">0 de 0 tópicos estudados</div>
+      </div>
+      <div class="gp-bar-col">
+        <div class="gp-bar-outer"><div class="gp-bar-inner" id="gBar"></div></div>
+        <div class="gp-detail"><span>Início</span><span id="gPctRight">0% do edital coberto</span></div>
+      </div>
+      <div class="gp-counts">
+        <div class="gpc-item">
+          <div class="gpc-num" id="gDone" style="color:var(--green)">0</div>
+          <div class="gpc-label">estudados</div>
+        </div>
+        <div class="gpc-item">
+          <div class="gpc-num" id="gPend" style="color:var(--amber)">0</div>
+          <div class="gpc-label">pendentes</div>
+        </div>
+        <div class="gpc-item" style="margin-left:8px;">
+          <button class="btn-reset" onclick="resetAll()">↺ Resetar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     DISCIPLINA 1: LÍNGUA PORTUGUESA
+     ========================================== -->
+<div class="materia-section" id="portugues">
+  <div class="mat-header" onclick="toggleMat(this)">
+    <div class="mat-icon" style="background:rgba(0,229,160,0.08)">📝</div>
+    <div class="mat-info">
+      <div class="mat-name">Língua Portuguesa</div>
+      <div class="mat-meta">Bloco I · 10 questões · peso alto</div>
+    </div>
+    <div class="mat-right">
+      <div>
+        <div class="mat-pct" style="color:var(--green)" data-mpct="port">0%</div>
+        <div class="mat-bar-mini-outer">
+          <div class="mat-bar-mini-inner" style="background:var(--green)" data-mbar="port"></div>
+        </div>
+      </div>
+      <span class="mat-badge" style="background:rgba(0,229,160,0.08);color:var(--green);border:1px solid rgba(0,229,160,0.2)">10 questões</span>
+      <div class="mat-chevron">▾</div>
+    </div>
+  </div>
+  <div class="mat-body">
+    <table class="topics-table">
+      <thead>
+        <tr>
+          <th style="width:44px">✓</th>
+          <th style="width:32px">#</th>
+          <th>Tópico do Edital</th>
+          <th style="width:80px;text-align:center">Prioridade</th>
+        </tr>
+      </thead>
+      <tbody data-cat="port">
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">📖 Compreensão e Interpretação</div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt01" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">01</div><div class="topic-name">Compreensão e interpretação de textos de gêneros variados</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt02" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">02</div><div class="topic-name">Tipologias e gêneros textuais (narração, descrição, dissertação, injunção)</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt03" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">03</div><div class="topic-name">Coesão e coerência textual — articulação entre ideias</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🔤 Ortografia e Fonologia</div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt04" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">04</div><div class="topic-name">Ortografia oficial (Acordo Ortográfico vigente)</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt05" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">05</div><div class="topic-name">Acentuação gráfica — regras gerais e casos especiais</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt06" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">06</div><div class="topic-name">Emprego dos sinais de pontuação</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">📚 Morfologia e Classes de Palavras</div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt07" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">07</div><div class="topic-name">Classes de palavras — substantivo, adjetivo, pronome, verbo, advérbio, preposição, conjunção, interjeição</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt08" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">08</div><div class="topic-name">Emprego dos pronomes (pessoais, possessivos, demonstrativos, relativos)</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt09" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">09</div><div class="topic-name">Emprego dos tempos e modos verbais</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt10" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">10</div><div class="topic-name">Estrutura e formação das palavras (derivação, composição)</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🧩 Sintaxe</div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt11" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">11</div><div class="topic-name">Frase, oração e período — termos essenciais e integrantes</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt12" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">12</div><div class="topic-name">Período composto: coordenação e subordinação</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt13" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">13</div><div class="topic-name">Concordância verbal e nominal — casos especiais</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt14" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">14</div><div class="topic-name">Regência verbal e nominal</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt15" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">15</div><div class="topic-name">Emprego da crase</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt16" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">16</div><div class="topic-name">Colocação pronominal (próclise, mesóclise, ênclise)</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🎭 Semântica e Estilística</div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt17" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">17</div><div class="topic-name">Significação das palavras: sinônimos, antônimos, homônimos, parônimos</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt18" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">18</div><div class="topic-name">Figuras de linguagem (metáfora, metonímia, hipérbole, etc.)</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt19" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">19</div><div class="topic-name">Variação linguística — norma culta e coloquial</div><span class="topic-priority p-baixa">baixa</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="pt20" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">20</div><div class="topic-name">Redação oficial — Manual da Presidência da República 2018</div><span class="topic-priority p-media">média</span></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ==========================================
+     DISCIPLINA 2: HISTÓRIA DE PERNAMBUCO
+     ========================================== -->
+<div class="materia-section" id="historia">
+  <div class="mat-header" onclick="toggleMat(this)">
+    <div class="mat-icon" style="background:rgba(245,166,35,0.08)">🏛️</div>
+    <div class="mat-info">
+      <div class="mat-name">História de Pernambuco</div>
+      <div class="mat-meta">Bloco I · 10 questões · exclusivo PE</div>
+    </div>
+    <div class="mat-right">
+      <div>
+        <div class="mat-pct" style="color:var(--amber)" data-mpct="hist">0%</div>
+        <div class="mat-bar-mini-outer">
+          <div class="mat-bar-mini-inner" style="background:var(--amber)" data-mbar="hist"></div>
+        </div>
+      </div>
+      <span class="mat-badge" style="background:rgba(245,166,35,0.08);color:var(--amber);border:1px solid rgba(245,166,35,0.2)">10 questões</span>
+      <div class="mat-chevron">▾</div>
+    </div>
+  </div>
+  <div class="mat-body">
+    <table class="topics-table">
+      <thead>
+        <tr>
+          <th style="width:44px">✓</th><th style="width:32px">#</th>
+          <th>Tópico do Edital</th><th style="width:80px;text-align:center">Prioridade</th>
+        </tr>
+      </thead>
+      <tbody data-cat="hist">
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🌊 Colonização e Formação</div></td></tr>
+        <tr><td><div class="topic-row" data-id="hi01" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">01</div><div class="topic-name">Ocupação e colonização — contatos iniciais com o nativo, Capitanias Hereditárias, Duarte Coelho</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="hi02" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">02</div><div class="topic-name">A importância do açúcar para a economia local — engenhos e mão de obra</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="hi03" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">03</div><div class="topic-name">Formação de Olinda e Recife — disputas e desenvolvimento urbano</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🇳🇱 Período Holandês</div></td></tr>
+        <tr><td><div class="topic-row" data-id="hi04" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">04</div><div class="topic-name">A presença holandesa em Pernambuco — WIC, invasão e domínio</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="hi05" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">05</div><div class="topic-name">O governo de Maurício de Nassau — urbanismo, ciências e tolerância</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">⚔️ Movimentos de Resistência</div></td></tr>
+        <tr><td><div class="topic-row" data-id="hi06" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">06</div><div class="topic-name">Insurreição Pernambucana (1654) — expulsão dos holandeses</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="hi07" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">07</div><div class="topic-name">Formação dos Quilombos — resistência negra, Palmares e Zumbi</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="hi08" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">08</div><div class="topic-name">Guerra dos Mascates (1710) — conflito Olinda x Recife</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="hi09" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">09</div><div class="topic-name">Revolução Pernambucana de 1817 — causas, desenvolvimento e derrota</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="hi10" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">10</div><div class="topic-name">Confederação do Equador (1824) — Frei Caneca e o ideal republicano</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="hi11" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">11</div><div class="topic-name">Guerra dos Cabanos (1832–1835) — revolta popular no agreste</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="hi12" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">12</div><div class="topic-name">Revolução Praieira (1848) — último levante do Império em PE</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🏛️ República e Cultura</div></td></tr>
+        <tr><td><div class="topic-row" data-id="hi13" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">13</div><div class="topic-name">Pernambuco e a República — oligarquias, Era Vargas e Agamenon Magalhães</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="hi14" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">14</div><div class="topic-name">Manifestações da cultura popular — Frevo, Maracatu, Forró, festas juninas</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="hi15" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">15</div><div class="topic-name">Herança afrodescendente em Pernambuco — religiosidade e identidade</div><span class="topic-priority p-media">média</span></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ==========================================
+     DISCIPLINA 3: RACIOCÍNIO LÓGICO
+     ========================================== -->
+<div class="materia-section" id="logico">
+  <div class="mat-header" onclick="toggleMat(this)">
+    <div class="mat-icon" style="background:rgba(77,166,255,0.08)">🧩</div>
+    <div class="mat-info">
+      <div class="mat-name">Raciocínio Lógico</div>
+      <div class="mat-meta">Bloco II · 10 questões · eliminatório</div>
+    </div>
+    <div class="mat-right">
+      <div>
+        <div class="mat-pct" style="color:var(--blue)" data-mpct="log">0%</div>
+        <div class="mat-bar-mini-outer">
+          <div class="mat-bar-mini-inner" style="background:var(--blue)" data-mbar="log"></div>
+        </div>
+      </div>
+      <span class="mat-badge" style="background:rgba(77,166,255,0.08);color:var(--blue);border:1px solid rgba(77,166,255,0.2)">10 questões</span>
+      <div class="mat-chevron">▾</div>
+    </div>
+  </div>
+  <div class="mat-body">
+    <table class="topics-table">
+      <thead>
+        <tr>
+          <th style="width:44px">✓</th><th style="width:32px">#</th>
+          <th>Tópico do Edital</th><th style="width:80px;text-align:center">Prioridade</th>
+        </tr>
+      </thead>
+      <tbody data-cat="log">
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🔣 Lógica Proposicional</div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo01" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">01</div><div class="topic-name">Proposições e conectivos lógicos (e, ou, se…então, se e somente se)</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo02" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">02</div><div class="topic-name">Tabelas-verdade e valor lógico das proposições</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo03" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">03</div><div class="topic-name">Tautologia, contradição e contingência</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo04" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">04</div><div class="topic-name">Equivalências lógicas e leis de De Morgan</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo05" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">05</div><div class="topic-name">Negação de proposições compostas</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">📐 Raciocínio Matemático</div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo06" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">06</div><div class="topic-name">Operações com números inteiros, racionais e reais</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo07" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">07</div><div class="topic-name">Razão, proporção e regra de três simples e composta</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo08" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">08</div><div class="topic-name">Porcentagem — cálculo, acréscimo, desconto e juros simples</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo09" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">09</div><div class="topic-name">Equações de 1º e 2º grau e sistemas lineares</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo10" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">10</div><div class="topic-name">Geometria plana — área e perímetro (triângulo, quadrado, círculo)</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🎲 Combinatória e Probabilidade</div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo11" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">11</div><div class="topic-name">Princípio fundamental da contagem (PFC)</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo12" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">12</div><div class="topic-name">Permutação, combinação e arranjo</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo13" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">13</div><div class="topic-name">Probabilidade simples e condicional</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo14" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">14</div><div class="topic-name">Média aritmética, moda e mediana (estatística básica)</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🧠 Raciocínio Dedutivo</div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo15" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">15</div><div class="topic-name">Sequências e padrões lógicos (numéricos, figurativos)</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="lo16" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">16</div><div class="topic-name">Argumentos e inferências — validade e falácias</div><span class="topic-priority p-media">média</span></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ==========================================
+     DISCIPLINA 4: INFORMÁTICA
+     ========================================== -->
+<div class="materia-section" id="informatica">
+  <div class="mat-header" onclick="toggleMat(this)">
+    <div class="mat-icon" style="background:rgba(139,124,248,0.08)">💻</div>
+    <div class="mat-info">
+      <div class="mat-name">Informática</div>
+      <div class="mat-meta">Bloco II · 10 questões · banca AOCP</div>
+    </div>
+    <div class="mat-right">
+      <div>
+        <div class="mat-pct" style="color:var(--purple)" data-mpct="info">0%</div>
+        <div class="mat-bar-mini-outer">
+          <div class="mat-bar-mini-inner" style="background:var(--purple)" data-mbar="info"></div>
+        </div>
+      </div>
+      <span class="mat-badge" style="background:rgba(139,124,248,0.08);color:var(--purple);border:1px solid rgba(139,124,248,0.2)">10 questões</span>
+      <div class="mat-chevron">▾</div>
+    </div>
+  </div>
+  <div class="mat-body">
+    <table class="topics-table">
+      <thead>
+        <tr>
+          <th style="width:44px">✓</th><th style="width:32px">#</th>
+          <th>Tópico do Edital</th><th style="width:80px;text-align:center">Prioridade</th>
+        </tr>
+      </thead>
+      <tbody data-cat="info">
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🌐 Internet e Redes</div></td></tr>
+        <tr><td><div class="topic-row" data-id="in01" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">01</div><div class="topic-name">Conceitos de internet e intranet — diferenças e usos</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="in02" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">02</div><div class="topic-name">Redes PAN, LAN, MAN, WAN — tipos e características</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="in03" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">03</div><div class="topic-name">Protocolos de internet: HTTP/HTTPS, FTP, SMTP, POP3, IMAP, DNS, DHCP</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="in04" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">04</div><div class="topic-name">Navegadores (browsers): histórico, cookies, favoritos, plugins</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="in05" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">05</div><div class="topic-name">Serviços de e-mail, busca na web e armazenamento em nuvem</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🔐 Segurança da Informação</div></td></tr>
+        <tr><td><div class="topic-row" data-id="in06" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">06</div><div class="topic-name">Conceitos de proteção e segurança — vírus, malware, phishing, ransomware</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="in07" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">07</div><div class="topic-name">Backup — tipos (completo, diferencial, incremental) e boas práticas</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="in08" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">08</div><div class="topic-name">Armazenamento: HD, SSD, pen drive, nuvem — diferenças e uso</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🖥️ Sistema Operacional</div></td></tr>
+        <tr><td><div class="topic-row" data-id="in09" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">09</div><div class="topic-name">Windows 10/11 — área de trabalho, painel de controle, gerenciador de arquivos</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="in10" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">10</div><div class="topic-name">Organização de arquivos e pastas — criação, exclusão, cópia, mover</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="in11" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">11</div><div class="topic-name">Instalação e configuração de periféricos (impressora, mouse, teclado)</div><span class="topic-priority p-baixa">baixa</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">📊 Pacote Office e LibreOffice</div></td></tr>
+        <tr><td><div class="topic-row" data-id="in12" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">12</div><div class="topic-name">Word / Writer — formatação, estilos, índices, mala direta</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="in13" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">13</div><div class="topic-name">Excel / Calc — fórmulas básicas (SOMA, MÉDIA, SE, CONT.SE, PROCV)</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="in14" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">14</div><div class="topic-name">PowerPoint / Impress — criação de slides, transições e animações</div><span class="topic-priority p-media">média</span></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ==========================================
+     DISCIPLINA 5: DIREITO CONSTITUCIONAL
+     ========================================== -->
+<div class="materia-section" id="constitucional">
+  <div class="mat-header" onclick="toggleMat(this)">
+    <div class="mat-icon" style="background:rgba(255,95,95,0.08)">⚖️</div>
+    <div class="mat-info">
+      <div class="mat-name">Direito Constitucional</div>
+      <div class="mat-meta">Bloco III · 10 questões · CF/1988</div>
+    </div>
+    <div class="mat-right">
+      <div>
+        <div class="mat-pct" style="color:var(--red)" data-mpct="const">0%</div>
+        <div class="mat-bar-mini-outer">
+          <div class="mat-bar-mini-inner" style="background:var(--red)" data-mbar="const"></div>
+        </div>
+      </div>
+      <span class="mat-badge" style="background:rgba(255,95,95,0.08);color:var(--red);border:1px solid rgba(255,95,95,0.2)">10 questões</span>
+      <div class="mat-chevron">▾</div>
+    </div>
+  </div>
+  <div class="mat-body">
+    <table class="topics-table">
+      <thead>
+        <tr>
+          <th style="width:44px">✓</th><th style="width:32px">#</th>
+          <th>Tópico do Edital</th><th style="width:80px;text-align:center">Prioridade</th>
+        </tr>
+      </thead>
+      <tbody data-cat="const">
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🏛️ Fundamentos e Organização do Estado</div></td></tr>
+        <tr><td><div class="topic-row" data-id="co01" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">01</div><div class="topic-name">Dos Princípios Fundamentais — Art. 1º ao 4º da CF/88</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="co02" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">02</div><div class="topic-name">Organização do Estado — União, Estados, DF e Municípios</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="co03" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">03</div><div class="topic-name">Administração Pública — princípios da LIMPE (Art. 37)</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">📋 Direitos e Garantias Fundamentais</div></td></tr>
+        <tr><td><div class="topic-row" data-id="co04" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">04</div><div class="topic-name">Direitos e deveres individuais e coletivos — Art. 5º CF/88 (incisos principais)</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="co05" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">05</div><div class="topic-name">Direito à vida, liberdade, igualdade, segurança e propriedade</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="co06" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">06</div><div class="topic-name">Direitos sociais — Art. 6º ao 11 (trabalho, saúde, educação, moradia)</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="co07" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">07</div><div class="topic-name">Nacionalidade — brasileiros natos e naturalizados</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="co08" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">08</div><div class="topic-name">Direitos políticos — alistamento, voto e inelegibilidade</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🔐 Remédios Constitucionais</div></td></tr>
+        <tr><td><div class="topic-row" data-id="co09" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">09</div><div class="topic-name">Habeas Corpus, Mandado de Segurança, Habeas Data, Mandado de Injunção</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="co10" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">10</div><div class="topic-name">Ação Popular e Ação Civil Pública</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🛡️ Segurança Pública e Forças Armadas</div></td></tr>
+        <tr><td><div class="topic-row" data-id="co11" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">11</div><div class="topic-name">Segurança Pública — Art. 144 CF/88: PM, PC, PF, PRF e Guardas Municipais</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="co12" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">12</div><div class="topic-name">Poder de Polícia — conceito, atributos e limitações</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="co13" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">13</div><div class="topic-name">Constituição do Estado de Pernambuco — disposições sobre a PM-PE</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ==========================================
+     DISCIPLINA 6: DIREITOS HUMANOS E LEG. EXTRAVAGANTE
+     ========================================== -->
+<div class="materia-section" id="direitos">
+  <div class="mat-header" onclick="toggleMat(this)">
+    <div class="mat-icon" style="background:rgba(0,229,160,0.08)">🕊️</div>
+    <div class="mat-info">
+      <div class="mat-name">Direitos Humanos e Legislação Extravagante</div>
+      <div class="mat-meta">Bloco III · 10 questões · legislação específica</div>
+    </div>
+    <div class="mat-right">
+      <div>
+        <div class="mat-pct" style="color:var(--green)" data-mpct="dh">0%</div>
+        <div class="mat-bar-mini-outer">
+          <div class="mat-bar-mini-inner" style="background:var(--green)" data-mbar="dh"></div>
+        </div>
+      </div>
+      <span class="mat-badge" style="background:rgba(0,229,160,0.08);color:var(--green);border:1px solid rgba(0,229,160,0.2)">10 questões</span>
+      <div class="mat-chevron">▾</div>
+    </div>
+  </div>
+  <div class="mat-body">
+    <table class="topics-table">
+      <thead>
+        <tr>
+          <th style="width:44px">✓</th><th style="width:32px">#</th>
+          <th>Tópico do Edital</th><th style="width:80px;text-align:center">Prioridade</th>
+        </tr>
+      </thead>
+      <tbody data-cat="dh">
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">🌍 Direitos Humanos Internacionais</div></td></tr>
+        <tr><td><div class="topic-row" data-id="dh01" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">01</div><div class="topic-name">Declaração Universal dos Direitos Humanos (1948) — princípios e artigos</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="dh02" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">02</div><div class="topic-name">Incorporação de normas internacionais de DH ao direito interno brasileiro</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="dh03" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">03</div><div class="topic-name">Convenção Americana de DH (Pacto de San José da Costa Rica)</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">👮 Direitos Humanos e Atividade Policial</div></td></tr>
+        <tr><td><div class="topic-row" data-id="dh04" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">04</div><div class="topic-name">Uso progressivo da força — princípios de necessidade e proporcionalidade</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="dh05" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">05</div><div class="topic-name">Código de Conduta para os Funcionários Responsáveis pela Aplicação da Lei (ONU)</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="dh06" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">06</div><div class="topic-name">Princípios Básicos sobre o Uso da Força e Armas de Fogo (ONU)</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr class="topic-section-header"><td colspan="4"><div class="topic-section-inner">📜 Legislação Extravagante</div></td></tr>
+        <tr><td><div class="topic-row" data-id="dh07" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">07</div><div class="topic-name">Estatuto da Criança e do Adolescente — ECA (Lei 8.069/1990) — pontos principais</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="dh08" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">08</div><div class="topic-name">Lei Maria da Penha (Lei 11.340/2006) — violência doméstica e familiar</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="dh09" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">09</div><div class="topic-name">Lei de Drogas (Lei 11.343/2006) — uso, tráfico e políticas sobre entorpecentes</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="dh10" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">10</div><div class="topic-name">Código Penal Brasileiro — crimes contra a vida, patrimônio e administração pública</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="dh11" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">11</div><div class="topic-name">Código de Processo Penal — flagrante, prisão, inquérito e denúncia</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="dh12" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">12</div><div class="topic-name">Lei de Improbidade Administrativa (Lei 8.429/1992)</div><span class="topic-priority p-media">média</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="dh13" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">13</div><div class="topic-name">Estatuto do Desarmamento (Lei 10.826/2003) — posse e porte de armas</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+        <tr><td><div class="topic-row" data-id="dh14" onclick="toggle(this)"><div class="topic-check">✓</div><div class="topic-num">14</div><div class="topic-name">Lei de Organização Policial de Pernambuco e Estatuto da PM-PE</div><span class="topic-priority p-alta">alta</span></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- REDAÇÃO -->
+<div class="materia-section">
+  <div class="redacao-card">
+    <div class="redacao-title">✍️ REDAÇÃO · PROVA DISCURSIVA · ELIMINATÓRIA</div>
+    <div class="redacao-desc">
+      A redação é de caráter <strong style="color:var(--text)">eliminatório e classificatório</strong>. Valor: <strong style="color:var(--green)">40 pontos</strong>.
+      Mínimo para não ser eliminado: <strong style="color:var(--green)">12 pontos</strong>. O texto deve ter entre 15 e 20 linhas, no gênero 
+      <strong style="color:var(--text)">dissertativo-argumentativo</strong>, com tese, argumentos e conclusão. Pratique com temas de segurança pública,
+      direitos humanos e cidadania. Leia o Manual de Redação da Presidência da República (2018).
+    </div>
+  </div>
+</div>
+
+<!-- MANIFESTO -->
+<div class="manifesto-wrap">
+  <div class="manifesto">
+    <div class="manifesto-quote">
+      "Você não estuda para passar na prova.<br>
+      Você estuda para ser o <span class="em">soldado que a PM-PE merece</span>."
+    </div>
+    <div class="manifesto-attr">— Conteúdo baseado no Edital 83/2023 · Banca AOCP · Soldado PM-PE</div>
+  </div>
+</div>
+
+<footer>
+  <div class="ft-main">
+    <span style="color:var(--green)">PM-PE</span>
+    <span style="color:var(--text3)"> → </span>
+    <span style="color:var(--amber)">Faculdade TI + IA</span>
+    <span style="color:var(--text3)"> → </span>
+    <span style="color:var(--blue)">🇨🇦 Canadá</span>
+  </div>
+  <div>Progresso salvo localmente no navegador — <span style="color:var(--green)">sem login, sem nuvem, só você.</span></div>
+  <div class="ft-sub">Edital 83/2023 · AOCP · Soldado PM-PE · 60 questões · 6 disciplinas</div>
+</footer>
+
+<script>
+// ===== NAV =====
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => {
+  navToggle.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    navToggle.classList.remove('open');
+    navLinks.classList.remove('open');
+  });
+});
+
+// ===== SCROLL PROGRESS BAR =====
+window.addEventListener('scroll', () => {
+  const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+});
+
+// ===== TOGGLE MAT HEADER =====
+function toggleMat(el) {
+  el.classList.toggle('open');
+}
+
+// ===== STORAGE =====
+const KEY = 'pmpe_planilha_v1';
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; }
+}
+function saveState(s) {
+  localStorage.setItem(KEY, JSON.stringify(s));
+}
+
+// ===== TOGGLE TOPIC =====
+function toggle(el) {
+  const id = el.dataset.id;
+  const s = loadState();
+  s[id] = !s[id];
+  saveState(s);
+  applyRow(el, s[id]);
+  updateAll();
+  showToast(s[id]);
+}
+
+function applyRow(el, done) {
+  el.classList.toggle('done', done);
+}
+
+// ===== TOAST =====
+let toastTimer;
+function showToast(done) {
+  const t = document.getElementById('toast');
+  t.textContent = done ? '✓ Tópico marcado como estudado!' : '○ Tópico desmarcado';
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ===== INIT =====
+function initAll() {
+  const s = loadState();
+  document.querySelectorAll('.topic-row[data-id]').forEach(el => {
+    applyRow(el, !!s[el.dataset.id]);
+  });
+  updateAll();
+  // total count
+  const total = document.querySelectorAll('.topic-row[data-id]').length;
+  document.getElementById('totalTopics').textContent = total;
+}
+
+// ===== UPDATE PROGRESS =====
+function updateAll() {
+  const s = loadState();
+  const all = document.querySelectorAll('.topic-row[data-id]');
+  const total = all.length;
+  let done = 0;
+  all.forEach(el => { if (s[el.dataset.id]) done++; });
+
+  // Global
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  document.getElementById('gPct').textContent = pct;
+  document.getElementById('gMeta').textContent = `${done} de ${total} tópicos estudados`;
+  document.getElementById('gBar').style.width = pct + '%';
+  document.getElementById('gPctRight').textContent = pct + '% do edital coberto';
+  document.getElementById('gDone').textContent = done;
+  document.getElementById('gPend').textContent = total - done;
+
+  // Per category
+  document.querySelectorAll('tbody[data-cat]').forEach(tbody => {
+    const cat = tbody.dataset.cat;
+    const items = tbody.querySelectorAll('.topic-row[data-id]');
+    const t = items.length;
+    let d = 0;
+    items.forEach(el => { if (s[el.dataset.id]) d++; });
+    const p = t > 0 ? Math.round((d / t) * 100) : 0;
+
+    const pctEl = document.querySelector(`[data-mpct="${cat}"]`);
+    const barEl = document.querySelector(`[data-mbar="${cat}"]`);
+    if (pctEl) pctEl.textContent = p + '%';
+    if (barEl) barEl.style.width = p + '%';
+  });
+}
+
+function resetAll() {
+  if (!confirm('Resetar TODO o progresso da planilha PM-PE?')) return;
+  localStorage.removeItem(KEY);
+  initAll();
+}
+
+initAll();
+
+// Open first section by default
+document.querySelector('.mat-header').classList.add('open');
+</script>
+</body>
+</html>
