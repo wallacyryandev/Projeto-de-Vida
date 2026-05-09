@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cronograma de Estudos · PM-PE · TheLegacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #080810;
+  --bg2:     #0e0e1a;
+  --bg3:     #161626;
+  --card:    #111120;
+  --border:  rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --green:   #00e5a0;
+  --green2:  #00b87d;
+  --amber:   #f5a623;
+  --amber2:  #ffbe55;
+  --purple:  #a78bfa;
+  --blue:    #60b4ff;
+  --red:     #ff6b6b;
+  --text:    #eeeef8;
+  --text2:   #8888a8;
+  --text3:   #4a4a6a;
+  --mono:    'JetBrains Mono', monospace;
+  --sans:    'Space Grotesk', sans-serif;
+  --display: 'Space Grotesk', sans-serif;
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
+
+/* ── BACKGROUND DECORATION ── */
+.bg-deco {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+}
+.bg-deco::before {
+  content: '';
+  position: absolute;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(0,229,160,0.09) 0%, transparent 70%);
+  top: -200px; left: -150px;
+  border-radius: 50%;
+}
+.bg-deco::after {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(245,166,35,0.08) 0%, transparent 70%);
+  bottom: -150px; right: -100px;
+  border-radius: 50%;
+}
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+
+/* ── PROGRESS BAR ── */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 2px;
+  background: linear-gradient(90deg, var(--green), var(--amber));
+  z-index: 300; transition: width 0.12s linear;
+  box-shadow: 0 0 12px rgba(0,229,160,0.6);
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 clamp(16px,5vw,48px);
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(8,8,16,0.88);
+  backdrop-filter: blur(24px) saturate(160%);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--display);
+  font-size: 14px; font-weight: 700;
+  color: var(--amber);
+  letter-spacing: 0.04em;
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-logo-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse-dot 2.5s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+.nav-links {
+  display: flex; gap: 4px; align-items: center;
+}
+.nav-link, .nav-back {
+  font-size: 12px; color: var(--text2); text-decoration: none;
+  padding: 6px 14px; border-radius: var(--r-sm);
+  transition: all 0.2s; border: 1px solid transparent;
+  font-weight: 500; white-space: nowrap;
+}
+.nav-link:hover { color: var(--text); background: var(--bg3); border-color: var(--border2); }
+.nav-back {
+  border-color: var(--border);
+}
+.nav-back:hover { color: var(--text); background: var(--bg3); }
+
+/* hamburger */
+.nav-toggle {
+  display: none; flex-direction: column; justify-content: center;
+  align-items: center; gap: 5px; width: 38px; height: 38px;
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: var(--r-sm); cursor: pointer; padding: 0; z-index: 110;
+}
+.nav-toggle span {
+  display: block; width: 18px; height: 1.5px;
+  background: var(--text2); border-radius: 2px;
+  transition: all 0.28s cubic-bezier(0.4,0,0.2,1); transform-origin: center;
+}
+.nav-toggle.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); background: var(--amber); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); background: var(--amber); }
+
+/* ── HERO ── */
+.page-hero {
+  padding: clamp(100px,14vw,148px) clamp(16px,5vw,48px) clamp(48px,6vw,72px);
+  max-width: 1200px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 11px; color: var(--green);
+  letter-spacing: 0.18em; margin-bottom: 20px;
+  display: flex; align-items: center; gap: 12px; text-transform: uppercase;
+}
+.hero-eyebrow-line { width: 28px; height: 1px; background: var(--green); flex-shrink: 0; }
+.hero-eyebrow-badge {
+  padding: 3px 10px; background: rgba(0,229,160,0.08);
+  border: 1px solid rgba(0,229,160,0.2); border-radius: 20px;
+  font-size: 10px; color: var(--green);
+}
+
+.page-title {
+  font-family: var(--display);
+  font-size: clamp(36px,6vw,72px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+.page-title .accent {
+  background: linear-gradient(135deg, var(--amber), var(--amber2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.page-subtitle {
+  font-size: clamp(14px,1.8vw,17px);
+  color: var(--text2); max-width: 580px;
+  line-height: 1.75; margin-bottom: 40px;
+}
+
+/* STATS ROW */
+.hero-stats {
+  display: flex; flex-wrap: wrap; gap: 12px;
+}
+.hero-stat {
+  display: flex; flex-direction: column;
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: var(--r-md); padding: 14px 20px;
+  min-width: 110px;
+}
+.hero-stat-val {
+  font-family: var(--display); font-size: 24px; font-weight: 800;
+  line-height: 1; margin-bottom: 3px;
+}
+.hero-stat-label { font-size: 11px; color: var(--text3); font-family: var(--mono); }
+
+/* ── WRAPPER ── */
+.wrap { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 clamp(16px,5vw,48px); }
+
+/* ── SECTION HEADERS ── */
+.section-eyebrow {
+  font-family: var(--mono); font-size: 10px; color: var(--amber);
+  letter-spacing: 0.22em; margin-bottom: 10px;
+  text-transform: uppercase; display: flex; align-items: center; gap: 10px;
+}
+.section-eyebrow::after { content: ''; flex: 1; max-width: 40px; height: 1px; background: var(--amber); opacity: 0.4; }
+.section-title {
+  font-family: var(--display);
+  font-size: clamp(22px,3.5vw,40px);
+  font-weight: 700; letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+.section-sub { color: var(--text2); font-size: 14px; margin-bottom: 40px; line-height: 1.75; max-width: 520px; }
+
+/* ── DIVIDER ── */
+.section-divider { height: 1px; background: var(--border); margin: 72px 0; position: relative; z-index:1; }
+
+/* =====================
+   PRIORITY CARDS
+   ===================== */
+.priority-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+  margin-bottom: 0;
+}
+
+.pcard {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+  transform: translateY(24px);
+  position: relative;
+}
+.pcard::before {
+  content: '';
+  position: absolute;
+  inset: 0; border-radius: inherit;
+  background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,255,255,0.025) 0%, transparent 100%);
+  pointer-events: none;
+}
+.pcard.visible { opacity: 1; transform: translateY(0); transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.3s, box-shadow 0.3s; }
+.pcard:hover {
+  border-color: var(--border2);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 56px rgba(0,0,0,0.5), 0 0 0 1px var(--border2);
+}
+
+.pcard-top {
+  padding: 22px 22px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 12px;
+}
+.pcard-top-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.pcard-rank {
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  padding: 4px 10px; border-radius: 6px; flex-shrink: 0;
+  letter-spacing: 0.05em;
+}
+.rank-1 { background: rgba(255,107,107,0.1); color: var(--red);    border: 1px solid rgba(255,107,107,0.25); }
+.rank-2 { background: rgba(245,166,35,0.1);  color: var(--amber);  border: 1px solid rgba(245,166,35,0.25); }
+.rank-3 { background: rgba(96,180,255,0.1);  color: var(--blue);   border: 1px solid rgba(96,180,255,0.25); }
+.rank-4 { background: rgba(167,139,250,0.1); color: var(--purple); border: 1px solid rgba(167,139,250,0.25); }
+.rank-5 { background: rgba(0,229,160,0.1);   color: var(--green);  border: 1px solid rgba(0,229,160,0.25); }
+.rank-6 { background: rgba(80,80,110,0.18);  color: var(--text3);  border: 1px solid var(--border2); }
+
+.pcard-meta { display: flex; flex-direction: column; gap: 2px; }
+.pcard-icon { font-size: 22px; margin-bottom: 2px; }
+.pcard-name { font-family: var(--sans); font-size: 17px; font-weight: 700; }
+.pcard-why { font-size: 11px; color: var(--text3); font-family: var(--mono); }
+.pcard-questions {
+  font-size: 10px; font-family: var(--mono);
+  padding: 4px 10px; border-radius: 20px; flex-shrink: 0; white-space: nowrap;
+}
+
+.pcard-topics { padding: 18px 22px 22px; }
+.pcard-topics-title {
+  font-size: 9px; font-family: var(--mono); color: var(--text3);
+  letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 12px;
+}
+.topic-tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.topic-tag {
+  font-size: 11px; font-family: var(--mono);
+  padding: 4px 10px; border-radius: 6px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  transition: all 0.18s;
+}
+.topic-tag:hover { color: var(--text); background: var(--bg3); }
+
+.pcard-tip {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 12px 14px;
+  font-size: 12px; color: var(--text2); line-height: 1.65;
+}
+.pcard-tip strong { color: var(--text); }
+
+/* =====================
+   CRONOGRAMA SEMANAL
+   ===================== */
+.crono-wrap { margin-bottom: 0; }
+
+/* Mobile card view */
+.crono-cards { display: none; flex-direction: column; gap: 12px; }
+.crono-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r-lg); overflow: hidden;
+}
+.crono-card-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+}
+.crono-day-badge {
+  font-family: var(--display); font-size: 13px; font-weight: 700;
+}
+.crono-day-tag {
+  font-size: 9px; font-family: var(--mono); color: var(--text3);
+  padding: 3px 8px; background: var(--bg3); border-radius: 4px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+.crono-card-slots { padding: 14px 18px; display: flex; flex-direction: column; gap: 12px; }
+.crono-slot-card {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.crono-period {
+  font-size: 9px; font-family: var(--mono); color: var(--text3);
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 2px;
+}
+
+/* Desktop table */
+.crono-table-wrap {
+  border-radius: var(--r-lg); overflow: hidden;
+  border: 1px solid var(--border);
+}
+.crono-table { width: 100%; border-collapse: collapse; }
+.crono-table thead tr { background: var(--bg2); }
+.crono-table th {
+  font-size: 10px; font-family: var(--mono); color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.14em;
+  padding: 14px 18px; text-align: left; font-weight: 500;
+  border-bottom: 1px solid var(--border);
+}
+.crono-table td { padding: 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+.crono-table tr:last-child td { border-bottom: none; }
+.crono-table tbody tr { transition: background 0.2s; }
+.crono-table tbody tr:hover td { background: rgba(255,255,255,0.012); }
+
+.crono-day-cell {
+  width: 110px; min-height: 72px;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 16px 18px;
+  border-right: 1px solid var(--border);
+}
+.crono-day-name { font-family: var(--display); font-size: 13px; font-weight: 700; }
+.crono-day-meta { font-size: 9px; color: var(--text3); font-family: var(--mono); margin-top: 3px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+.crono-slot {
+  padding: 16px 18px;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.crono-slot:last-child { border-right: none; }
+.crono-mat { font-size: 13px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 7px; }
+.crono-topics-mini { font-size: 11px; color: var(--text3); line-height: 1.5; }
+.cb { display: inline-block; width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* =====================
+   REGRAS DE OURO
+   ===================== */
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px; margin-bottom: 0;
+}
+.rule-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 22px;
+  transition: all 0.3s;
+  opacity: 0; transform: translateY(16px);
+  position: relative; overflow: hidden;
+}
+.rule-card::after {
+  content: attr(data-num);
+  position: absolute; right: 18px; top: 14px;
+  font-family: var(--display); font-size: 52px; font-weight: 800;
+  color: rgba(255,255,255,0.025); line-height: 1; pointer-events: none;
+}
+.rule-card.visible { opacity: 1; transform: translateY(0); transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s, box-shadow 0.2s; }
+.rule-card:hover { border-color: var(--border2); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+
+.rule-num { font-family: var(--mono); font-size: 10px; color: var(--amber); margin-bottom: 10px; letter-spacing: 0.1em; }
+.rule-title { font-family: var(--display); font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.rule-desc { font-size: 13px; color: var(--text2); line-height: 1.7; }
+
+/* ── MANIFESTO ── */
+.manifesto {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: var(--r-lg);
+  padding: clamp(36px,5vw,64px) clamp(24px,5vw,56px);
+  text-align: center; position: relative; overflow: hidden; margin-bottom: 0;
+}
+.manifesto::before {
+  content: '"';
+  position: absolute; font-family: var(--display);
+  font-size: 400px; font-weight: 800;
+  color: rgba(255,255,255,0.015);
+  top: -120px; left: -10px; line-height: 1;
+  pointer-events: none;
+}
+.manifesto-quote {
+  font-family: var(--display);
+  font-size: clamp(18px,2.8vw,28px);
+  font-weight: 600; letter-spacing: -0.02em;
+  line-height: 1.45; margin-bottom: 20px;
+  max-width: 640px; margin-left: auto; margin-right: auto;
+  position: relative;
+}
+.manifesto-quote .em {
+  background: linear-gradient(135deg, var(--amber), var(--amber2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.manifesto-attr { font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: 0.1em; }
+
+/* ── FOOTER ── */
+footer {
+  position: relative; z-index: 1;
+  text-align: center; padding: clamp(40px,7vw,72px) clamp(16px,5vw,48px);
+  border-top: 1px solid var(--border);
+  color: var(--text3); font-size: 13px;
+  margin-top: 72px;
+}
+.ft-main { font-family: var(--display); font-size: 17px; margin-bottom: 12px; color: var(--text); font-weight: 700; }
+.ft-path { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.ft-arrow { color: var(--border2); }
+.ft-sub { font-size: 11px; color: var(--text3); margin-top: 8px; font-family: var(--mono); }
+.ft-copy { margin-top: 24px; font-size: 11px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 840px) {
+  nav { padding: 0 16px; }
+  .nav-toggle { display: flex; }
+  .nav-links {
+    display: none; flex-direction: column;
+    position: fixed; top: 60px; left: 0; right: 0;
+    background: rgba(8,8,16,0.97); backdrop-filter: blur(24px);
+    padding: 16px; gap: 6px;
+    border-bottom: 1px solid var(--border); z-index: 99;
+  }
+  .nav-links.open { display: flex; }
+  .nav-link, .nav-back { font-size: 14px; padding: 11px 16px; }
+}
+
+@media (max-width: 640px) {
+  .priority-grid { grid-template-columns: 1fr; }
+  .rules-grid { grid-template-columns: 1fr; }
+
+  /* switch table ↔ cards */
+  .crono-table-wrap { display: none; }
+  .crono-cards { display: flex; }
+
+  .hero-stats { gap: 8px; }
+  .hero-stat { padding: 12px 16px; min-width: 90px; }
+  .hero-stat-val { font-size: 20px; }
+}
+
+@media (max-width: 480px) {
+  .pcard-top { flex-wrap: wrap; }
+  .pcard-questions { margin-left: auto; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div class="bg-deco"></div>
+<div class="bg-grid"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-dot"></div>
+    📅 Cronograma PM-PE
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links" id="navLinks">
+    <a class="nav-back" href="index.html">← Voltar ao Plano</a>
+    <a class="nav-link" href="#prioridades">Prioridades</a>
+    <a class="nav-link" href="#cronograma">Cronograma</a>
+    <a class="nav-link" href="#regras">Regras</a>
+    <a class="nav-link" href="pmpe-planilha.html" style="color:var(--red);border-color:rgba(255,107,107,0.2);background:rgba(255,107,107,0.05);">🎖️ Planilha ↗</a>
+    <a class="nav-link" href="estudos.html" style="color:var(--amber);border-color:rgba(245,166,35,0.2);background:rgba(245,166,35,0.05);">📚 Dashboard ↗</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-eyebrow">
+    <div class="hero-eyebrow-line"></div>
+    Edital 83/2023 · Banca AOCP · Soldado
+    <span class="hero-eyebrow-badge">6 disciplinas reais</span>
+  </div>
+  <h1 class="page-title">
+    Por onde começar<br>
+    <span class="accent">no concurso PM-PE</span>
+  </h1>
+  <p class="page-subtitle">
+    Ordem de prioridade, tópicos por disciplina e cronograma semanal — tudo baseado
+    nas 6 matérias reais do edital. Sem inventar disciplinas que não existem na prova.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="hero-stat-val" style="color:var(--amber)">60</span>
+      <span class="hero-stat-label">questões</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-val" style="color:var(--green)">6</span>
+      <span class="hero-stat-label">disciplinas</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-val" style="color:var(--blue)">2h</span>
+      <span class="hero-stat-label">por dia</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-val" style="color:var(--purple)">6</span>
+      <span class="hero-stat-label">dias/semana</span>
+    </div>
+  </div>
+</div>
+
+<!-- PRIORIDADES -->
+<div class="wrap" id="prioridades" style="margin-bottom:72px;">
+  <div class="section-eyebrow">01 · Estratégia</div>
+  <h2 class="section-title">Ordem de prioridade — 6 matérias reais</h2>
+  <p class="section-sub">Baseado na frequência histórica de cobrança da banca AOCP e no custo-benefício de cada disciplina.</p>
+
+  <div class="priority-grid">
+
+    <!-- 1. PORTUGUÊS -->
+    <div class="pcard" data-delay="0">
+      <div class="pcard-top">
+        <div class="pcard-top-row">
+          <div class="pcard-rank rank-1">Prioridade 1</div>
+          <span class="pcard-questions" style="background:rgba(255,107,107,0.08);color:var(--red);border:1px solid rgba(255,107,107,0.2)">10 questões</span>
+        </div>
+        <div class="pcard-meta">
+          <div class="pcard-icon">📝</div>
+          <div class="pcard-name">Língua Portuguesa</div>
+          <div class="pcard-why">Base de tudo · leia todo dia</div>
+        </div>
+      </div>
+      <div class="pcard-topics">
+        <div class="pcard-topics-title">▸ Comece por estes tópicos</div>
+        <div class="topic-tag-row">
+          <span class="topic-tag">Interpretação de texto</span>
+          <span class="topic-tag">Tipologia textual</span>
+          <span class="topic-tag">Pontuação</span>
+          <span class="topic-tag">Ortografia oficial</span>
+          <span class="topic-tag">Acentuação gráfica</span>
+          <span class="topic-tag">Concordância verbal</span>
+          <span class="topic-tag">Concordância nominal</span>
+          <span class="topic-tag">Crase</span>
+          <span class="topic-tag">Regência verbal</span>
+          <span class="topic-tag">Classes de palavras</span>
+          <span class="topic-tag">Pronomes</span>
+          <span class="topic-tag">Coesão e coerência</span>
+        </div>
+        <div class="pcard-tip">
+          💡 <strong>Por que primeiro:</strong> É a disciplina com maior peso, serve de base para entender os enunciados do Direito e aparece em toda prova da AOCP. Leia 1 texto e resolva 5 questões todo dia.
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. DIREITO CONSTITUCIONAL -->
+    <div class="pcard" data-delay="80">
+      <div class="pcard-top">
+        <div class="pcard-top-row">
+          <div class="pcard-rank rank-2">Prioridade 2</div>
+          <span class="pcard-questions" style="background:rgba(245,166,35,0.08);color:var(--amber);border:1px solid rgba(245,166,35,0.2)">10 questões</span>
+        </div>
+        <div class="pcard-meta">
+          <div class="pcard-icon">⚖️</div>
+          <div class="pcard-name">Direito Constitucional</div>
+          <div class="pcard-why">Porta de entrada do Direito</div>
+        </div>
+      </div>
+      <div class="pcard-topics">
+        <div class="pcard-topics-title">▸ Comece por estes tópicos</div>
+        <div class="topic-tag-row">
+          <span class="topic-tag">Art. 5º — Direitos individuais</span>
+          <span class="topic-tag">Princípios fundamentais (Art. 1–4)</span>
+          <span class="topic-tag">Direitos sociais (Art. 6–11)</span>
+          <span class="topic-tag">Art. 37 — LIMPE</span>
+          <span class="topic-tag">Art. 144 — Segurança Pública</span>
+          <span class="topic-tag">Remédios constitucionais</span>
+          <span class="topic-tag">Habeas Corpus</span>
+          <span class="topic-tag">Mandado de Segurança</span>
+          <span class="topic-tag">Poder de Polícia</span>
+          <span class="topic-tag">Constituição PE — PM-PE</span>
+        </div>
+        <div class="pcard-tip">
+          💡 <strong>Por que segundo:</strong> O Art. 5º é o assunto mais cobrado na história da PMPE. Decorar os incisos principais garante pontos certos. Base para entender Direitos Humanos.
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. RACIOCÍNIO LÓGICO -->
+    <div class="pcard" data-delay="160">
+      <div class="pcard-top">
+        <div class="pcard-top-row">
+          <div class="pcard-rank rank-3">Prioridade 3</div>
+          <span class="pcard-questions" style="background:rgba(96,180,255,0.08);color:var(--blue);border:1px solid rgba(96,180,255,0.2)">10 questões</span>
+        </div>
+        <div class="pcard-meta">
+          <div class="pcard-icon">🧩</div>
+          <div class="pcard-name">Raciocínio Lógico</div>
+          <div class="pcard-why">Comece cedo — precisa maturar</div>
+        </div>
+      </div>
+      <div class="pcard-topics">
+        <div class="pcard-topics-title">▸ Comece por estes tópicos</div>
+        <div class="topic-tag-row">
+          <span class="topic-tag">Proposições e conectivos</span>
+          <span class="topic-tag">Tabelas-verdade</span>
+          <span class="topic-tag">Negação de proposições</span>
+          <span class="topic-tag">Leis de De Morgan</span>
+          <span class="topic-tag">Porcentagem</span>
+          <span class="topic-tag">Regra de três</span>
+          <span class="topic-tag">Probabilidade</span>
+          <span class="topic-tag">Média, moda, mediana</span>
+          <span class="topic-tag">Sequências lógicas</span>
+          <span class="topic-tag">Razão e proporção</span>
+        </div>
+        <div class="pcard-tip">
+          💡 <strong>Por que terceiro:</strong> Lógica precisa de tempo para "cair na cabeça". Quem deixa pra última hora entra em pânico. Resolva pelo menos 5 questões por dia desde o início.
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. DIREITOS HUMANOS -->
+    <div class="pcard" data-delay="240">
+      <div class="pcard-top">
+        <div class="pcard-top-row">
+          <div class="pcard-rank rank-4">Prioridade 4</div>
+          <span class="pcard-questions" style="background:rgba(167,139,250,0.08);color:var(--purple);border:1px solid rgba(167,139,250,0.2)">10 questões</span>
+        </div>
+        <div class="pcard-meta">
+          <div class="pcard-icon">🕊️</div>
+          <div class="pcard-name">Dir. Humanos e Leg. Extravagante</div>
+          <div class="pcard-why">Muito legislação — organize por lei</div>
+        </div>
+      </div>
+      <div class="pcard-topics">
+        <div class="pcard-topics-title">▸ Comece por estes tópicos</div>
+        <div class="topic-tag-row">
+          <span class="topic-tag">DUDH 1948 — artigos principais</span>
+          <span class="topic-tag">ECA — Lei 8.069/1990</span>
+          <span class="topic-tag">Lei Maria da Penha</span>
+          <span class="topic-tag">Lei de Drogas — 11.343/2006</span>
+          <span class="topic-tag">Estatuto do Desarmamento</span>
+          <span class="topic-tag">Código Penal — crimes principais</span>
+          <span class="topic-tag">CPP — flagrante e prisão</span>
+          <span class="topic-tag">Uso progressivo da força</span>
+          <span class="topic-tag">Estatuto da PM-PE</span>
+        </div>
+        <div class="pcard-tip">
+          💡 <strong>Por que quarto:</strong> Muita lei para cobrir, mas a banca repete os artigos clássicos. Foque nos pontos mais cobrados de cada lei em vez de ler o texto inteiro.
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. INFORMÁTICA -->
+    <div class="pcard" data-delay="320">
+      <div class="pcard-top">
+        <div class="pcard-top-row">
+          <div class="pcard-rank rank-5">Prioridade 5</div>
+          <span class="pcard-questions" style="background:rgba(0,229,160,0.08);color:var(--green);border:1px solid rgba(0,229,160,0.2)">10 questões</span>
+        </div>
+        <div class="pcard-meta">
+          <div class="pcard-icon">💻</div>
+          <div class="pcard-name">Informática</div>
+          <div class="pcard-why">Decoreba + prática — aprende rápido</div>
+        </div>
+      </div>
+      <div class="pcard-topics">
+        <div class="pcard-topics-title">▸ Comece por estes tópicos</div>
+        <div class="topic-tag-row">
+          <span class="topic-tag">Windows 10/11 — básico</span>
+          <span class="topic-tag">Word — formatação e estilos</span>
+          <span class="topic-tag">Excel — SOMA, MÉDIA, SE</span>
+          <span class="topic-tag">Segurança — vírus, phishing</span>
+          <span class="topic-tag">Backup — tipos e conceitos</span>
+          <span class="topic-tag">HTTP/HTTPS, FTP, SMTP</span>
+          <span class="topic-tag">Navegadores — cookies, cache</span>
+          <span class="topic-tag">Redes LAN, MAN, WAN</span>
+        </div>
+        <div class="pcard-tip">
+          💡 <strong>Por que quinto:</strong> A AOCP cobra muito Office e segurança. São conceitos de memorização — com 2 semanas focadas você cobre tudo. Vantagem: você já usa essas ferramentas.
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. HISTÓRIA PE -->
+    <div class="pcard" data-delay="400">
+      <div class="pcard-top">
+        <div class="pcard-top-row">
+          <div class="pcard-rank rank-6">Prioridade 6</div>
+          <span class="pcard-questions" style="background:rgba(80,80,110,0.15);color:var(--text3);border:1px solid var(--border2)">10 questões</span>
+        </div>
+        <div class="pcard-meta">
+          <div class="pcard-icon">🏛️</div>
+          <div class="pcard-name">História de Pernambuco</div>
+          <div class="pcard-why">Específica e direta — menos abstrata</div>
+        </div>
+      </div>
+      <div class="pcard-topics">
+        <div class="pcard-topics-title">▸ Comece por estes tópicos</div>
+        <div class="topic-tag-row">
+          <span class="topic-tag">Maurício de Nassau</span>
+          <span class="topic-tag">Insurreição Pernambucana 1817</span>
+          <span class="topic-tag">Confederação do Equador 1824</span>
+          <span class="topic-tag">Zumbi e Palmares</span>
+          <span class="topic-tag">Período holandês — WIC</span>
+          <span class="topic-tag">Guerra dos Mascates 1710</span>
+          <span class="topic-tag">Revolução Praieira 1848</span>
+          <span class="topic-tag">Frevo e Maracatu</span>
+          <span class="topic-tag">Duarte Coelho</span>
+        </div>
+        <div class="pcard-tip">
+          💡 <strong>Por que sexto:</strong> É direta e factual — datas, nomes, eventos. Ótima para alternar com Lógica quando você precisar descansar a mente. Mapas mentais funcionam muito bem aqui.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="section-divider wrap" style="max-width:1200px;padding:0 clamp(16px,5vw,48px);margin-left:auto;margin-right:auto;">
+  <div style="height:1px;background:var(--border);"></div>
+</div>
+
+<!-- CRONOGRAMA SEMANAL -->
+<div class="wrap" id="cronograma" style="margin:72px auto;">
+  <div class="section-eyebrow">02 · Rotina</div>
+  <h2 class="section-title">Cronograma semanal — estudante integral</h2>
+  <p class="section-sub">Seg–Sex à noite (≈2h). Sáb e Dom à tarde e noite (≈4h/dia). Domingo: descanso ou simulado.</p>
+
+  <div class="crono-wrap">
+
+    <!-- DESKTOP TABLE -->
+    <div class="crono-table-wrap">
+      <table class="crono-table">
+        <thead>
+          <tr>
+            <th style="width:110px">Dia</th>
+            <th>🌙 Noite / Período 1</th>
+            <th>📚 Noite / Período 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="crono-day-cell">
+                <div class="crono-day-name">Segunda</div>
+                <div class="crono-day-meta">noite</div>
+              </div>
+            </td>
+            <td>
+              <div class="crono-slot">
+                <div class="crono-mat"><span class="cb" style="background:var(--red)"></span>Língua Portuguesa</div>
+                <div class="crono-topics-mini">Interpretação de texto · Tipologia · Ortografia</div>
+              </div>
+            </td>
+            <td>
+              <div class="crono-slot">
+                <div class="crono-mat"><span class="cb" style="background:var(--red)"></span>Língua Portuguesa</div>
+                <div class="crono-topics-mini">10 questões de interpretação · corrija os erros</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="crono-day-cell">
+                <div class="crono-day-name">Terça</div>
+                <div class="crono-day-meta">noite</div>
+              </div>
+            </td>
+            <td>
+              <div class="crono-slot">
+                <div class="crono-mat"><span class="cb" style="background:var(--amber)"></span>Direito Constitucional</div>
+                <div class="crono-topics-mini">Art. 5º — Direitos individuais e coletivos</div>
+              </div>
+            </td>
+            <td>
+              <div class="crono-slot">
+                <div class="crono-mat"><span class="cb" style="background:var(--amber)"></span>Direito Constitucional</div>
+                <div class="crono-topics-mini">10 questões sobre Art. 5º e Art. 1–4</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="crono-day-cell">
+                <div class="crono-day-name">Quarta</div>
+                <div class="crono-day-meta">noite</div>
+              </div>
+            </td>
+            <td>
+              <div class="crono-slot">
+                <div class="crono-mat"><span class="cb" style="background:var(--blue)"></span>Raciocínio Lógico</div>
+                <div class="crono-topics-mini">Proposições · Conectivos · Tabelas-verdade</div>
+              </div>
+            </td>
+            <td>
+              <div class="crono-slot">
+                <div class="crono-mat"><span class="cb" style="background:var(--blue)"></span>Raciocínio Lógico</div>
+                <div class="crono-topics-mini">10 questões de lógica proposicional</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="crono-day-cell">
+                <div class="crono-day-name">Quinta</div>
+                <div class="crono-day-meta">noite</div>
+              </div>
+            </td>
+            <td>
+              <div class="crono-slot">
+                <div class="crono-mat"><span class="cb" style="background:var(--purple)"></span>Dir. Humanos e Leg. Extravagante</div>
+                <div class="crono-topics-mini">DUDH 1948 · ECA · Lei Maria da Penha</div>
+              </div>
+            </td>
+            <td>
+              <div class="crono-slot">
+                <div class="crono-mat"><span class="cb" style="background:var(--purple)"></span>Dir. Humanos e Leg. Extravagante</div>
+                <div class="crono-topics-mini">10 questões sobre DUDH e ECA</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="crono-day-cell">
+                <div class="crono-day-name">Sexta</div>
+                <div class="crono-day-meta">noite</div>
+              </div>
+            </td>
+            <td>
+              <div class="crono-slot">
+                <div class="crono-mat"><span class="cb" style="background:var(--red)"></span>Língua Portuguesa</div>
+                <div class="crono-topics-mini">Concordância verbal e nominal · Crase · Regência</div>
+              </div>
+            </td>
+            <td>
+              <div class="crono-slot">
+                <div class="crono-mat"><span class="cb" style="background:var(--amber)"></span>Direito Constitucional</div>
+                <div class="crono-topics-mini">Art. 37 LIMPE · Art. 144 Segurança Pública</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="crono-day-cell">
+                <div class="crono-day-name">Sábado</div>
+                <div class="crono-day-meta">tarde + noite</div>
+              </div>
+            </td>
+            <td>
+              <div class="crono-slot">
+                <div class="crono-mat"><span class="cb" style="background:var(--blue)"></span>Raciocínio Lógico</div>
+                <div class="crono-topics-mini">Porcentagem · Probabilidade · Sequências · Regra de 3</div>
+              </div>
+            </td>
+            <td>
+              <div class="crono-slot">
+                <div class="crono-mat"><span class="cb" style="background:var(--green)"></span>Informática</div>
+                <div class="crono-topics-mini">Windows · Word · Excel · Segurança digital · 10 questões</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="crono-day-cell">
+                <div class="crono-day-name">Domingo</div>
+                <div class="crono-day-meta">tarde + noite</div>
+              </div>
+            </td>
+            <td>
+              <div class="crono-slot">
+                <div class="crono-mat"><span class="cb" style="background:var(--amber)"></span>História de Pernambuco</div>
+                <div class="crono-topics-mini">Nassau · Insurreições · Palmares · Revolução Praieira</div>
+              </div>
+            </td>
+            <td>
+              <div class="crono-slot" style="flex-direction:row;align-items:center;gap:16px;">
+                <div>
+                  <div class="crono-mat" style="color:var(--green)">🏆 Revisão geral + Simulado OU descanso</div>
+                  <div class="crono-topics-mini">10 questões de cada matéria da semana. Se tiver menos de 4 semanas para a prova → simulado completo.</div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MOBILE CARDS -->
+    <div class="crono-cards">
+
+      <div class="crono-card">
+        <div class="crono-card-header">
+          <div class="crono-day-badge">Segunda</div>
+          <div class="crono-day-tag">noite</div>
+        </div>
+        <div class="crono-card-slots">
+          <div class="crono-slot-card">
+            <div class="crono-period">🌙 Noite — teoria</div>
+            <div class="crono-mat"><span class="cb" style="background:var(--red)"></span>Língua Portuguesa</div>
+            <div class="crono-topics-mini">Interpretação de texto · Tipologia · Ortografia</div>
+          </div>
+          <div class="crono-slot-card">
+            <div class="crono-period">📚 Noite — prática</div>
+            <div class="crono-mat"><span class="cb" style="background:var(--red)"></span>Língua Portuguesa</div>
+            <div class="crono-topics-mini">10 questões de interpretação · corrija os erros</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="crono-card">
+        <div class="crono-card-header">
+          <div class="crono-day-badge">Terça</div>
+          <div class="crono-day-tag">noite</div>
+        </div>
+        <div class="crono-card-slots">
+          <div class="crono-slot-card">
+            <div class="crono-period">🌙 Noite — teoria</div>
+            <div class="crono-mat"><span class="cb" style="background:var(--amber)"></span>Direito Constitucional</div>
+            <div class="crono-topics-mini">Art. 5º — Direitos individuais e coletivos</div>
+          </div>
+          <div class="crono-slot-card">
+            <div class="crono-period">📚 Noite — prática</div>
+            <div class="crono-mat"><span class="cb" style="background:var(--amber)"></span>Direito Constitucional</div>
+            <div class="crono-topics-mini">10 questões sobre Art. 5º e Art. 1–4</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="crono-card">
+        <div class="crono-card-header">
+          <div class="crono-day-badge">Quarta</div>
+          <div class="crono-day-tag">noite</div>
+        </div>
+        <div class="crono-card-slots">
+          <div class="crono-slot-card">
+            <div class="crono-period">🌙 Noite — teoria</div>
+            <div class="crono-mat"><span class="cb" style="background:var(--blue)"></span>Raciocínio Lógico</div>
+            <div class="crono-topics-mini">Proposições · Conectivos · Tabelas-verdade</div>
+          </div>
+          <div class="crono-slot-card">
+            <div class="crono-period">📚 Noite — prática</div>
+            <div class="crono-mat"><span class="cb" style="background:var(--blue)"></span>Raciocínio Lógico</div>
+            <div class="crono-topics-mini">10 questões de lógica proposicional</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="crono-card">
+        <div class="crono-card-header">
+          <div class="crono-day-badge">Quinta</div>
+          <div class="crono-day-tag">noite</div>
+        </div>
+        <div class="crono-card-slots">
+          <div class="crono-slot-card">
+            <div class="crono-period">🌙 Noite — teoria</div>
+            <div class="crono-mat"><span class="cb" style="background:var(--purple)"></span>Dir. Humanos e Leg. Extravagante</div>
+            <div class="crono-topics-mini">DUDH 1948 · ECA · Lei Maria da Penha</div>
+          </div>
+          <div class="crono-slot-card">
+            <div class="crono-period">📚 Noite — prática</div>
+            <div class="crono-mat"><span class="cb" style="background:var(--purple)"></span>Dir. Humanos e Leg. Extravagante</div>
+            <div class="crono-topics-mini">10 questões sobre DUDH e ECA</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="crono-card">
+        <div class="crono-card-header">
+          <div class="crono-day-badge">Sexta</div>
+          <div class="crono-day-tag">noite</div>
+        </div>
+        <div class="crono-card-slots">
+          <div class="crono-slot-card">
+            <div class="crono-period">🌙 Noite — teoria</div>
+            <div class="crono-mat"><span class="cb" style="background:var(--red)"></span>Língua Portuguesa</div>
+            <div class="crono-topics-mini">Concordância verbal e nominal · Crase · Regência</div>
+          </div>
+          <div class="crono-slot-card">
+            <div class="crono-period">📚 Noite — prática</div>
+            <div class="crono-mat"><span class="cb" style="background:var(--amber)"></span>Direito Constitucional</div>
+            <div class="crono-topics-mini">Art. 37 LIMPE · Art. 144 Segurança Pública</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="crono-card">
+        <div class="crono-card-header">
+          <div class="crono-day-badge">Sábado</div>
+          <div class="crono-day-tag">tarde + noite</div>
+        </div>
+        <div class="crono-card-slots">
+          <div class="crono-slot-card">
+            <div class="crono-period">🌤️ Tarde</div>
+            <div class="crono-mat"><span class="cb" style="background:var(--blue)"></span>Raciocínio Lógico</div>
+            <div class="crono-topics-mini">Porcentagem · Probabilidade · Sequências · Regra de 3</div>
+          </div>
+          <div class="crono-slot-card">
+            <div class="crono-period">🌙 Noite</div>
+            <div class="crono-mat"><span class="cb" style="background:var(--green)"></span>Informática</div>
+            <div class="crono-topics-mini">Windows · Word · Excel · Segurança digital · 10 questões</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="crono-card">
+        <div class="crono-card-header">
+          <div class="crono-day-badge">Domingo</div>
+          <div class="crono-day-tag">tarde + noite</div>
+        </div>
+        <div class="crono-card-slots">
+          <div class="crono-slot-card">
+            <div class="crono-period">🌤️ Tarde</div>
+            <div class="crono-mat"><span class="cb" style="background:var(--amber)"></span>História de Pernambuco</div>
+            <div class="crono-topics-mini">Nassau · Insurreições · Palmares · Revolução Praieira</div>
+          </div>
+          <div class="crono-slot-card">
+            <div class="crono-period">🌙 Noite</div>
+            <div class="crono-mat" style="color:var(--green)">🏆 Revisão geral + Simulado OU descanso</div>
+            <div class="crono-topics-mini">10 questões de cada matéria da semana. Menos de 4 semanas → simulado completo.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.crono-cards -->
+  </div>
+</div>
+
+<div style="height:1px;background:var(--border);max-width:1200px;margin:0 auto;padding:0 clamp(16px,5vw,48px);"><div style="height:1px;background:var(--border);"></div></div>
+
+<!-- REGRAS DE OURO -->
+<div class="wrap" id="regras" style="margin-top:72px;margin-bottom:72px;">
+  <div class="section-eyebrow">03 · Método</div>
+  <h2 class="section-title">Regras de ouro do concurseiro</h2>
+  <p class="section-sub">O que separa aprovado de candidato que volta no próximo concurso.</p>
+
+  <div class="rules-grid">
+    <div class="rule-card" data-delay="0" data-num="1">
+      <div class="rule-num">regra 01</div>
+      <div class="rule-title">📖 Questões todo dia, sem exceção</div>
+      <div class="rule-desc">Não é possível passar em concurso só lendo teoria. Resolva pelo menos 10 questões por dia. O erro ensina mais do que a teoria lida.</div>
+    </div>
+    <div class="rule-card" data-delay="60" data-num="2">
+      <div class="rule-num">regra 02</div>
+      <div class="rule-title">🔁 Revisão é mais importante que conteúdo novo</div>
+      <div class="rule-desc">Aprender algo novo e não revisar é a mesma coisa que não aprender. Reserve 30% do tempo para revisar o que já estudou.</div>
+    </div>
+    <div class="rule-card" data-delay="120" data-num="3">
+      <div class="rule-num">regra 03</div>
+      <div class="rule-title">🎯 Estude o que cai, não o que existe</div>
+      <div class="rule-desc">O edital tem tudo que pode cair, mas a banca AOCP repete padrões. Priorize os assuntos com maior histórico de cobrança — já estão marcados na planilha.</div>
+    </div>
+    <div class="rule-card" data-delay="180" data-num="4">
+      <div class="rule-num">regra 04</div>
+      <div class="rule-title">✍️ Não negligencie a Redação</div>
+      <div class="rule-desc">A redação é eliminatória — mínimo 12 de 40 pontos. Pratique 1 redação por semana. Use temas de segurança pública, cidadania e direitos.</div>
+    </div>
+    <div class="rule-card" data-delay="240" data-num="5">
+      <div class="rule-num">regra 05</div>
+      <div class="rule-title">😴 Sono e descanso são parte do estudo</div>
+      <div class="rule-desc">Dormir menos de 7 horas destrói a consolidação da memória. Um dia de descanso por semana é estratégia, não preguiça.</div>
+    </div>
+    <div class="rule-card" data-delay="300" data-num="6">
+      <div class="rule-num">regra 06</div>
+      <div class="rule-title">🏃 Prepare o corpo — o TAF elimina</div>
+      <div class="rule-desc">Barra fixa, abdominal, corrida 2400m e salto em distância. Muita gente passa na prova objetiva e é eliminada no TAF. Treine em paralelo desde o início.</div>
+    </div>
+  </div>
+</div>
+
+<!-- MANIFESTO -->
+<div class="wrap" style="margin-bottom:72px;">
+  <div class="manifesto">
+    <div class="manifesto-quote">
+      "Estudar sem saber o que vai cair<br>é como treinar para uma corrida <span class="em">sem saber a distância</span>."
+    </div>
+    <div class="manifesto-attr">— 6 matérias reais · Edital 83/2023 · Banca AOCP · Soldado PM-PE</div>
+  </div>
+</div>
+
+<footer>
+  <div class="ft-main">
+    <div class="ft-path">
+      <span style="color:var(--green)">PM-PE</span>
+      <span class="ft-arrow">→</span>
+      <span style="color:var(--amber)">Faculdade TI + IA</span>
+      <span class="ft-arrow">→</span>
+      <span style="color:var(--blue)">🇨🇦 Canadá</span>
+    </div>
+  </div>
+  <div>Conteúdo baseado no <span style="color:var(--green)">Edital 83/2023</span> — Instituto AOCP — Soldado PM-PE.</div>
+  <div class="ft-sub">As 6 disciplinas reais: Português · História PE · Raciocínio Lógico · Informática · Dir. Constitucional · Dir. Humanos</div>
+  <div class="ft-copy" style="color:var(--text3);opacity:0.5;">TheLegacy · 2025</div>
+</footer>
+
+<script>
+// NAV TOGGLE
+const navToggle = document.getElementById('navToggle');
+const navLinks  = document.getElementById('navLinks');
+
+navToggle.addEventListener('click', () => {
+  navToggle.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    navToggle.classList.remove('open');
+    navLinks.classList.remove('open');
+  });
+});
+// close on outside click
+document.addEventListener('click', e => {
+  if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
+    navToggle.classList.remove('open');
+    navLinks.classList.remove('open');
+  }
+});
+
+// SCROLL PROGRESS
+const progressBar = document.getElementById('progress-bar');
+window.addEventListener('scroll', () => {
+  const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+  progressBar.style.width = pct + '%';
+}, { passive: true });
+
+// INTERSECTION OBSERVER — animate on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el    = entry.target;
+      const delay = parseInt(el.dataset.delay || 0);
+      setTimeout(() => el.classList.add('visible'), delay);
+      observer.unobserve(el);
+    }
+  });
+}, { threshold: 0.06 });
+
+document.querySelectorAll('.pcard, .rule-card').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
